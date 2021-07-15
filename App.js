@@ -14,6 +14,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./src/screens/Home";
 
 import Auth from "./src/screens/Auth";
+import YoutubeScreen from "./src/screens/YoutubeScreen";
 
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
@@ -42,6 +43,7 @@ export default function App() {
                   component={Auth}
                   options={{ headerShown: false }}
                />
+               <Stack.Screen name="Youtube" component={YoutubeScreen} />
             </Stack.Navigator>
          </NavigationContainer>
       </Provider>

@@ -14,6 +14,12 @@ function Home({ navigation }) {
                onPress={() => navigation.navigate("Auth")}
             />
          </View>
+         <View style={styles.login}>
+            <Button
+               title="Youtube"
+               onPress={() => navigation.navigate("Youtube")}
+            />
+         </View>
       </View>
    );
 }
