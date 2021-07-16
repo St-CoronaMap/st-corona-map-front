@@ -147,7 +147,7 @@ function LoginContainer({ navigation }) {
    useEffect(() => {
       if (response?.type === "success") {
          const { authentication } = response;
-         console.log(response);
+         dispatch(signin("", "", "google", authentication.accessToken));
       }
    }, [response]);
    const onGoogleSignin = async () => {

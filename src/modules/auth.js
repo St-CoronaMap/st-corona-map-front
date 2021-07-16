@@ -5,7 +5,7 @@ const SIGNOUT = "SIGNOUT";
 //액션 생성 함수
 export const signin = (email, uid, type, token) => ({
    type: SIGNIN,
-   payload: { email: email, uid: uid, type: type, token: token },
+   payload: { email: email, uid: uid, type: type, accessToken: token },
 });
 export const signout = () => ({ type: SIGNOUT });
 
@@ -14,7 +14,7 @@ const initialState = {
    email: "",
    uid: "",
    type: "",
-   token: "",
+   accessToken: "",
 };
 
 export default function auth(state = initialState, action) {
@@ -25,10 +25,16 @@ export default function auth(state = initialState, action) {
             email: action.payload.email,
             uid: action.payload.uid,
             type: action.payload.type,
-            token: action.payload.token,
+            accessToken: action.payload.accessToken,
          };
       case SIGNOUT:
-         return { signined: false, email: "", uid: "", type: "", token: "" };
+         return {
+            signined: false,
+            email: "",
+            uid: "",
+            type: "",
+            accessToken: "",
+         };
       default:
          return state;
    }
