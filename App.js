@@ -16,6 +16,7 @@ import HomeScreen from "./src/screens/Home";
 import Auth from "./src/screens/Auth";
 import YoutubeScreen from "./src/screens/YoutubeScreen";
 import SearchScreen from "./src/screens/Search";
+import { StatusBar } from "expo-status-bar";
 
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
@@ -51,6 +52,7 @@ export default function App() {
                   options={{ headerShown: false }}
                />
             </Stack.Navigator>
+            <StatusBar style="auto" />
          </NavigationContainer>
       </Provider>
    );

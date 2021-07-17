@@ -14,12 +14,7 @@ export default function SearchScreen({ navigation }) {
             initialParams={{ navigation: navigation }}
             options={{ headerShown: false }}
          />
-         <Stack.Screen
-            name="addItem"
-            component={AddItemContainer}
-            options={{ headerShown: false }}
-            initialParams={{ navigation: navigation }}
-         />
+         <Stack.Screen name="addItem" component={AddItemContainer} />
       </Stack.Navigator>
    );
 }

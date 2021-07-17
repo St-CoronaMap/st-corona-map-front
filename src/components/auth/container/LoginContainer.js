@@ -149,7 +149,7 @@ function LoginContainer({ navigation }) {
          const { authentication } = response;
          dispatch(signin("", "", "google", authentication.accessToken));
       }
-   }, [response]);
+   }, [response]);   
    const onGoogleSignin = async () => {
       try {
          await promptAsync();

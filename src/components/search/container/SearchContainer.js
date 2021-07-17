@@ -16,10 +16,10 @@ function SearchContainer({ navigation }) {
    const onSearch = async (type, token) => {
       try {
          let params = {
-            access_token: accessToken,
+            key: apiKey,
             part: "snippet",
             maxResults: 10,
-            order: "rating",
+            type: "video",
          };
          if (type === "page") {
             params["pageToken"] = token;
@@ -40,6 +40,9 @@ function SearchContainer({ navigation }) {
                id: item.id.videoId,
                title: decode(item.snippet.title),
                thumbnails: item.snippet.thumbnails.medium.url,
+               publishedAt: item.snippet.publishedAt,
+               description: decode(item.snippet.description),
+               channelTitle: decode(item.snippet.channelTitle),
             }))
          );
          setPageTokens([res.data.prevPageToken, res.data.nextPageToken]);
