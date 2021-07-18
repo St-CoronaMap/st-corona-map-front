@@ -52,7 +52,7 @@ function SearchContainer({ navigation }) {
       setLoading(false);
    };
    const onPressItem = (item) => {
-      navigation.navigate("addItem", { item: item });
+      navigation.navigate("추가", { item: item });
    };
    const onChange = (value) => {
       setTyping(value);
