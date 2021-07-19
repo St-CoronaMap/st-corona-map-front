@@ -1,5 +1,5 @@
 import React from "react";
-
+import { ModalPortal } from "react-native-modals";
 /*리덕스 */
 import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
@@ -17,6 +17,7 @@ import Auth from "./src/screens/Auth";
 import YoutubeScreen from "./src/screens/YoutubeScreen";
 import SearchScreen from "./src/screens/Search";
 import { StatusBar } from "expo-status-bar";
+import PlaylistScreen from "./src/screens/Playlist";
 
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
@@ -51,8 +52,14 @@ export default function App() {
                   component={SearchScreen}
                   options={{ headerShown: false }}
                />
+               <Stack.Screen
+                  name="Playlist"
+                  component={PlaylistScreen}
+                  options={{ headerShown: false }}
+               />
             </Stack.Navigator>
             <StatusBar style="auto" />
+            <ModalPortal />
          </NavigationContainer>
       </Provider>
    );

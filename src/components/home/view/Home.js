@@ -26,6 +26,12 @@ function Home({ navigation }) {
                onPress={() => navigation.navigate("Search")}
             />
          </View>
+         <View style={styles.login}>
+            <Button
+               title="Playlist"
+               onPress={() => navigation.navigate("Playlist")}
+            />
+         </View>
       </View>
    );
 }

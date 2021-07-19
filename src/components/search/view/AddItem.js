@@ -27,9 +27,11 @@ function AddItem({
    selectedLapsed,
    handleValueChange,
    endTime,
+   loaded,
    setLoaded,
    setPlaying,
    setSelectedLapsed,
+   checkItem,
 }) {
    const [vol, setVol] = useState(50);
 
@@ -63,7 +65,6 @@ function AddItem({
       },
       [selectedLapsed]
    );
-
    return (
       <View style={styles.container}>
          <View style={styles.player}>
@@ -97,82 +98,78 @@ function AddItem({
                </Text>
             </View>
          </View>
-         <View style={styles.lapseContainer}>
-            <View style={styles.sliderContainer}>
-               <RangeSlider
-                  min={0}
-                  max={endTime}
-                  low={lapse[0]}
-                  high={lapse[1]}
-                  step={1}
-                  renderThumb={renderThumb}
-                  renderRail={renderRail}
-                  renderRailSelected={renderRailSelected}
-                  renderLabel={renderLabel}
-                  renderNotch={renderNotch}
-                  onValueChanged={handleValueChange}
-               />
-               <View
-                  style={{
-                     flexDirection: "row",
-                     justifyContent: "space-between",
-                  }}>
-                  <Text>{seperateSecond(lapse[0])}</Text>
+         {loaded && (
+            <View style={styles.lapseContainer}>
+               <View style={styles.sliderContainer}>
+                  <RangeSlider
+                     min={0}
+                     max={endTime}
+                     low={lapse[0]}
+                     high={lapse[1]}
+                     step={1}
+                     renderThumb={renderThumb}
+                     renderRail={renderRail}
+                     renderRailSelected={renderRailSelected}
+                     renderLabel={renderLabel}
+                     renderNotch={renderNotch}
+                     onValueChanged={handleValueChange}
+                  />
                   <View
-                     containerStyle={{
-                        position: "absolute",
-                        left: "40%",
-                        top: 10,
+                     style={{
                         flexDirection: "row",
+                        justifyContent: "space-between",
                      }}>
+                     <Text>{seperateSecond(lapse[0])}</Text>
                      <Button
                         title="적용"
                         containerStyle={{
                            width: 100,
+                           marginTop: 10,
                         }}
                         type="outline"
                         onPress={applyLapse}
                      />
+                     <Text>{seperateSecond(lapse[1])}</Text>
                   </View>
-                  <Text>{seperateSecond(lapse[1])}</Text>
+               </View>
+               <View style={styles.pauseButtonContainer}>
+                  <Slider
+                     style={{ width: 100, height: 100 }}
+                     minimumValue={0}
+                     maximumValue={100}
+                     value={vol}
+                     thumbTintColor="black"
+                     minimumTrackTintColor="red"
+                     maximumTrackTintColor="#000000"
+                     onValueChange={(v) => setVol(v)}
+                  />
+                  <Button
+                     icon={{
+                        name: `${playing ? "pause" : "play"}`,
+                        type: "font-awesome",
+                     }}
+                     containerStyle={styles.pauseButton}
+                     buttonStyle={{
+                        ...styles.pauseButton,
+                        backgroundColor: "red",
+                     }}
+                     onPress={togglePlaying}
+                     raised
+                  />
+                  <Button
+                     icon={{
+                        name: "plus",
+                        type: "font-awesome",
+                     }}
+                     type="outline"
+                     containerStyle={styles.sidePauseButtonContainer}
+                     buttonStyle={styles.pauseButton}
+                     type="clear"
+                     onPress={checkItem}
+                  />
                </View>
             </View>
-            <View style={styles.pauseButtonContainer}>
-               <Slider
-                  style={{ width: 100, height: 100 }}
-                  minimumValue={0}
-                  maximumValue={100}
-                  value={vol}
-                  thumbTintColor="black"
-                  minimumTrackTintColor="red"
-                  maximumTrackTintColor="#000000"
-                  onValueChange={(v) => setVol(v)}
-               />
-               <Button
-                  icon={{
-                     name: `${playing ? "pause" : "play"}`,
-                     type: "font-awesome",
-                  }}
-                  containerStyle={styles.pauseButton}
-                  buttonStyle={{
-                     ...styles.pauseButton,
-                     backgroundColor: "red",
-                  }}
-                  onPress={togglePlaying}
-                  raised
-               />
-               <Button
-                  icon={{
-                     name: "plus",
-                     type: "font-awesome",
-                  }}
-                  type="outline"
-                  containerStyle={styles.sidePauseButtonContainer}
-                  buttonStyle={styles.pauseButton}
-                  type="clear"
-               />
-            </View>
-         </View>
+         )}
          <View style={styles.control}></View>
       </View>
    );
