@@ -22,10 +22,7 @@ export default function playlist(state = initialState, action) {
       case ADD_ITEM:
          return state.map((list) => {
             if (list.id === action.payload.id) {
-               list.items.push({
-                  ...action.payload.item,
-                  id: list.items.length,
-               });
+               list.items.push(action.payload.item);
             }
             return list;
          });

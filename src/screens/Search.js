@@ -14,7 +14,11 @@ export default function SearchScreen({ navigation }) {
             initialParams={{ navigation: navigation }}
             options={{ headerShown: false }}
          />
-         <Stack.Screen name="추가" component={AddItemContainer} />
+         <Stack.Screen
+            name="추가"
+            component={AddItemContainer}
+            options={{ headerShown: true, headerStatusBarHeight: 0 }}
+         />
       </Stack.Navigator>
    );
 }

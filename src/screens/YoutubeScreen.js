@@ -35,7 +35,11 @@ export default function YoutubeScreen() {
    const handleStateChange = useCallback((e) => {
       if (e === "ended" && cur != playlist.length - 1) {
          setPlaying(false);
-         setCur((prev) => prev + 1);
+         if (cur === playlist.length - 1) {
+            setCur(0);
+         } else {
+            setCur((prev) => prev + 1);
+         }
       }
    });
    const youtubePlayerWrap = (cur) => {

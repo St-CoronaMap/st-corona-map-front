@@ -11,13 +11,11 @@ import rootReducer, { rootSaga } from "./src/modules";
 /*네비게이션 */
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./src/screens/Home";
 
-import Auth from "./src/screens/Auth";
-import YoutubeScreen from "./src/screens/YoutubeScreen";
-import SearchScreen from "./src/screens/Search";
 import { StatusBar } from "expo-status-bar";
-import PlaylistScreen from "./src/screens/Playlist";
+import TopTabContainer from "./src/components/topTab/container/TopTabContainer";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import palette from "./src/lib/styles/palette";
 
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
@@ -33,34 +31,16 @@ const Stack = createStackNavigator();
 /* 앱 함수 */
 export default function App() {
    return (
-      <Provider store={store}>
-         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home">
-               <Stack.Screen
-                  name="Home"
-                  component={HomeScreen}
-                  options={{ headerShown: false }}
-               />
-               <Stack.Screen
-                  name="Auth"
-                  component={Auth}
-                  options={{ headerShown: false }}
-               />
-               <Stack.Screen name="Youtube" component={YoutubeScreen} />
-               <Stack.Screen
-                  name="Search"
-                  component={SearchScreen}
-                  options={{ headerShown: false }}
-               />
-               <Stack.Screen
-                  name="Playlist"
-                  component={PlaylistScreen}
-                  options={{ headerShown: false }}
-               />
-            </Stack.Navigator>
-            <StatusBar style="auto" />
-            <ModalPortal />
-         </NavigationContainer>
-      </Provider>
+      <SafeAreaProvider>
+         <StatusBar backgroundColor={palette.blackBerry} />
+         <SafeAreaView style={{ flex: 1 }}>
+            <Provider store={store}>
+               <NavigationContainer>
+                  <TopTabContainer />
+               </NavigationContainer>
+               <ModalPortal />
+            </Provider>
+         </SafeAreaView>
+      </SafeAreaProvider>
    );
 }

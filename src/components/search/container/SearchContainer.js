@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 function SearchContainer({ navigation }) {
    const [result, setResult] = useState([]);
    const [typing, setTyping] = useState("");
-   const [search, setSearch] = useState("");
+   const [searched, setSearched] = useState("");
    const [pageTokens, setPageTokens] = useState(["", ""]);
    const { accessToken } = useSelector(({ auth }) => auth);
    const [loading, setLoading] = useState(false);
@@ -23,12 +23,13 @@ function SearchContainer({ navigation }) {
          };
          if (type === "page") {
             params["pageToken"] = token;
-            params["q"] = search;
+            params["q"] = searched;
          } else {
             params["q"] = typing;
-            setSearch(typing);
+            setSearched(typing);
          }
          setLoading(true);
+
          const res = await axios.get(
             "https://www.googleapis.com/youtube/v3/search?",
             {

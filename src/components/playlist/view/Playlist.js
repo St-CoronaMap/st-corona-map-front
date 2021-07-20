@@ -9,6 +9,7 @@ import {
 import { Card } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { FAB } from "react-native-elements";
+
 function Playlist({ playlist, listPressCallback, onPressVisible }) {
    return (
       <View style={styles.topView}>
@@ -17,12 +18,13 @@ function Playlist({ playlist, listPressCallback, onPressVisible }) {
                {playlist?.map((item, idx) => {
                   return (
                      <Card
+                        key={idx}
                         containerStyle={styles.card}
                         wrapperStyle={{ flex: 1 }}>
                         <TouchableOpacity
                            style={styles.cardTouchable}
                            onPress={() => listPressCallback(item)}>
-                           <View key={idx} style={{ flex: 1 }}>
+                           <View style={{ flex: 1 }}>
                               <View style={styles.cardImageContainer}>
                                  <Card.Image
                                     resizeMode="cover"

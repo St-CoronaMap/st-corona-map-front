@@ -34,7 +34,6 @@ function AddItem({
    checkItem,
 }) {
    const [vol, setVol] = useState(50);
-
    const renderThumb = useCallback(() => <Thumb />, []);
    const renderRail = useCallback(() => <Rail />, []);
    const renderRailSelected = useCallback(() => <RailSelected />, []);
@@ -67,7 +66,7 @@ function AddItem({
    );
    return (
       <View style={styles.container}>
-         <View style={styles.player}>
+         <View>
             <YoutubePlayer
                ref={playerRef}
                play={playing}
