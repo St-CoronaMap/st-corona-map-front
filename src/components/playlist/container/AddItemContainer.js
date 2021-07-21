@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../../../modules/playlist";
+import { addItemLocal } from "../../../lib/api/playlist";
+import { getPlaylist } from "../../../modules/playlist";
 import Playlist from "../view/Playlist";
 import AddPlaylistModalContainer from "./AddPlaylistModalContainer";
 
@@ -9,9 +10,9 @@ function AddItemContainer({ item, afterAdd }) {
    const playlist = useSelector(({ playlist }) => playlist);
    const dispatch = useDispatch();
 
-   const addItemCallback = (list) => {
-      console.log(list);
-      dispatch(addItem(list.id, item));
+   const addItemCallback = async (list) => {
+      await addItemLocal(playlist, list.id, item);
+      dispatch(getPlaylist());
       afterAdd();
    };
 

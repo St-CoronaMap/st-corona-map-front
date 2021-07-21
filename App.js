@@ -16,7 +16,7 @@ import { StatusBar } from "expo-status-bar";
 import TopTabContainer from "./src/components/topTab/container/TopTabContainer";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import palette from "./src/lib/styles/palette";
-
+import PlayScreen from "./src/screens/Play";
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -36,7 +36,24 @@ export default function App() {
          <SafeAreaView style={{ flex: 1 }}>
             <Provider store={store}>
                <NavigationContainer>
-                  <TopTabContainer />
+                  <Stack.Navigator mode="modal" initialRouteName="Main">
+                     <Stack.Screen
+                        name="Main"
+                        component={TopTabContainer}
+                        options={{ headerShown: false }}
+                     />
+                     <Stack.Screen
+                        name="Play"
+                        component={PlayScreen}
+                        options={{
+                           headerStatusBarHeight: 0,
+                           title: "뒤로가기",
+                           headerStyle: {
+                              backgroundColor: palette.ivory,
+                           },
+                        }}
+                     />
+                  </Stack.Navigator>
                </NavigationContainer>
                <ModalPortal />
             </Provider>

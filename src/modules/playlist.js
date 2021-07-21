@@ -1,6 +1,11 @@
+import { call, put, takeLatest } from "redux-saga/effects";
+import { getPlaylistLocal } from "../lib/api/playlist";
+
 //액션 타입
 const ADD_ITEM = "ADD_ITEM";
 const ADD_PLAYLIST = "ADD_PLAYLIST";
+const GET_PLAYLIST = "GET_PLAYLIST";
+const GET_PLAYLIST_ASYNC = "GET_PLAYLIST_ASYNC";
 
 //액션 생성 함수
 export const addItem = (id, item) => ({
@@ -8,14 +13,18 @@ export const addItem = (id, item) => ({
    payload: { id: id, item: item },
 });
 export const addPlaylist = (name) => ({ type: ADD_PLAYLIST, payload: name });
+export const getPlaylist = () => ({ type: GET_PLAYLIST });
 
-const initialState = [
-   {
-      id: 0,
-      name: "재생목록 1",
-      items: [],
-   },
-];
+const initialState = [];
+
+function* getPlaylistAsync() {
+   const res = yield call(getPlaylistLocal);
+   yield put({ type: GET_PLAYLIST_ASYNC, payload: res });
+}
+
+export function* playlistSaga() {
+   yield takeLatest(GET_PLAYLIST, getPlaylistAsync);
+}
 
 export default function playlist(state = initialState, action) {
    switch (action.type) {
@@ -33,6 +42,8 @@ export default function playlist(state = initialState, action) {
             items: [],
          });
          return [...state];
+      case GET_PLAYLIST_ASYNC:
+         return action.payload;
       default:
          return state;
    }

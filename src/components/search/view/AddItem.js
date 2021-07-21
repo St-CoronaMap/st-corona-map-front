@@ -18,6 +18,8 @@ import Notch from "../../elements/Notch";
 import Rail from "../../elements/Rail";
 import RailSelected from "../../elements/RailSelected";
 import Thumb from "../../elements/Thumb";
+import { ScrollView } from "react-native-gesture-handler";
+import palette from "../../../lib/styles/palette";
 
 function AddItem({
    item,
@@ -84,92 +86,93 @@ function AddItem({
                }}
             />
          </View>
-         <View style={styles.summaryContainer}>
-            <View style={styles.summaryBorder}>
-               <Text style={{ padding: 10, fontSize: 25 }}>{item.title}</Text>
-               <Text style={{ padding: 10 }}>
-                  {item.channelTitle}
-                  {"\t\t"}
-                  {item.publishedAt.slice(0, 10)}
-               </Text>
-               <Text style={{ padding: 10, color: "gray" }}>
-                  {item.description}
-               </Text>
+         <ScrollView>
+            <View style={styles.summaryContainer}>
+               <View style={styles.summaryBorder}>
+                  <Text style={{ padding: 10, fontSize: 20 }}>
+                     {item.title}
+                  </Text>
+                  <Text style={{ padding: 10, paddingBottom: 0 }}>
+                     {item.channelTitle}
+                     {"\t\t"}
+                     {item.publishedAt.slice(0, 10)}
+                  </Text>
+               </View>
             </View>
-         </View>
-         {loaded && (
-            <View style={styles.lapseContainer}>
-               <View style={styles.sliderContainer}>
-                  <RangeSlider
-                     min={0}
-                     max={endTime}
-                     low={lapse[0]}
-                     high={lapse[1]}
-                     step={1}
-                     renderThumb={renderThumb}
-                     renderRail={renderRail}
-                     renderRailSelected={renderRailSelected}
-                     renderLabel={renderLabel}
-                     renderNotch={renderNotch}
-                     onValueChanged={handleValueChange}
-                  />
-                  <View
-                     style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                     }}>
-                     <Text>{seperateSecond(lapse[0])}</Text>
-                     <Button
-                        title="적용"
-                        containerStyle={{
-                           width: 100,
-                           marginTop: 10,
-                        }}
-                        type="outline"
-                        onPress={applyLapse}
+            {loaded && (
+               <View style={styles.lapseContainer}>
+                  <View style={styles.sliderContainer}>
+                     <RangeSlider
+                        min={0}
+                        max={endTime}
+                        low={lapse[0]}
+                        high={lapse[1]}
+                        step={1}
+                        renderThumb={renderThumb}
+                        renderRail={renderRail}
+                        renderRailSelected={renderRailSelected}
+                        renderLabel={renderLabel}
+                        renderNotch={renderNotch}
+                        onValueChanged={handleValueChange}
                      />
-                     <Text>{seperateSecond(lapse[1])}</Text>
+                     <View
+                        style={{
+                           flexDirection: "row",
+                           justifyContent: "space-between",
+                        }}>
+                        <Text>{seperateSecond(lapse[0])}</Text>
+                        <Button
+                           title="적용"
+                           containerStyle={styles.applyButtonContainer}
+                           buttonStyle={styles.applyButton}
+                           titleStyle={styles.applyButtonTitle}
+                           type="outline"
+                           onPress={applyLapse}
+                           raised
+                        />
+                        <Text>{seperateSecond(lapse[1])}</Text>
+                     </View>
                   </View>
                </View>
-               <View style={styles.pauseButtonContainer}>
-                  <Slider
-                     style={{ width: 100, height: 100 }}
-                     minimumValue={0}
-                     maximumValue={100}
-                     value={vol}
-                     thumbTintColor="black"
-                     minimumTrackTintColor="red"
-                     maximumTrackTintColor="#000000"
-                     onValueChange={(v) => setVol(v)}
-                  />
-                  <Button
-                     icon={{
-                        name: `${playing ? "pause" : "play"}`,
-                        type: "font-awesome",
-                     }}
-                     containerStyle={styles.pauseButton}
-                     buttonStyle={{
-                        ...styles.pauseButton,
-                        backgroundColor: "red",
-                     }}
-                     onPress={togglePlaying}
-                     raised
-                  />
-                  <Button
-                     icon={{
-                        name: "plus",
-                        type: "font-awesome",
-                     }}
-                     type="outline"
-                     containerStyle={styles.sidePauseButtonContainer}
-                     buttonStyle={styles.pauseButton}
-                     type="clear"
-                     onPress={checkItem}
-                  />
-               </View>
+            )}
+         </ScrollView>
+         <View style={styles.control}>
+            <Slider
+               style={{ width: 120 }}
+               minimumValue={0}
+               maximumValue={100}
+               value={vol}
+               thumbTintColor={palette.blackBerry}
+               minimumTrackTintColor={palette.blackBerry}
+               maximumTrackTintColor={palette.lightPink}
+               onValueChange={(v) => setVol(v)}
+            />
+            <View style={styles.buttonContainer}>
+               <Button
+                  icon={{
+                     name: `${playing ? "pause" : "play"}`,
+                     type: "font-awesome",
+                     color: palette.blackBerry,
+                  }}
+                  onPress={togglePlaying}
+                  containerStyle={styles.pauseButton}
+                  buttonStyle={styles.pauseButton}
+                  raised
+               />
             </View>
-         )}
-         <View style={styles.control}></View>
+            <View style={styles.buttonContainer}>
+               <Button
+                  icon={{
+                     name: "plus",
+                     type: "font-awesome",
+                  }}
+                  containerStyle={styles.pauseButton}
+                  buttonStyle={styles.pauseButton}
+                  raised
+                  onPress={checkItem}
+               />
+            </View>
+         </View>
       </View>
    );
 }
@@ -177,12 +180,15 @@ function AddItem({
 const styles = StyleSheet.create({
    container: {
       flex: 1,
+      backgroundColor: palette.ivory,
+      borderColor: palette.blackBerry,
+      borderLeftWidth: 1,
    },
    summaryContainer: {
       flex: 3,
    },
    summaryBorder: {
-      paddingBottom: 20,
+      paddingBottom: 10,
       borderBottomWidth: 0.5,
       borderRadius: 20,
    },
@@ -192,36 +198,41 @@ const styles = StyleSheet.create({
       paddingLeft: "10%",
       paddingRight: "10%",
       paddingTop: 0,
+      paddingBottom: "10%",
    },
-   control: {
-      position: "absolute",
-      bottom: 0,
-      width: "100%",
-      height: 50,
-      flexDirection: "row",
+   applyButtonContainer: {
+      width: 100,
+      marginTop: 10,
+   },
+   applyButton: {
+      backgroundColor: palette.redRose,
+   },
+   applyButtonTitle: {
+      color: palette.blackBerry,
    },
    sliderContainer: {
       flex: 1,
    },
-   controlButton: {
-      width: "100%",
-   },
-   pauseButtonContainer: {
-      flex: 2,
-      flexDirection: "row",
-      paddingTop: 60,
-      justifyContent: "space-between",
-   },
    pauseButton: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
+      width: 60,
+      height: 60,
+      borderRadius: 35,
+      backgroundColor: palette.deepRedRose,
    },
-   sidePauseButtonContainer: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
-      justifyContent: "center",
+   buttonContainer: {
+      width: 120,
+      justifyContent: "flex-end",
+      alignItems: "center",
+   },
+   control: {
+      position: "absolute",
+      bottom: 0,
+      height: 80,
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-around",
+      alignItems: "center",
+      backgroundColor: palette.redRose,
    },
 });
 

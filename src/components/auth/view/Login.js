@@ -3,13 +3,15 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { StyleSheet, View, Text } from "react-native";
 import { Input } from "react-native-elements";
 import { Button } from "react-native-elements";
+import palette from "../../../lib/styles/palette";
 
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
+      backgroundColor: palette.ivory,
+      padding: 30,
+      borderColor: palette.blackBerry,
+      borderLeftWidth: 1,
    },
    topBlank: {
       flex: 1,
@@ -17,16 +19,15 @@ const styles = StyleSheet.create({
    content: {
       flex: 5,
    },
-   input: {
-      width: 400,
-   },
+   input: {},
    header: {
       flex: 1,
       fontSize: 32,
+      width: "80%",
    },
    inputContainer: {
       flex: 5,
-      width: 400,
+      width: "100%",
    },
    button: {
       width: 100,
@@ -52,7 +53,6 @@ function Login({
 }) {
    return (
       <View style={styles.container}>
-         <View style={styles.topBlank} />
          <View style={styles.content}>
             <Text style={styles.header}>{login ? "로그인" : "회원가입"}</Text>
             <View style={styles.inputContainer}>
@@ -88,7 +88,7 @@ function Login({
                   style={{
                      flexDirection: "row",
                      justifyContent: "flex-end",
-                     width: 400,
+                     width: "100%",
                   }}>
                   {wrongPW && (
                      <Button

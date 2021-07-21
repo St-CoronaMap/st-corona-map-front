@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addPlaylist } from "../../../modules/playlist";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addPlaylistLocal } from "../../../lib/api/playlist";
+import { getPlaylist } from "../../../modules/playlist";
 import AddPlaylistModal from "../view/AddPlaylistModal";
 
-function AddPlaylistModalContainer({ visible, cancel }) {
+function AddPlaylistModalContainer({ visible, cancel, playlist }) {
    const [name, setName] = useState("");
    const [errMsg, setErrMsg] = useState("");
-   const playlist = useSelector(({ playlist }) => playlist);
    const dispatch = useDispatch();
+
    const onChange = (v) => {
       if (errMsg) {
          setErrMsg("");
@@ -29,11 +30,18 @@ function AddPlaylistModalContainer({ visible, cancel }) {
             return;
          }
       }
-      dispatch(addPlaylist(name));
+
+      callAddPlaylist(name);
       setName("");
       setErrMsg("");
       cancel();
    };
+
+   const callAddPlaylist = async (name) => {
+      await addPlaylistLocal(playlist, name);
+      dispatch(getPlaylist());
+   };
+
    return (
       <AddPlaylistModal
          visible={visible}

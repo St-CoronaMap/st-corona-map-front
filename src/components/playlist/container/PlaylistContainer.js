@@ -1,21 +1,26 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import Playlist from "../view/Playlist";
 import AddPlaylistModalContainer from "./AddPlaylistModalContainer";
 import Snackbar from "rn-animated-snackbar";
-import { Dimensions } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { getPlaylist } from "../../../modules/playlist";
 
 function PlaylistContainer({ navigation }) {
    const [visibleAddPlaylist, setVisibleAddPlaylist] = useState(false);
    const [visible, setVisible] = useState(false);
    const playlist = useSelector(({ playlist }) => playlist);
+   const dispatch = useDispatch();
+
+   useEffect(() => {
+      dispatch(getPlaylist());
+   }, []);
 
    const enterPlaylist = (item) => {
       if (item.items.length === 0) {
          setVisible(true);
          return;
       }
-      navigation.jumpTo("Play", { playlist: item });
+      navigation.navigate("Play", { playlist: item });
    };
    const onPressVisible = () => {
       setVisibleAddPlaylist(true);
@@ -34,6 +39,7 @@ function PlaylistContainer({ navigation }) {
          <AddPlaylistModalContainer
             visible={visibleAddPlaylist}
             cancel={cancel}
+            playlist={playlist}
          />
          <Snackbar
             visible={visible}

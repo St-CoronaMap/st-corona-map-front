@@ -10,6 +10,7 @@ import seperateSecond from "../../../lib/utils/seperateSecond";
 const styles = StyleSheet.create({
    container: {
       flex: 1,
+      backgroundColor: palette.ivory,
    },
    control: {
       position: "absolute",
@@ -37,6 +38,28 @@ const styles = StyleSheet.create({
       height: 50,
       borderRadius: 25,
       backgroundColor: palette.deepRedRose,
+   },
+   listItem: {
+      backgroundColor: palette.ivory,
+      height: 100,
+      width: "90%",
+      overflow: "hidden",
+      borderColor: palette.ivory,
+      borderWidth: 1,
+      borderRadius: 30,
+      margin: 10,
+      padding: 0,
+      paddingRight: 5,
+      paddingLeft: 5,
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 5,
+      },
+      shadowOpacity: 0.34,
+      shadowRadius: 6.27,
+
+      elevation: 15,
    },
 });
 
@@ -80,9 +103,11 @@ function Play({
                {playlist.items?.map((item, idx) => {
                   return (
                      <ListItem
-                        bottomDivider
                         key={idx}
-                        onPress={() => onPressItem(item, idx)}>
+                        underlayColor={palette.ivory}
+                        activeOpacity={0.5}
+                        onPress={() => onPressItem(item, idx)}
+                        containerStyle={styles.listItem}>
                         <Text>{idx + 1}) </Text>
                         <Image
                            source={{ uri: item.thumbnails }}
@@ -90,7 +115,10 @@ function Play({
                            transition
                         />
                         <ListItem.Content>
-                           <ListItem.Title>{item.title}</ListItem.Title>
+                           <ListItem.Title
+                              style={{ color: palette.blackBerry }}>
+                              {item.title}
+                           </ListItem.Title>
                            <ListItem.Subtitle>
                               {seperateSecond(item.lapse[0])} ~{" "}
                               {seperateSecond(item.lapse[1])}

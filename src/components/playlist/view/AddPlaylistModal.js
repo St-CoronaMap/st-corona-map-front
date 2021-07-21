@@ -1,8 +1,11 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Input, Button } from "react-native-elements";
-import { ModalButton, ModalFooter, ModalTitle } from "react-native-modals";
+import { Input } from "react-native-elements";
+import { TextInput } from "react-native-gesture-handler";
+import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
+import CustomModalFooter from "../../elements/CustomModalFooter";
+import CustomModalHeader from "../../elements/CustomModalHeader";
 
 function AddPlaylistModal({
    visible,
@@ -12,19 +15,27 @@ function AddPlaylistModal({
    addPlaylist,
    errMsg,
 }) {
-   const title = <ModalTitle title="재생목록 추가" hasTitleBar />;
-   const footer = (
-      <ModalFooter>
-         <ModalButton text="취소" onPress={cancel} />
-         <ModalButton text="추가" onPress={addPlaylist} />
-      </ModalFooter>
-   );
+   const titleProps = { title: "재생목록 추가", hasTitleBar: true };
+   const buttons = [
+      {
+         text: "취소",
+         onPress: cancel,
+      },
+      {
+         text: "추가",
+         onPress: addPlaylist,
+      },
+   ];
 
    return (
-      <CustomModal visible={visible} title={title} footer={footer} rounded>
+      <CustomModal
+         visible={visible}
+         title={<CustomModalHeader props={titleProps} />}
+         footer={<CustomModalFooter buttons={buttons} />}
+         rounded>
          <View style={styles.container}>
             <Text>추가하실 재생목록의 이름을 입력해주세요.</Text>
-            <Input value={name} onChangeText={onChange} errorMessage={errMsg} />
+            <Input onChangeText={onChange} errorMessage={errMsg} />
          </View>
       </CustomModal>
    );
@@ -34,7 +45,7 @@ const styles = StyleSheet.create({
    container: {
       padding: 30,
       paddingBottom: 0,
-      backgroundColor: "#fff",
+      backgroundColor: palette.ivory,
       alignItems: "center",
       justifyContent: "center",
    },

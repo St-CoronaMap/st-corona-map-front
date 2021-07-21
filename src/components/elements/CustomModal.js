@@ -1,7 +1,7 @@
 import React from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { Modal, ModalContent, SlideAnimation } from "react-native-modals";
-
+import palette from "../../lib/styles/palette";
 function CustomModal({
    children,
    visible,
@@ -21,7 +21,8 @@ function CustomModal({
             new SlideAnimation({
                slideFrom: "bottom",
             })
-         }>
+         }
+         modalStyle={styles.container}>
          <ModalContent
             children={children}
             style={isFullScreen ? styles.content : {}}
@@ -32,13 +33,12 @@ function CustomModal({
 
 const styles = StyleSheet.create({
    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
+      backgroundColor: palette.ivory,
+      borderRadius: 10,
+      opacity: 1,
    },
    content: {
-      flex: 1,
+      height: Dimensions.get("window").height * 0.7,
       width: Dimensions.get("window").width,
    },
 });

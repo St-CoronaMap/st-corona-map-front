@@ -1,7 +1,6 @@
 import React from "react";
-import { Button } from "react-native-elements";
 import { StyleSheet, View, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import palette from "../../../lib/styles/palette";
 
 function Home({ navigation }) {
    return (
@@ -16,7 +15,7 @@ function Home({ navigation }) {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: "#fff",
+      backgroundColor: palette.white,
       alignItems: "center",
       justifyContent: "center",
    },
