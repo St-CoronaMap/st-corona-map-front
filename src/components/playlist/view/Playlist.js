@@ -64,8 +64,6 @@ const styles = StyleSheet.create({
    topView: {
       flex: 1,
       backgroundColor: palette.ivory,
-      borderColor: palette.blackBerry,
-      borderLeftWidth: 1,
    },
    container: {
       flex: 1,

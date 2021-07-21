@@ -11,8 +11,9 @@ const styles = StyleSheet.create({
    container: {
       backgroundColor: palette.ivory,
       flex: 1,
-      borderColor: palette.blackBerry,
+      borderColor: palette.deepCoolGray,
       borderLeftWidth: 1,
+      borderRightWidth: 1,
    },
    search: {
       width: "100%",
@@ -23,12 +24,12 @@ const styles = StyleSheet.create({
       shadowColor: "#000",
       shadowOffset: {
          width: 0,
-         height: 5,
+         height: 2,
       },
-      shadowOpacity: 0.34,
-      shadowRadius: 6.27,
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
 
-      elevation: 10,
+      elevation: 5,
    },
    listItem: {
       backgroundColor: palette.ivory,
@@ -44,12 +45,12 @@ const styles = StyleSheet.create({
       shadowColor: "#000",
       shadowOffset: {
          width: 0,
-         height: 5,
+         height: 2,
       },
-      shadowOpacity: 0.34,
-      shadowRadius: 6.27,
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
 
-      elevation: 15,
+      elevation: 5,
    },
    result: {
       width: "100%",

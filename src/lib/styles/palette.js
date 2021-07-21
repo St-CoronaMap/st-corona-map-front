@@ -5,7 +5,7 @@ const palette = {
    softBlackBerry: "gray",
    blackBerry: "#0e0301",
    deepRedRose: "#e01020",
-   ivory: "#f0f0f0",
+   ivory: "#f5f5f5",
    deepCoolGray: "#acabaf",
 };
 

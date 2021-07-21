@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: palette.ivory,
       padding: 30,
-      borderColor: palette.blackBerry,
+      borderColor: palette.deepCoolGray,
       borderLeftWidth: 1,
    },
    topBlank: {
