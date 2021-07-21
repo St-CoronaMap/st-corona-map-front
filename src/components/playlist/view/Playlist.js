@@ -6,12 +6,16 @@ import {
    Dimensions,
    TouchableOpacity,
 } from "react-native";
-import { Card } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
-import { FAB } from "react-native-elements";
+import { FAB, Icon, Card } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 
-function Playlist({ playlist, listPressCallback, onPressVisible }) {
+function Playlist({
+   playlist,
+   listPressCallback,
+   onPressVisible,
+   onPressVisibleEdit,
+}) {
    return (
       <View style={styles.topView}>
          <ScrollView>
@@ -38,7 +42,21 @@ function Playlist({ playlist, listPressCallback, onPressVisible }) {
                                  />
                               </View>
                               <View style={styles.cardTitleContainer}>
-                                 <Text>{item?.name}</Text>
+                                 <Text
+                                    style={{
+                                       width: "60%",
+                                       textAlign: "center",
+                                    }}>
+                                    {item?.name}
+                                 </Text>
+                                 <Icon
+                                    name="ellipsis-v"
+                                    type="font-awesome"
+                                    containerStyle={styles.settingIconContainer}
+                                    iconStyle={styles.settingIcon}
+                                    color={palette.deepCoolGray}
+                                    onPress={() => onPressVisibleEdit(item)}
+                                 />
                               </View>
                            </View>
                         </TouchableOpacity>
@@ -111,6 +129,11 @@ const styles = StyleSheet.create({
       backgroundColor: palette.ivory,
       borderBottomRightRadius: 30,
       borderBottomLeftRadius: 30,
+   },
+   settingIconContainer: {
+      position: "absolute",
+      right: 10,
+      width: 30,
    },
    fabContainer: {
       width: 70,

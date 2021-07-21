@@ -1,6 +1,5 @@
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { ScrollView, Platform, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, ListItem, SearchBar, Image } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 

@@ -1,12 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {
-   StyleSheet,
-   View,
-   Text,
-   Dimensions,
-   TextInputBase,
-   TextInput,
-} from "react-native";
+import React, { useCallback, useState } from "react";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Button } from "react-native-elements";
 import YoutubePlayer from "react-native-youtube-iframe";
 
@@ -20,7 +13,10 @@ import RailSelected from "../../elements/RailSelected";
 import Thumb from "../../elements/Thumb";
 import { ScrollView } from "react-native-gesture-handler";
 import palette from "../../../lib/styles/palette";
-
+import {
+   CustomCounterLeft,
+   CustomCounterRight,
+} from "../../elements/CustomCounter";
 function AddItem({
    item,
    playerRef,
@@ -34,6 +30,8 @@ function AddItem({
    setPlaying,
    setSelectedLapsed,
    checkItem,
+   lapseLowCounter,
+   lapseHighCounter,
 }) {
    const [vol, setVol] = useState(50);
    const renderThumb = useCallback(() => <Thumb />, []);
@@ -104,6 +102,7 @@ function AddItem({
                   <View style={styles.sliderContainer}>
                      <RangeSlider
                         min={0}
+                        floatingLabel
                         max={endTime}
                         low={lapse[0]}
                         high={lapse[1]}
@@ -121,17 +120,38 @@ function AddItem({
                            justifyContent: "space-between",
                         }}>
                         <Text>{seperateSecond(lapse[0])}</Text>
-                        <Button
-                           title="적용"
-                           containerStyle={styles.applyButtonContainer}
-                           buttonStyle={styles.applyButton}
-                           titleStyle={styles.applyButtonTitle}
-                           type="outline"
-                           onPress={applyLapse}
-                           raised
-                        />
                         <Text>{seperateSecond(lapse[1])}</Text>
                      </View>
+                  </View>
+                  <View style={styles.counterButtonContainer}>
+                     <CustomCounterLeft
+                        value={lapse[0]}
+                        min={0}
+                        max={lapse[1] - 1}
+                        onPress={lapseLowCounter}
+                     />
+                     <CustomCounterRight
+                        value={lapse[1]}
+                        min={lapse[0] + 1}
+                        max={endTime}
+                        onPress={lapseHighCounter}
+                     />
+                  </View>
+                  <View
+                     style={{
+                        width: "100%",
+                        alignItems: "center",
+                        marginTop: 10,
+                     }}>
+                     <Button
+                        title="적용"
+                        containerStyle={styles.applyButtonContainer}
+                        buttonStyle={styles.applyButton}
+                        titleStyle={styles.applyButtonTitle}
+                        type="outline"
+                        onPress={applyLapse}
+                        raised
+                     />
                   </View>
                </View>
             )}
@@ -197,7 +217,7 @@ const styles = StyleSheet.create({
       alignContent: "center",
       paddingLeft: "10%",
       paddingRight: "10%",
-      paddingTop: 0,
+      paddingTop: 10,
       paddingBottom: "10%",
    },
    applyButtonContainer: {
@@ -223,6 +243,12 @@ const styles = StyleSheet.create({
       width: 120,
       justifyContent: "flex-end",
       alignItems: "center",
+   },
+   counterButtonContainer: {
+      flexDirection: "row",
+      marginTop: 10,
+      alignItems: "center",
+      justifyContent: "space-evenly",
    },
    control: {
       position: "absolute",

@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import palette from "../../lib/styles/palette";
 import seperateSecond from "../../lib/utils/seperateSecond";
 
 const Label = ({ text, ...restProps }) => {
@@ -14,12 +15,14 @@ const styles = StyleSheet.create({
    root: {
       alignItems: "center",
       padding: 8,
-      backgroundColor: "#4499ff",
+      backgroundColor: palette.ivory,
       borderRadius: 4,
+      borderColor: palette.blackBerry,
+      borderWidth: 1,
    },
    text: {
       fontSize: 16,
-      color: "#fff",
+      color: palette.blackBerry,
    },
 });
 

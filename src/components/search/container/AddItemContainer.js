@@ -28,8 +28,7 @@ function AddItemContainer({ route, navigation }) {
    }, [loaded]);
 
    let count = 0,
-      saveLow,
-      saveHigh;
+      saveLow = 0;
    const handleValueChange = useCallback((low, high) => {
       if (count >= 4) {
          if (low <= high) {
@@ -37,7 +36,7 @@ function AddItemContainer({ route, navigation }) {
 
             if (low != saveLow) playerRef.current?.seekTo(low, true);
             else playerRef.current?.seekTo(high, true);
-            (saveLow = low), (saveHigh = high);
+            saveLow = low;
          }
       } else if (count < 4) {
          count++;
@@ -48,6 +47,12 @@ function AddItemContainer({ route, navigation }) {
    }, []);
    const selectPlaylist = useCallback(() => {
       setVisible(true);
+   }, []);
+   const lapseLowCounter = useCallback((v) => {
+      setLapse((prev) => [v, prev[1]]);
+   }, []);
+   const lapseHighCounter = useCallback((v) => {
+      setLapse((prev) => [prev[0], v]);
    }, []);
 
    return (
@@ -66,6 +71,8 @@ function AddItemContainer({ route, navigation }) {
             setPlaying={setPlaying}
             setSelectedLapsed={setSelectedLapsed}
             checkItem={checkItem}
+            lapseLowCounter={lapseLowCounter}
+            lapseHighCounter={lapseHighCounter}
          />
          <SelectPlaylist
             visible={visible}

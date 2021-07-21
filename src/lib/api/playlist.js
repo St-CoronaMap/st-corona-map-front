@@ -26,14 +26,44 @@ export const addItemLocal = async (list, id, item) => {
    }
 };
 
+export const deletePlaylistLocal = async (list, id) => {
+   try {
+      const newList = list.filter((item) => item.id !== id);
+      if (newList.length !== 0) {
+         const jsonValue = JSON.stringify(newList);
+         await AsyncStorage.setItem("@playlists", jsonValue);
+      } else {
+         await AsyncStorage.removeItem("@playlists");
+      }
+   } catch (err) {
+      console.log(err);
+   }
+};
+
+export const deleteItemLocal = async (list, id, videoId) => {
+   try {
+      const jsonValue = JSON.stringify(
+         list.map((list) => {
+            let newList = list;
+            if (list.id === id) {
+               newList = list.filter((item) => item.id !== videoId);
+            }
+            return newList;
+         })
+      );
+      await AsyncStorage.setItem("@playlists", jsonValue);
+   } catch (err) {
+      console.log(err);
+   }
+};
+
 export const getPlaylistLocal = async () => {
    try {
       let jsonValue = await AsyncStorage.getItem("@playlists");
-      if (!jsonValue) {
+      if (!jsonValue || jsonValue.length === 0) {
          await addPlaylistLocal([], "default");
          jsonValue = await AsyncStorage.getItem("@playlists");
       }
-      console.log(jsonValue);
       return JSON.parse(jsonValue);
    } catch (err) {
       console.log(err);

@@ -8,7 +8,6 @@ function AddPlaylistModalContainer({ visible, cancel, playlist }) {
    const [name, setName] = useState("");
    const [errMsg, setErrMsg] = useState("");
    const dispatch = useDispatch();
-
    const onChange = (v) => {
       if (errMsg) {
          setErrMsg("");
@@ -22,6 +21,10 @@ function AddPlaylistModalContainer({ visible, cancel, playlist }) {
       }
       if (name[0] === " " || name[name.length - 1] === " ") {
          setErrMsg("처음과 마지막은 띄어쓰기가 될 수 없습니다.");
+         return;
+      }
+      if (name.length > 20) {
+         setErrMsg("최대 20자까지 가능합니다.");
          return;
       }
       for (let i of playlist) {

@@ -9,7 +9,6 @@ function CustomModalFooter({ buttons }) {
          {buttons.map((item) => (
             <ModalButton
                {...item}
-               bordered
                textStyle={styles.footerButtonText}
                style={styles.footerButton}
             />

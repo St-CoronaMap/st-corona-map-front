@@ -86,6 +86,7 @@ function Play({
             volume={vol}
             height={9 * (Dimensions.get("window").width / 16)}
             onReady={onReady}
+            webViewStyle={{ backgroundColor: "black" }}
             videoId={playlist.items[cur].id}
             onChangeState={handleStateChange}
             initialPlayerParams={{

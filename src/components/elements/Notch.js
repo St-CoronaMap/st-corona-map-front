@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { View, StyleSheet } from "react-native";
+import palette from "../../lib/styles/palette";
 
 const Notch = (props) => {
    return <View style={styles.root} {...props} />;
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
       height: 8,
       borderLeftColor: "transparent",
       borderRightColor: "transparent",
-      borderTopColor: "#4499ff",
+      borderTopColor: palette.blackBerry,
       borderLeftWidth: 4,
       borderRightWidth: 4,
       borderTopWidth: 8,
