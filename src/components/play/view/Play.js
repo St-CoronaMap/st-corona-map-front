@@ -99,8 +99,12 @@ function Play({
    return (
       <View style={styles.container}>
          <View>{youtubePlayerWrap(cur)}</View>
-         <View>
-            <ScrollView>
+         <ScrollView>
+            <View
+               style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+               }}>
                {playlist.items?.map((item, idx) => {
                   return (
                      <ListItem
@@ -128,8 +132,8 @@ function Play({
                      </ListItem>
                   );
                })}
-            </ScrollView>
-         </View>
+            </View>
+         </ScrollView>
          <View style={styles.control}>
             <Slider
                style={{ width: 120 }}
