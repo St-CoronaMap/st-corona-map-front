@@ -25,4 +25,4 @@ function SelectPlaylist({ visible, cancel, item }) {
    );
 }
 
-export default SelectPlaylist;
+export default React.memo(SelectPlaylist);

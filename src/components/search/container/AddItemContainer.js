@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+   useCallback,
+   useEffect,
+   useMemo,
+   useRef,
+   useState,
+} from "react";
 import AddItem from "../view/AddItem";
 import CheckItemModal from "../view/CheckItemModal";
 import SelectPlaylist from "../view/SelectPlaylist";
@@ -42,17 +48,33 @@ function AddItemContainer({ route, navigation }) {
          count++;
       }
    }, []);
+
    const checkItem = useCallback(() => {
       setVisibleCheckModal(true);
-   }, []);
-   const selectPlaylist = useCallback(() => {
-      setVisible(true);
    }, []);
    const lapseLowCounter = useCallback((v) => {
       setLapse((prev) => [v, prev[1]]);
    }, []);
    const lapseHighCounter = useCallback((v) => {
       setLapse((prev) => [prev[0], v]);
+   }, []);
+
+   // checkItemModal에서 클릭시 재생목록 창 키거나, 취소
+   const pressSelectPlaylist = useCallback(() => {
+      setVisible(true);
+   }, []);
+   const closeCheckItemModel = useCallback(() => {
+      setVisibleCheckModal(false);
+   }, []);
+   const CheckItemModalObject = useMemo(
+      () => ({ ...item, lapse: selectedLapsed }),
+      [selectedLapsed]
+   );
+
+   // 재생목록 창 끄기
+   const closeSelectPlaylist = useCallback(() => {
+      setVisible(false);
+      setVisibleCheckModal(false);
    }, []);
 
    return (
@@ -76,17 +98,14 @@ function AddItemContainer({ route, navigation }) {
          />
          <SelectPlaylist
             visible={visible}
-            cancel={() => {
-               setVisible(false);
-               setVisibleCheckModal(false);
-            }}
-            item={{ ...item, lapse: selectedLapsed }}
+            cancel={closeSelectPlaylist}
+            item={CheckItemModalObject}
          />
          <CheckItemModal
             visible={visibleCheckModal}
-            close={() => setVisibleCheckModal(false)}
-            onOk={selectPlaylist}
-            item={{ ...item, lapse: selectedLapsed }}
+            close={closeCheckItemModel}
+            onOk={pressSelectPlaylist}
+            item={CheckItemModalObject}
          />
       </>
    );

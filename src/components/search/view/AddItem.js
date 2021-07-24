@@ -1,22 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
-import { Button } from "react-native-elements";
 import YoutubePlayer from "react-native-youtube-iframe";
 
-import RangeSlider from "rn-range-slider";
-import Slider from "@react-native-community/slider";
-import seperateSecond from "../../../lib/utils/seperateSecond";
-import Label from "../../elements/Label";
-import Notch from "../../elements/Notch";
-import Rail from "../../elements/Rail";
-import RailSelected from "../../elements/RailSelected";
-import Thumb from "../../elements/Thumb";
 import { ScrollView } from "react-native-gesture-handler";
 import palette from "../../../lib/styles/palette";
-import {
-   CustomCounterLeft,
-   CustomCounterRight,
-} from "../../elements/CustomCounter";
+import ControlVideo from "../elements/ControlVideo";
+import SecondController from "../elements/SecondController";
+import Summary from "../elements/Summary";
+
+const PLAYER_HEIGHT = 9 * (Dimensions.get("window").width / 16);
+
 function AddItem({
    item,
    playerRef,
@@ -34,19 +27,7 @@ function AddItem({
    lapseHighCounter,
 }) {
    const [vol, setVol] = useState(50);
-   const renderThumb = useCallback(() => <Thumb />, []);
-   const renderRail = useCallback(() => <Rail />, []);
-   const renderRailSelected = useCallback(() => <RailSelected />, []);
-   const renderLabel = useCallback((value) => <Label text={value} />, []);
-   const renderNotch = useCallback(() => <Notch />, []);
 
-   const togglePlaying = useCallback(() => {
-      setPlaying((prev) => !prev);
-   }, []);
-   const applyLapse = useCallback(() => {
-      setSelectedLapsed(lapse);
-      setPlaying(false);
-   }, [lapse]);
    const onReady = useCallback(() => {
       setLoaded(true);
       setPlaying(true);
@@ -71,7 +52,7 @@ function AddItem({
                ref={playerRef}
                play={playing}
                forceAndroidAutoplay={true}
-               height={9 * (Dimensions.get("window").width / 16)}
+               height={PLAYER_HEIGHT}
                videoId={item.id}
                onReady={onReady}
                volume={vol}
@@ -85,114 +66,26 @@ function AddItem({
             />
          </View>
          <ScrollView>
-            <View style={styles.summaryContainer}>
-               <View style={styles.summaryBorder}>
-                  <Text style={{ padding: 10, fontSize: 20 }}>
-                     {item.title}
-                  </Text>
-                  <Text style={{ padding: 10, paddingBottom: 0 }}>
-                     {item.channelTitle}
-                     {"\t\t"}
-                     {item.publishedAt.slice(0, 10)}
-                  </Text>
-               </View>
-            </View>
+            <Summary item={item} />
             {loaded && (
-               <View style={styles.lapseContainer}>
-                  <View style={styles.sliderContainer}>
-                     <RangeSlider
-                        min={0}
-                        floatingLabel
-                        max={endTime}
-                        low={lapse[0]}
-                        high={lapse[1]}
-                        step={1}
-                        renderThumb={renderThumb}
-                        renderRail={renderRail}
-                        renderRailSelected={renderRailSelected}
-                        renderLabel={renderLabel}
-                        renderNotch={renderNotch}
-                        onValueChanged={handleValueChange}
-                     />
-                     <View
-                        style={{
-                           flexDirection: "row",
-                           justifyContent: "space-between",
-                        }}>
-                        <Text>{seperateSecond(lapse[0])}</Text>
-                        <Text>{seperateSecond(lapse[1])}</Text>
-                     </View>
-                  </View>
-                  <View style={styles.counterButtonContainer}>
-                     <CustomCounterLeft
-                        value={lapse[0]}
-                        min={0}
-                        max={lapse[1] - 1}
-                        onPress={lapseLowCounter}
-                     />
-                     <CustomCounterRight
-                        value={lapse[1]}
-                        min={lapse[0] + 1}
-                        max={endTime}
-                        onPress={lapseHighCounter}
-                     />
-                  </View>
-                  <View
-                     style={{
-                        width: "100%",
-                        alignItems: "center",
-                        marginTop: 10,
-                     }}>
-                     <Button
-                        title="적용"
-                        containerStyle={styles.applyButtonContainer}
-                        buttonStyle={styles.applyButton}
-                        titleStyle={styles.applyButtonTitle}
-                        type="outline"
-                        onPress={applyLapse}
-                        raised
-                     />
-                  </View>
-               </View>
+               <SecondController
+                  lapse={lapse}
+                  lapseLowCounter={lapseLowCounter}
+                  lapseHighCounter={lapseHighCounter}
+                  handleValueChange={handleValueChange}
+                  endTime={endTime}
+                  setSelectedLapsed={setSelectedLapsed}
+                  setPlaying={setPlaying}
+               />
             )}
          </ScrollView>
-         <View style={styles.control}>
-            <Slider
-               style={{ width: 120 }}
-               minimumValue={0}
-               maximumValue={100}
-               value={vol}
-               thumbTintColor={palette.blackBerry}
-               minimumTrackTintColor={palette.blackBerry}
-               maximumTrackTintColor={palette.lightPink}
-               onValueChange={(v) => setVol(v)}
-            />
-            <View style={styles.buttonContainer}>
-               <Button
-                  icon={{
-                     name: `${playing ? "pause" : "play"}`,
-                     type: "font-awesome",
-                     color: palette.blackBerry,
-                  }}
-                  onPress={togglePlaying}
-                  containerStyle={styles.pauseButton}
-                  buttonStyle={styles.pauseButton}
-                  raised
-               />
-            </View>
-            <View style={styles.buttonContainer}>
-               <Button
-                  icon={{
-                     name: "plus",
-                     type: "font-awesome",
-                  }}
-                  containerStyle={styles.pauseButton}
-                  buttonStyle={styles.pauseButton}
-                  raised
-                  onPress={checkItem}
-               />
-            </View>
-         </View>
+         <ControlVideo
+            vol={vol}
+            setVol={setVol}
+            setPlaying={setPlaying}
+            playing={playing}
+            checkItem={checkItem}
+         />
       </View>
    );
 }
@@ -203,62 +96,7 @@ const styles = StyleSheet.create({
       backgroundColor: palette.ivory,
       borderColor: palette.deepCoolGray,
       borderLeftWidth: 1,
-   },
-   summaryContainer: {
-      flex: 3,
-   },
-   summaryBorder: {
-      paddingBottom: 10,
-      borderBottomWidth: 0.5,
-      borderRadius: 20,
-   },
-   lapseContainer: {
-      flex: 6,
-      alignContent: "center",
-      paddingLeft: "10%",
-      paddingRight: "10%",
-      paddingTop: 10,
-      paddingBottom: "10%",
-   },
-   applyButtonContainer: {
-      width: 100,
-      marginTop: 10,
-   },
-   applyButton: {
-      backgroundColor: palette.redRose,
-   },
-   applyButtonTitle: {
-      color: palette.blackBerry,
-   },
-   sliderContainer: {
-      flex: 1,
-   },
-   pauseButton: {
-      width: 60,
-      height: 60,
-      borderRadius: 35,
-      backgroundColor: palette.deepRedRose,
-   },
-   buttonContainer: {
-      width: 120,
-      justifyContent: "flex-end",
-      alignItems: "center",
-   },
-   counterButtonContainer: {
-      flexDirection: "row",
-      marginTop: 10,
-      alignItems: "center",
-      justifyContent: "space-evenly",
-   },
-   control: {
-      position: "absolute",
-      bottom: 0,
-      height: 80,
-      width: "100%",
-      flexDirection: "row",
-      justifyContent: "space-around",
-      alignItems: "center",
-      backgroundColor: palette.redRose,
+      borderRightWidth: 1,
    },
 });
 

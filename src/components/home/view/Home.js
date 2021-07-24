@@ -15,7 +15,7 @@ function Home({ navigation }) {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: palette.white,
+      backgroundColor: palette.ivory,
       alignItems: "center",
       justifyContent: "center",
    },

@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, ListItem, SearchBar, Image } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
+import LottieView from "lottie-react-native";
 
 const styles = StyleSheet.create({
    main: {
@@ -108,28 +109,41 @@ function Search({
             </View>
             <ScrollView>
                <View style={styles.result}>
-                  {result?.map((item, idx) => {
-                     return (
-                        <ListItem
-                           key={idx}
-                           underlayColor={palette.ivory}
-                           activeOpacity={0.5}
-                           onPress={() => onPressItem(item)}
-                           containerStyle={styles.listItem}>
-                           <Image
-                              source={{ uri: item.thumbnails }}
-                              style={{ width: 100, height: 100 }}
-                              transition
-                           />
-                           <ListItem.Content>
-                              <ListItem.Title
-                                 style={{ color: palette.blackBerry }}>
-                                 {item.title}
-                              </ListItem.Title>
-                           </ListItem.Content>
-                        </ListItem>
-                     );
-                  })}
+                  {loading ? (
+                     <View style={{ height: 100, justifyContent: "center" }}>
+                        <LottieView
+                           style={{
+                              width: 50,
+                              height: 50,
+                           }}
+                           autoPlay
+                           source={require("../../../lib/styles/loading.json")}
+                        />
+                     </View>
+                  ) : (
+                     result?.map((item, idx) => {
+                        return (
+                           <ListItem
+                              key={idx}
+                              underlayColor={palette.ivory}
+                              activeOpacity={0.5}
+                              onPress={() => onPressItem(item)}
+                              containerStyle={styles.listItem}>
+                              <Image
+                                 source={{ uri: item.thumbnails }}
+                                 style={{ width: 100, height: 100 }}
+                                 transition
+                              />
+                              <ListItem.Content>
+                                 <ListItem.Title
+                                    style={{ color: palette.blackBerry }}>
+                                    {item.title}
+                                 </ListItem.Title>
+                              </ListItem.Content>
+                           </ListItem>
+                        );
+                     })
+                  )}
                </View>
             </ScrollView>
             <View style={styles.pagination}>

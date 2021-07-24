@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default CheckItemModal;
+export default React.memo(CheckItemModal);
