@@ -6,8 +6,9 @@ import palette from "../../lib/styles/palette";
 function CustomModalFooter({ buttons }) {
    return (
       <ModalFooter>
-         {buttons.map((item) => (
+         {buttons.map((item, key) => (
             <ModalButton
+               key={`modal_button_${key}`}
                {...item}
                textStyle={styles.footerButtonText}
                style={styles.footerButton}

@@ -1,16 +1,28 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 
 function Summary({ item }) {
    return (
       <View style={styles.summaryContainer}>
          <View style={styles.summaryBorder}>
             <Text style={{ padding: 10, fontSize: 20 }}>{item.title}</Text>
-            <Text style={{ padding: 10, paddingBottom: 0 }}>
-               {item.channelTitle}
-               {"\t\t"}
-               {item.publishedAt.slice(0, 10)}
-            </Text>
+            <View
+               style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingLeft: 10,
+                  paddingBottom: 10,
+               }}>
+               <Image
+                  source={{ uri: item.channelAvatar }}
+                  style={{ width: 40, height: 40, borderRadius: 20 }}
+                  transition
+               />
+               <Text>
+                  {"\t"}
+                  {item.channelTitle}
+               </Text>
+            </View>
          </View>
       </View>
    );

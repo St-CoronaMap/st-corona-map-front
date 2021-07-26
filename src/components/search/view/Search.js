@@ -83,15 +83,7 @@ const styles = StyleSheet.create({
    },
 });
 
-function Search({
-   onSearch,
-   typing,
-   onChange,
-   pageTokens,
-   result,
-   loading,
-   onPressItem,
-}) {
+function Search({ onSearch, typing, onChange, result, loading, onPressItem }) {
    return (
       <>
          <View style={styles.container}>
@@ -104,7 +96,7 @@ function Search({
                   containerStyle={styles.input}
                   onChangeText={onChange}
                   value={typing}
-                  onSubmitEditing={() => onSearch("search")}
+                  onSubmitEditing={onSearch}
                />
             </View>
             <ScrollView>
@@ -146,40 +138,6 @@ function Search({
                   )}
                </View>
             </ScrollView>
-            <View style={styles.pagination}>
-               {pageTokens[0] ? (
-                  <Button
-                     icon={{
-                        name: "chevron-left",
-                        type: "font-awesome",
-                        color: palette.blackBerry,
-                        size: 15,
-                     }}
-                     onPress={() => onSearch("page", pageTokens[0])}
-                     containerStyle={styles.paginationButtonContainer}
-                     buttonStyle={styles.paginationButton}
-                     raised
-                  />
-               ) : (
-                  <></>
-               )}
-               {pageTokens[1] ? (
-                  <Button
-                     icon={{
-                        name: "chevron-right",
-                        type: "font-awesome",
-                        color: palette.blackBerry,
-                        size: 15,
-                     }}
-                     onPress={() => onSearch("page", pageTokens[1])}
-                     containerStyle={styles.paginationButtonContainer}
-                     raised
-                     buttonStyle={styles.paginationButton}
-                  />
-               ) : (
-                  <></>
-               )}
-            </View>
          </View>
       </>
    );
