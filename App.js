@@ -17,6 +17,7 @@ import TopTabContainer from "./src/components/topTab/container/TopTabContainer";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import palette from "./src/lib/styles/palette";
 import PlayScreen from "./src/screens/Play";
+import HeaderName from "./src/components/headerName/HeaderName";
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -34,6 +35,7 @@ export default function App() {
       <SafeAreaProvider>
          <StatusBar backgroundColor={palette.blackBerry} />
          <SafeAreaView style={{ flex: 1 }}>
+            <HeaderName />
             <Provider store={store}>
                <NavigationContainer>
                   <Stack.Navigator mode="modal" initialRouteName="Main">
