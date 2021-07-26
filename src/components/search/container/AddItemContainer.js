@@ -5,11 +5,14 @@ import React, {
    useRef,
    useState,
 } from "react";
+import { copilot } from "react-native-copilot";
+import { useDispatch, useSelector } from "react-redux";
+import { setUniqueId } from "../../../modules/uniqueId";
 import AddItem from "../view/AddItem";
 import CheckItemModal from "../view/CheckItemModal";
 import SelectPlaylist from "../view/SelectPlaylist";
 
-function AddItemContainer({ route, navigation }) {
+function AddItemContainer({ route, navigation, start }) {
    const { item } = route.params;
    const [playing, setPlaying] = useState(false);
    const playerRef = useRef();
@@ -19,6 +22,16 @@ function AddItemContainer({ route, navigation }) {
    const [loaded, setLoaded] = useState(false);
    const [visible, setVisible] = useState(false);
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
+
+   const uniqueId = useSelector(({ uniqueId }) => uniqueId);
+   const dispatch = useDispatch();
+
+   useEffect(() => {
+      if (uniqueId.first && loaded) {
+         setTimeout(start, 250);
+         dispatch(setUniqueId({ id: uniqueId.id, first: false }));
+      }
+   }, [uniqueId, loaded]);
 
    useEffect(() => {
       const getEndTime = async () => {
@@ -111,4 +124,4 @@ function AddItemContainer({ route, navigation }) {
    );
 }
 
-export default AddItemContainer;
+export default copilot()(AddItemContainer);

@@ -69,3 +69,11 @@ export const getPlaylistLocal = async () => {
       console.log(err);
    }
 };
+
+export const removeAll = async () => {
+   try {
+      await AsyncStorage.clear();
+   } catch (err) {
+      console.log(err);
+   }
+};

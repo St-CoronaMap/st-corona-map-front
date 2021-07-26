@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Playlist from "../view/Playlist";
 import AddPlaylistModalContainer from "./AddPlaylistModalContainer";
 import Snackbar from "rn-animated-snackbar";
-import { useDispatch, useSelector } from "react-redux";
-import { getPlaylist } from "../../../modules/playlist";
+import { useSelector } from "react-redux";
 import EditPlaylistModalContainer from "./EditPlaylistModalContainer";
 
 function PlaylistContainer({ navigation }) {
@@ -12,11 +11,7 @@ function PlaylistContainer({ navigation }) {
    const [edittingPlaylist, setEdittingPlaylist] = useState({});
    const [visible, setVisible] = useState(false);
    const playlist = useSelector(({ playlist }) => playlist);
-   const dispatch = useDispatch();
-
-   useEffect(() => {
-      dispatch(getPlaylist());
-   }, []);
+   const firstTime = useSelector(({ uniqueId }) => uniqueId.first);
 
    const enterPlaylist = (item) => {
       if (item.items.length === 0) {
@@ -46,6 +41,7 @@ function PlaylistContainer({ navigation }) {
             listPressCallback={enterPlaylist}
             onPressVisible={onPressVisible}
             onPressVisibleEdit={onPressVisibleEdit}
+            firstTime={firstTime}
          />
          <AddPlaylistModalContainer
             visible={visibleAddPlaylist}

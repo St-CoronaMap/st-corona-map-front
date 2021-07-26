@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
    StyleSheet,
    View,
@@ -9,61 +9,79 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { FAB, Icon, Card } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
+import { walkthroughable, CopilotStep, copilot } from "react-native-copilot";
+
+const CopilotView = walkthroughable(View);
 
 function Playlist({
    playlist,
    listPressCallback,
    onPressVisible,
    onPressVisibleEdit,
+   start,
+   firstTime,
 }) {
+   useEffect(() => {
+      if (firstTime && playlist.length >= 1) {
+         setTimeout(start, 250);
+      }
+   }, [firstTime, playlist]);
+
    return (
       <View style={styles.topView}>
          <ScrollView>
-            <View style={styles.container}>
-               {playlist?.map((item, idx) => {
-                  return (
-                     <Card
-                        key={idx}
-                        containerStyle={styles.card}
-                        wrapperStyle={{ flex: 1 }}>
-                        <TouchableOpacity
-                           style={styles.cardTouchable}
-                           onPress={() => listPressCallback(item)}>
-                           <View style={{ flex: 1 }}>
-                              <View style={styles.cardImageContainer}>
-                                 <Card.Image
-                                    resizeMode="cover"
-                                    source={{
-                                       uri:
-                                          item.items &&
-                                          item.items[0]?.thumbnails,
-                                    }}
-                                    style={styles.thumbnail}
-                                 />
+            <CopilotStep
+               text="상단의 검색을 통해 음악을 추가하고, 재생목록을 완성시키세요!"
+               order={1}
+               name="playlist">
+               <CopilotView style={styles.container}>
+                  {playlist?.map((item, idx) => {
+                     return (
+                        <Card
+                           key={idx}
+                           containerStyle={styles.card}
+                           wrapperStyle={{ flex: 1 }}>
+                           <TouchableOpacity
+                              style={styles.cardTouchable}
+                              onPress={() => listPressCallback(item)}>
+                              <View style={{ flex: 1 }}>
+                                 <View style={styles.cardImageContainer}>
+                                    <Card.Image
+                                       resizeMode="cover"
+                                       source={{
+                                          uri:
+                                             item.items &&
+                                             item.items[0]?.thumbnails,
+                                       }}
+                                       style={styles.thumbnail}
+                                    />
+                                 </View>
+                                 <View style={styles.cardTitleContainer}>
+                                    <Text
+                                       style={{
+                                          width: "60%",
+                                          textAlign: "center",
+                                       }}>
+                                       {item?.name}
+                                    </Text>
+                                    <Icon
+                                       name="ellipsis-v"
+                                       type="font-awesome"
+                                       containerStyle={
+                                          styles.settingIconContainer
+                                       }
+                                       iconStyle={styles.settingIcon}
+                                       color={palette.deepCoolGray}
+                                       onPress={() => onPressVisibleEdit(item)}
+                                    />
+                                 </View>
                               </View>
-                              <View style={styles.cardTitleContainer}>
-                                 <Text
-                                    style={{
-                                       width: "60%",
-                                       textAlign: "center",
-                                    }}>
-                                    {item?.name}
-                                 </Text>
-                                 <Icon
-                                    name="ellipsis-v"
-                                    type="font-awesome"
-                                    containerStyle={styles.settingIconContainer}
-                                    iconStyle={styles.settingIcon}
-                                    color={palette.deepCoolGray}
-                                    onPress={() => onPressVisibleEdit(item)}
-                                 />
-                              </View>
-                           </View>
-                        </TouchableOpacity>
-                     </Card>
-                  );
-               })}
-            </View>
+                           </TouchableOpacity>
+                        </Card>
+                     );
+                  })}
+               </CopilotView>
+            </CopilotStep>
          </ScrollView>
          <FAB
             placement="right"
@@ -148,4 +166,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default Playlist;
+export default copilot()(Playlist);

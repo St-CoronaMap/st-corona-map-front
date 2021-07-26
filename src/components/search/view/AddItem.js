@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 
@@ -7,7 +7,6 @@ import palette from "../../../lib/styles/palette";
 import ControlVideo from "../elements/ControlVideo";
 import SecondController from "../elements/SecondController";
 import Summary from "../elements/Summary";
-
 const PLAYER_HEIGHT = 9 * (Dimensions.get("window").width / 16);
 
 function AddItem({

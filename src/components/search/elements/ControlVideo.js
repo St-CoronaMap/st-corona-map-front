@@ -4,6 +4,10 @@ import { StyleSheet, View, Text } from "react-native";
 import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 
+import { walkthroughable, CopilotStep } from "react-native-copilot";
+
+const CopilotView = walkthroughable(View);
+
 function ControlVideo({ vol, setVol, setPlaying, playing, checkItem }) {
    const volumneChange = useCallback((v) => setVol(v), []);
    const togglePlaying = useCallback(() => {
@@ -34,18 +38,23 @@ function ControlVideo({ vol, setVol, setPlaying, playing, checkItem }) {
                raised
             />
          </View>
-         <View style={styles.buttonContainer}>
-            <Button
-               icon={{
-                  name: "plus",
-                  type: "font-awesome",
-               }}
-               containerStyle={styles.pauseButton}
-               buttonStyle={styles.pauseButton}
-               raised
-               onPress={checkItem}
-            />
-         </View>
+         <CopilotStep
+            text="마음에 드신다면, 이 버튼을 눌러 재생목록에 추가하세요!"
+            order={3}
+            name="add_button">
+            <CopilotView style={styles.buttonContainer}>
+               <Button
+                  icon={{
+                     name: "plus",
+                     type: "font-awesome",
+                  }}
+                  containerStyle={styles.pauseButton}
+                  buttonStyle={styles.pauseButton}
+                  raised
+                  onPress={checkItem}
+               />
+            </CopilotView>
+         </CopilotStep>
       </View>
    );
 }
