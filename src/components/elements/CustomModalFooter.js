@@ -20,7 +20,7 @@ function CustomModalFooter({ buttons }) {
 
 const styles = StyleSheet.create({
    footerButton: {
-      backgroundColor: palette.redRose,
+      backgroundColor: palette.modalRed,
       borderColor: palette.blackBerry,
       shadowColor: "#000",
       shadowOffset: {

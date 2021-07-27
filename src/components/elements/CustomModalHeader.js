@@ -15,7 +15,7 @@ function CustomModalHeader({ props }) {
 
 const styles = StyleSheet.create({
    titleContainer: {
-      backgroundColor: palette.redRose,
+      backgroundColor: palette.modalRed,
    },
    titleText: {
       color: palette.blackBerry,

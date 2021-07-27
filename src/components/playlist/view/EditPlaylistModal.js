@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
@@ -16,6 +16,15 @@ function EditPlaylistModal({ visible, cancel, onDelete }) {
          title={<CustomModalHeader props={props} />}
          footer={<CustomModalFooter buttons={buttons} />}>
          <View style={styles.container}>
+            <ListItem
+               onPress={onDelete}
+               underlayColor={palette.ivory}
+               activeOpacity={0.5}
+               containerStyle={styles.listItem}>
+               <ListItem.Content style={{ alignItems: "center" }}>
+                  <ListItem.Title>이름 변경</ListItem.Title>
+               </ListItem.Content>
+            </ListItem>
             <ListItem
                onPress={onDelete}
                underlayColor={palette.ivory}
@@ -45,6 +54,7 @@ const styles = StyleSheet.create({
       borderColor: palette.ivory,
       borderWidth: 1,
       borderRadius: 30,
+      margin: 10,
       padding: 0,
 
       shadowColor: "#000",
@@ -55,7 +65,7 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
 
-      elevation: 5,
+      elevation: 3,
    },
 });
 

@@ -10,7 +10,7 @@ export const getUniqueId = async () => {
          await AsyncStorage.setItem("@uniqueId", newId);
          return { id: newId, first: true };
       }
-      return { id: id, first: true };
+      return { id: id, first: false };
    } catch (err) {
       console.log(err);
    }

@@ -31,7 +31,7 @@ function AddItemContainer({ route, navigation, start }) {
    useEffect(() => {
       if (uniqueId.first && loaded) {
          setTimeout(start, 250);
-         //dispatch(setUniqueId({ id: uniqueId.id, first: false }));
+         dispatch(setUniqueId({ id: uniqueId.id, first: false }));
       }
    }, [uniqueId, loaded]);
 

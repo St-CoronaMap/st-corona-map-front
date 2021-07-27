@@ -7,6 +7,7 @@ const palette = {
    deepRedRose: "#e01020",
    ivory: "#f5f5f5",
    deepCoolGray: "#acabaf",
+   modalRed: "#d92139",
 };
 
 export default palette;
