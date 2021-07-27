@@ -91,7 +91,7 @@ function SecondController({
                   width: "100%",
                   alignItems: "center",
                   marginTop: 10,
-                  marginBottom: 10,
+                  paddingBottom: 10,
                }}>
                <Button
                   title="적용"

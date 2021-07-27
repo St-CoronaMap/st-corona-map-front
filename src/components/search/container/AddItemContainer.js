@@ -8,6 +8,8 @@ import React, {
 import { copilot } from "react-native-copilot";
 import { useDispatch, useSelector } from "react-redux";
 import { setUniqueId } from "../../../modules/uniqueId";
+import CustomStepNumber from "../../elements/CustomStepNumber";
+import CustomTootip from "../../elements/CustomTootip";
 import AddItem from "../view/AddItem";
 import CheckItemModal from "../view/CheckItemModal";
 import SelectPlaylist from "../view/SelectPlaylist";
@@ -29,7 +31,7 @@ function AddItemContainer({ route, navigation, start }) {
    useEffect(() => {
       if (uniqueId.first && loaded) {
          setTimeout(start, 250);
-         dispatch(setUniqueId({ id: uniqueId.id, first: false }));
+         //dispatch(setUniqueId({ id: uniqueId.id, first: false }));
       }
    }, [uniqueId, loaded]);
 
@@ -124,4 +126,7 @@ function AddItemContainer({ route, navigation, start }) {
    );
 }
 
-export default copilot()(AddItemContainer);
+export default copilot({
+   tooltipComponent: CustomTootip,
+   stepNumberComponent: CustomStepNumber,
+})(AddItemContainer);

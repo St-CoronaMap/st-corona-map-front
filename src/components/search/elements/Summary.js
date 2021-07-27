@@ -5,7 +5,7 @@ function Summary({ item }) {
    return (
       <View style={styles.summaryContainer}>
          <View style={styles.summaryBorder}>
-            <Text style={{ padding: 10, fontSize: 20 }}>{item.title}</Text>
+            <Text style={{ padding: 10, fontSize: 20 }}>{item?.title}</Text>
             <View
                style={{
                   flexDirection: "row",
@@ -14,13 +14,13 @@ function Summary({ item }) {
                   paddingBottom: 10,
                }}>
                <Image
-                  source={{ uri: item.channelAvatar }}
+                  source={{ uri: item?.channelAvatar }}
                   style={{ width: 40, height: 40, borderRadius: 20 }}
                   transition
                />
                <Text>
                   {"\t"}
-                  {item.channelTitle}
+                  {item?.channelTitle}
                </Text>
             </View>
          </View>

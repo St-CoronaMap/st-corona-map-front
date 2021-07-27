@@ -52,7 +52,7 @@ function AddItem({
                play={playing}
                forceAndroidAutoplay={true}
                height={PLAYER_HEIGHT}
-               videoId={item.id}
+               videoId={item?.id}
                onReady={onReady}
                volume={vol}
                onChangeState={onChangeState}

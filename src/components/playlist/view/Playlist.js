@@ -10,6 +10,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { FAB, Icon, Card } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import { walkthroughable, CopilotStep, copilot } from "react-native-copilot";
+import CustomTootip from "../../elements/CustomTootip";
+import CustomStepNumber from "../../elements/CustomStepNumber";
 
 const CopilotView = walkthroughable(View);
 
@@ -96,6 +98,11 @@ function Playlist({
    );
 }
 
+export default copilot({
+   tooltipComponent: CustomTootip,
+   stepNumberComponent: CustomStepNumber,
+})(Playlist);
+
 const styles = StyleSheet.create({
    topView: {
       flex: 1,
@@ -165,5 +172,3 @@ const styles = StyleSheet.create({
       backgroundColor: "red",
    },
 });
-
-export default copilot()(Playlist);
