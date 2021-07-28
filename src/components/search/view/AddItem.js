@@ -50,17 +50,16 @@ function AddItem({
             <YoutubePlayer
                ref={playerRef}
                play={playing}
-               forceAndroidAutoplay={true}
                height={PLAYER_HEIGHT}
+               forceAndroidAutoplay
                videoId={item?.id}
                onReady={onReady}
                volume={vol}
                onChangeState={onChangeState}
-               webViewStyle={{ backgroundColor: "black" }}
+               webViewStyle={{ backgroundColor: "black", opacity: 0.99 }}
                initialPlayerParams={{
                   start: selectedLapsed[0],
                   end: selectedLapsed[1],
-                  controls: false,
                }}
             />
          </View>

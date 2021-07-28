@@ -29,6 +29,19 @@
       },
       "web": {
          "favicon": "./assets/favicon.png"
-      }
+      },
+      "hooks": {
+         "postPublish": [
+            {
+               "file": "sentry-expo/upload-sourcemaps",
+               "config": {
+                  "organization": "ytplayer",
+                  "project": "ytplayer",
+                  "authToken": "486e4cc38d264f348a8249e018e7298bd05f5b9223234a95b7aebaaa0b79ce88"
+               }
+            }
+         ]
+      },
+      "plugins": ["sentry-expo"]
    }
 }

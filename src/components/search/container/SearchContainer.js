@@ -31,7 +31,7 @@ function SearchContainer({ navigation }) {
       setLoading(false);
    };
    const onPressItem = (item) => {
-      navigation.navigate("추가", { item: item });
+      navigation.navigate("추가", item);
    };
    const onChange = (value) => {
       setTyping(value);

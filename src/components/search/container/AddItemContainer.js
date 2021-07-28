@@ -15,7 +15,7 @@ import CheckItemModal from "../view/CheckItemModal";
 import SelectPlaylist from "../view/SelectPlaylist";
 
 function AddItemContainer({ route, navigation, start }) {
-   const { item } = route.params;
+   const item = route.params;
    const [playing, setPlaying] = useState(false);
    const playerRef = useRef();
    const [lapse, setLapse] = useState([0, 10000]);

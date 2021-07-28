@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import PlaylistScreen from "../../../screens/Playlist";
 import Auth from "../../../screens/Auth";
 import SearchScreen from "../../../screens/Search";
 import { StyleSheet } from "react-native";
 import palette from "../../../lib/styles/palette";
+import { useNavigationState } from "@react-navigation/native";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -28,9 +29,24 @@ const styles = StyleSheet.create({
 });
 
 function TopTab() {
+   const [swipeEnabled, setSwipeEnabled] = useState(true);
+   const state = useNavigationState((state) => state.routes[0].state);
+   useEffect(() => {
+      if (
+         state &&
+         state.index === 1 &&
+         state.routes &&
+         state.routes[1]?.state?.index === 1
+      ) {
+         setSwipeEnabled(false);
+      } else {
+         setSwipeEnabled(true);
+      }
+   }, [state]);
    return (
       <Tab.Navigator
          initialRouteName="Playlist"
+         swipeEnabled={swipeEnabled}
          tabBarOptions={{
             activeTintColor: palette.blackBerry,
             indicatorStyle: styles.indicator,

@@ -1,8 +1,9 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Play from "../view/Play";
 
-function PlayContainer({ playlist }) {
+function PlayContainer({ playlistInput }) {
    const [playing, setPlaying] = useState(true);
+   const [playlist, setPlaylist] = useState(playlistInput);
    const playerRef = useRef();
    const [cur, setCur] = useState(0);
    const [vol, setVol] = useState(80);
@@ -10,6 +11,7 @@ function PlayContainer({ playlist }) {
    const togglePlaying = useCallback(() => {
       setPlaying((prev) => !prev);
    }, []);
+
    const onReady = useCallback(() => {
       setPlaying(true);
    }, []);
@@ -31,8 +33,9 @@ function PlayContainer({ playlist }) {
       },
       [cur]
    );
+
    const onPressItem = useCallback(
-      (item, idx) => {
+      (idx) => {
          if (cur !== idx) {
             setPlaying(false);
          }
@@ -40,9 +43,11 @@ function PlayContainer({ playlist }) {
       },
       [cur]
    );
+
    const changeVol = useCallback((v) => {
       setVol(v);
    }, []);
+
    const pressBackward = useCallback(() => {
       if (playlist.items.length === 1) {
          return;
@@ -54,6 +59,7 @@ function PlayContainer({ playlist }) {
          setCur((prev) => prev - 1);
       }
    }, [cur]);
+
    const pressForwardward = useCallback(() => {
       if (playlist.items.length === 1) {
          return;
@@ -65,10 +71,28 @@ function PlayContainer({ playlist }) {
          setCur((prev) => prev + 1);
       }
    }, [cur]);
+
+   const changePlaylistOrder = useCallback(
+      (data, from, to) => {
+         if (from === to) {
+            return;
+         }
+         // 요청보내고, 비동기로 전체 데이터 다시 받아오기
+         setPlaylist((prev) => ({ ...prev, items: data }));
+         setPlaying(false);
+
+         if ((from < cur && to < cur) || (from > cur && to > cur)) {
+            setPlaying(true);
+         }
+      },
+      [cur]
+   );
+
    return (
       <Play
          onPressItem={onPressItem}
          playlist={playlist}
+         changePlaylistOrder={changePlaylistOrder}
          playing={playing}
          playerRef={playerRef}
          togglePlaying={togglePlaying}

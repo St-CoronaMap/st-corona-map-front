@@ -18,6 +18,21 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import palette from "./src/lib/styles/palette";
 import PlayScreen from "./src/screens/Play";
 import HeaderName from "./src/components/headerName/HeaderName";
+
+/* Sentry */
+import * as Sentry from "sentry-expo";
+import { sentryDsn } from "./env";
+
+Sentry.init({
+   dsn: sentryDsn,
+});
+
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs([
+   "ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.",
+]);
+
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
