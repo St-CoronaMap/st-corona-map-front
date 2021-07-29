@@ -1,8 +1,7 @@
 import React from "react";
 import SearchContainer from "../components/search/container/SearchContainer";
 import { createStackNavigator } from "@react-navigation/stack";
-import AddItemContainer from "../components/search/container/AddItemContainer";
-import palette from "../lib/styles/palette";
+import VideoEditContainer from "../components/videoEdit/container/VideoEditContainer";
 
 const Stack = createStackNavigator();
 
@@ -16,15 +15,10 @@ export default function SearchScreen({ navigation }) {
             options={{ headerShown: false }}
          />
          <Stack.Screen
-            name="추가"
-            component={AddItemContainer}
+            name="videoEdit_search"
+            component={VideoEditContainer}
             options={{
-               headerShown: true,
-               headerStatusBarHeight: 0,
-               title: "뒤로가기",
-               headerStyle: {
-                  backgroundColor: palette.ivory,
-               },
+               headerShown: false,
             }}
          />
       </Stack.Navigator>

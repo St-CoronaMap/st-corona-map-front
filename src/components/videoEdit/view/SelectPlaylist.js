@@ -1,4 +1,5 @@
 import React from "react";
+import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
@@ -10,6 +11,7 @@ function SelectPlaylist({ visible, cancel, item }) {
       {
          text: "취소",
          onPress: cancel,
+         textStyle: { color: palette.redRose },
       },
    ];
 

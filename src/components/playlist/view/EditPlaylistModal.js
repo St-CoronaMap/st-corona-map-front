@@ -7,13 +7,11 @@ import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
 
 function EditPlaylistModal({ visible, cancel, onDelete }) {
-   const props = { title: "재생목록 수정", hasTitleBar: true };
    const buttons = [{ text: "취소", onPress: cancel }];
    return (
       <CustomModal
          visible={visible}
          rounded={true}
-         title={<CustomModalHeader props={props} />}
          footer={<CustomModalFooter buttons={buttons} />}>
          <View style={styles.container}>
             <ListItem
@@ -22,7 +20,9 @@ function EditPlaylistModal({ visible, cancel, onDelete }) {
                activeOpacity={0.5}
                containerStyle={styles.listItem}>
                <ListItem.Content style={{ alignItems: "center" }}>
-                  <ListItem.Title>이름 변경</ListItem.Title>
+                  <ListItem.Title style={{ color: "#03a9f4" }}>
+                     이름 변경
+                  </ListItem.Title>
                </ListItem.Content>
             </ListItem>
             <ListItem
@@ -31,7 +31,9 @@ function EditPlaylistModal({ visible, cancel, onDelete }) {
                activeOpacity={0.5}
                containerStyle={styles.listItem}>
                <ListItem.Content style={{ alignItems: "center" }}>
-                  <ListItem.Title>삭제</ListItem.Title>
+                  <ListItem.Title style={{ color: palette.redRose }}>
+                     삭제
+                  </ListItem.Title>
                </ListItem.Content>
             </ListItem>
          </View>

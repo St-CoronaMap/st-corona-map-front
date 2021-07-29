@@ -19,6 +19,7 @@ function AddPlaylistModal({
       {
          text: "취소",
          onPress: cancel,
+         textStyle: { color: palette.redRose },
       },
       {
          text: "추가",

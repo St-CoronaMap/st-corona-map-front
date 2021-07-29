@@ -64,6 +64,7 @@ export default function App() {
                         component={PlayScreen}
                         options={{
                            headerStatusBarHeight: 0,
+                           headerShown: false,
                            title: "뒤로가기",
                            headerStyle: {
                               backgroundColor: palette.ivory,

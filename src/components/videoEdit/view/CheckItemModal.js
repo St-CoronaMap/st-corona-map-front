@@ -5,29 +5,29 @@ import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
-import CustomModalHeader from "../../elements/CustomModalHeader";
 
-function CheckItemModal({ visible, close, onOk, item }) {
+function CheckItemModal({ visible, close, onOk, item, from }) {
    const footerButtons = [
       {
-         text: "취소",
+         text: "아니요",
          onPress: close,
+         textStyle: { color: palette.redRose },
       },
       {
-         text: "확인",
+         text: "예",
          onPress: onOk,
       },
    ];
-   const titleProps = { title: "확인" };
    return (
       <CustomModal
          visible={visible}
-         title={<CustomModalHeader props={titleProps} />}
          footer={<CustomModalFooter buttons={footerButtons} />}
          rounded={true}>
          <View style={styles.container}>
             <Text style={styles.header}>
-               다음을 재생목록에 추가하시겠습니까?{" "}
+               {from === "play"
+                  ? "다음과 같이 수정하시겠습니까?"
+                  : "다음을 재생목록에 추가하시겠습니까?"}
             </Text>
 
             <View style={styles.item}>

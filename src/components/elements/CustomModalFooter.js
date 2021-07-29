@@ -9,9 +9,9 @@ function CustomModalFooter({ buttons }) {
          {buttons.map((item, key) => (
             <ModalButton
                key={`modal_button_${key}`}
-               {...item}
                textStyle={styles.footerButtonText}
                style={styles.footerButton}
+               {...item}
             />
          ))}
       </ModalFooter>
@@ -20,15 +20,16 @@ function CustomModalFooter({ buttons }) {
 
 const styles = StyleSheet.create({
    footerButton: {
-      backgroundColor: palette.modalRed,
-      borderColor: palette.blackBerry,
+      backgroundColor: palette.ivory,
       shadowColor: "#000",
       shadowOffset: {
          width: 0,
-         height: 5,
+         height: 2,
       },
-      shadowOpacity: 0.34,
-      shadowRadius: 6.27,
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+
+      elevation: 3,
    },
    footerButtonText: {
       color: palette.blackBerry,

@@ -9,7 +9,7 @@ import SecondController from "../elements/SecondController";
 import Summary from "../elements/Summary";
 const PLAYER_HEIGHT = 9 * (Dimensions.get("window").width / 16);
 
-function AddItem({
+function VideoEdit({
    item,
    playerRef,
    playing,
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default AddItem;
+export default VideoEdit;

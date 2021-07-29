@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import Search from "../view/Search";
-import { decode } from "html-entities";
 import { requestUrl } from "../../../../env";
 
 function SearchContainer({ navigation }) {
@@ -31,7 +30,7 @@ function SearchContainer({ navigation }) {
       setLoading(false);
    };
    const onPressItem = (item) => {
-      navigation.navigate("추가", item);
+      navigation.navigate("videoEdit_search", { item: item, from: "search" });
    };
    const onChange = (value) => {
       setTyping(value);

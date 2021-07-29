@@ -15,7 +15,16 @@ function CustomModalHeader({ props }) {
 
 const styles = StyleSheet.create({
    titleContainer: {
-      backgroundColor: palette.modalRed,
+      backgroundColor: palette.ivory,
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+
+      elevation: 1,
    },
    titleText: {
       color: palette.blackBerry,

@@ -1,39 +1,69 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
 import { Button, ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import { CONTROLBAR_HEIGHT } from "../../../lib/styles/variables";
+import { CONTROLBAR_HEIGHT, WINDOW_WIDTH } from "../../../lib/styles/variables";
 import { Animated } from "react-native";
 
-function VideoList({ playlist, changePlaylistOrder, onPressItem, cur }) {
+function VideoList({
+   playlist,
+   changePlaylistOrder,
+   onPressEditVideo,
+   onPressDeleteVideo,
+   onPressItem,
+   cur,
+}) {
    let listItemAnimation = new Animated.Value(-1);
+   const listRef = useRef();
+
+   useEffect(() => {
+      listRef.current?.current?.scrollToIndex({
+         index: cur,
+         viewPosition: 0.5,
+      });
+   }, [cur]);
+
    const interpolations = playlist.items.map((item, index) => {
       const inputRange = [index - 0.3, index, index + 0.3];
       const translateX = listItemAnimation.interpolate({
          inputRange: inputRange,
-         outputRange: [0, -150, 0],
+         outputRange: [0, -170, 0],
          extrapolate: "clamp",
       });
       return { translateX };
    });
 
    const onReightPress = (index) => {
-      listItemAnimation.setValue(index - 0.5);
+      listItemAnimation.setValue(index - 0.3);
       Animated.timing(listItemAnimation, {
          toValue: index,
          duration: 400,
-         useNativeDriver: false,
+         useNativeDriver: true,
       }).start();
    };
    const onCancleRight = (index) => {
       Animated.timing(listItemAnimation, {
          toValue: index - 0.3,
          duration: 400,
-         useNativeDriver: false,
+         useNativeDriver: true,
       }).start();
    };
+   const onPressEdit = useCallback(
+      (index) => {
+         onCancleRight(index);
+         onPressEditVideo(index);
+      },
+      [cur, playlist]
+   );
+   const onPressDelete = useCallback(
+      async (index, id) => {
+         onCancleRight(index);
+         await onPressDeleteVideo(index, id);
+      },
+      [cur]
+   );
 
    const renderItem = useCallback(
       ({ item, index, drag, isActive }) => {
@@ -70,51 +100,51 @@ function VideoList({ playlist, changePlaylistOrder, onPressItem, cur }) {
                         </ListItem.Subtitle>
                      </ListItem.Content>
                      <Button
-                        containerStyle={{ width: "10%", padding: 5 }}
+                        containerStyle={styles().chevronContainer}
                         onLongPress={drag}
                         onPress={() => onReightPress(index)}
-                        buttonStyle={{
-                           height: "100%",
-                           width: "100%",
-                           backgroundColor: palette.ivory,
-                        }}
+                        buttonStyle={styles().chevronButton}
                         icon={{
                            name: "chevron-right",
                            type: "font-awesome",
                            color: "gray",
-                           size: 15,
+                           size: 10,
                         }}
                      />
                   </ListItem>
                </Animated.View>
                <Button
                   title="취소"
-                  containerStyle={{
-                     position: "absolute",
-                     right: "5%",
-                     height: "100%",
-                     paddingTop: 10,
-                     zIndex: -1,
-                  }}
                   type="clear"
-                  buttonStyle={{
-                     height: 100,
-                     width: 50,
+                  containerStyle={styles(null, null, 0).buttonContainer}
+                  buttonStyle={styles().buttonStyle}
+                  titleStyle={{
+                     color: palette.blackBerry,
                   }}
                   onPress={() => onCancleRight(index)}
+               />
+               <Button
+                  title="수정"
+                  type="clear"
+                  containerStyle={styles(null, null, 1).buttonContainer}
+                  buttonStyle={styles().buttonStyle}
+                  onPress={() => onPressEdit(index)}
+               />
+               <Button
+                  title="삭제"
+                  type="clear"
+                  containerStyle={styles(null, null, 2).buttonContainer}
+                  buttonStyle={styles().buttonStyle}
+                  titleStyle={{
+                     color: palette.redRose,
+                  }}
+                  onPress={() => onPressDelete(index, item.id)}
                />
             </View>
          );
       },
-      [cur]
+      [cur, playlist]
    );
-   const listRef = useRef();
-   useEffect(() => {
-      listRef.current?.current?.scrollToIndex({
-         index: cur,
-         viewPosition: 0.5,
-      });
-   }, [cur]);
 
    return (
       <DraggableFlatList
@@ -137,7 +167,7 @@ function VideoList({ playlist, changePlaylistOrder, onPressItem, cur }) {
    );
 }
 
-const styles = (isCur, isActive) =>
+const styles = (isCur, isActive, buttonOffset) =>
    StyleSheet.create({
       listItem: {
          backgroundColor: palette.ivory,
@@ -157,7 +187,24 @@ const styles = (isCur, isActive) =>
          shadowOpacity: 0.25,
          shadowRadius: 3.84,
 
-         elevation: isActive ? 10 : 3,
+         elevation: isActive ? 7 : 3,
+      },
+      chevronContainer: { width: "10%" },
+      chevronButton: {
+         height: "100%",
+         width: "100%",
+         backgroundColor: palette.ivory,
+      },
+      buttonContainer: {
+         position: "absolute",
+         right: WINDOW_WIDTH * 0.05 + 50 * buttonOffset,
+         height: "100%",
+         paddingTop: 10,
+         zIndex: -1,
+      },
+      buttonStyle: {
+         height: 100,
+         width: 50,
       },
    });
 

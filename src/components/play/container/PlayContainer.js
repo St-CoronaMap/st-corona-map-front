@@ -1,12 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Play from "../view/Play";
 
-function PlayContainer({ playlistInput }) {
+function PlayContainer({ route, navigation }) {
    const [playing, setPlaying] = useState(true);
-   const [playlist, setPlaylist] = useState(playlistInput);
+   const [playlist, setPlaylist] = useState(route.params.playlistInput);
    const playerRef = useRef();
    const [cur, setCur] = useState(0);
    const [vol, setVol] = useState(80);
+
+   useEffect(() => {
+      if (route.params.isCurItem) {
+         setPlaying(false);
+         route.params.isCurItem = false;
+      }
+      setPlaylist(route.params.playlistInput);
+   }, [route]);
 
    const togglePlaying = useCallback(() => {
       setPlaying((prev) => !prev);
@@ -88,22 +96,57 @@ function PlayContainer({ playlistInput }) {
       [cur]
    );
 
+   const onPressEditVideo = useCallback(
+      (index) => {
+         navigation.navigate("videoEdit_play", {
+            item: playlist.items[index],
+            from: "play",
+            isCurItem: index === cur,
+            playlist: playlist,
+         });
+      },
+      [cur, playlist]
+   );
+   const onPressDeleteVideo = useCallback(
+      async (index, id) => {
+         /* 1. 서버로 요청 보내기
+            2. 성공하면 백그라운드로 리스트 업데이트 -> 그 플레이 리스트만 받아서 업데이트
+            3. 동시에 삭제된 리스트로 상태 업데이트 
+        */
+         setPlaylist((prev) => ({
+            id: prev.id,
+            items: prev.items.filter((item) => item.id !== id),
+         }));
+         if (cur !== 0 && index <= cur) {
+            setCur((prev) => prev - 1);
+         }
+         if (index === cur) {
+            setPlaying(false);
+         }
+      },
+      [cur]
+   );
+
    return (
-      <Play
-         onPressItem={onPressItem}
-         playlist={playlist}
-         changePlaylistOrder={changePlaylistOrder}
-         playing={playing}
-         playerRef={playerRef}
-         togglePlaying={togglePlaying}
-         handleStateChange={handleStateChange}
-         cur={cur}
-         vol={vol}
-         changeVol={changeVol}
-         onReady={onReady}
-         pressBackward={pressBackward}
-         pressForwardward={pressForwardward}
-      />
+      <>
+         <Play
+            onPressItem={onPressItem}
+            playlist={playlist}
+            changePlaylistOrder={changePlaylistOrder}
+            onPressEditVideo={onPressEditVideo}
+            onPressDeleteVideo={onPressDeleteVideo}
+            playing={playing}
+            playerRef={playerRef}
+            togglePlaying={togglePlaying}
+            handleStateChange={handleStateChange}
+            cur={cur}
+            vol={vol}
+            changeVol={changeVol}
+            onReady={onReady}
+            pressBackward={pressBackward}
+            pressForwardward={pressForwardward}
+         />
+      </>
    );
 }
 

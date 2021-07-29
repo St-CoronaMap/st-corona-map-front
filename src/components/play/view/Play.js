@@ -19,6 +19,8 @@ const styles = StyleSheet.create({
 function Play({
    playlist,
    changePlaylistOrder,
+   onPressEditVideo,
+   onPressDeleteVideo,
    playerRef,
    playing,
    cur,
@@ -59,6 +61,8 @@ function Play({
          <VideoList
             playlist={playlist}
             changePlaylistOrder={changePlaylistOrder}
+            onPressEditVideo={onPressEditVideo}
+            onPressDeleteVideo={onPressDeleteVideo}
             onPressItem={onPressItem}
             cur={cur}
          />
