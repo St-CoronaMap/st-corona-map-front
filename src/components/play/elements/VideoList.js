@@ -19,6 +19,7 @@ function VideoList({
    const listRef = useRef();
 
    useEffect(() => {
+      console.log("called");
       listRef.current?.current?.scrollToIndex({
          index: cur,
          viewPosition: 0.5,
@@ -154,7 +155,6 @@ function VideoList({
          onRef={(ref) => {
             listRef.current = ref;
          }}
-         showsHorizontalScrollIndicator={false}
          keyExtractor={(item, index) => `draggable-item-${index}`}
          onDragEnd={({ data, from, to }) => changePlaylistOrder(data, from, to)}
          containerStyle={{
@@ -162,7 +162,9 @@ function VideoList({
             paddingBottom: 10,
             marginBottom: CONTROLBAR_HEIGHT,
          }}
-         dragItemOverflow
+         autoscrollSpeed={100}
+         dragItemOverflow={true}
+         activationDistance={0}
       />
    );
 }

@@ -6,6 +6,7 @@ import SearchScreen from "../../../screens/Search";
 import { StyleSheet } from "react-native";
 import palette from "../../../lib/styles/palette";
 import { useNavigationState } from "@react-navigation/native";
+import HeaderName from "../../headerName/HeaderName";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -44,31 +45,33 @@ function TopTab() {
       }
    }, [state]);
    return (
-      <Tab.Navigator
-         initialRouteName="Playlist"
-         swipeEnabled={swipeEnabled}
-         tabBarOptions={{
-            activeTintColor: palette.blackBerry,
-            indicatorStyle: styles.indicator,
-            labelStyle: styles.labelStyle,
-            style: styles.barStyle,
-         }}>
-         <Tab.Screen
-            name="Playlist"
-            component={PlaylistScreen}
-            options={{ tabBarLabel: "재생목록" }}
-         />
-         <Tab.Screen
-            name="Search"
-            component={SearchScreen}
-            options={{ tabBarLabel: "검색" }}
-         />
-         <Tab.Screen
-            name="Auth"
-            component={Auth}
-            options={{ tabBarLabel: "로그인" }}
-         />
-      </Tab.Navigator>
+      <>
+         <Tab.Navigator
+            initialRouteName="Playlist"
+            swipeEnabled={swipeEnabled}
+            tabBarOptions={{
+               activeTintColor: palette.blackBerry,
+               indicatorStyle: styles.indicator,
+               labelStyle: styles.labelStyle,
+               style: styles.barStyle,
+            }}>
+            <Tab.Screen
+               name="Playlist"
+               component={PlaylistScreen}
+               options={{ tabBarLabel: "재생목록" }}
+            />
+            <Tab.Screen
+               name="Search"
+               component={SearchScreen}
+               options={{ tabBarLabel: "검색" }}
+            />
+            <Tab.Screen
+               name="Auth"
+               component={Auth}
+               options={{ tabBarLabel: "로그인" }}
+            />
+         </Tab.Navigator>
+      </>
    );
 }
 

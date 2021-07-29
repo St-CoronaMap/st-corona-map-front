@@ -51,7 +51,7 @@ function VideoEditFromPlay({ route, navigation, start }) {
       saveLow = 0;
    const handleValueChange = useCallback((low, high) => {
       if (count >= 3) {
-         if (low <= high) {
+         if (low < high) {
             setLapse([low, high]);
 
             if (low != saveLow) playerRef.current?.seekTo(low, true);
