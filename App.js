@@ -31,6 +31,7 @@ import { LogBox } from "react-native";
 
 LogBox.ignoreLogs([
    "ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.",
+   "%s: Calling %s on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.",
 ]);
 
 /*리덕스 */
@@ -63,12 +64,7 @@ export default function App() {
                         name="Play"
                         component={PlayScreen}
                         options={{
-                           headerStatusBarHeight: 0,
                            headerShown: false,
-                           title: "뒤로가기",
-                           headerStyle: {
-                              backgroundColor: palette.ivory,
-                           },
                         }}
                      />
                   </Stack.Navigator>

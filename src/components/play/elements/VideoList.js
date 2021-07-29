@@ -1,10 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, Image, View } from "react-native";
-import { Button, ListItem } from "react-native-elements";
+import { StyleSheet, Text, Image, View, TouchableOpacity } from "react-native";
+import { Button, ButtonGroup, ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import { CONTROLBAR_HEIGHT, WINDOW_WIDTH } from "../../../lib/styles/variables";
+
+import {
+   CONTROLBAR_HEIGHT,
+   HEADERNAME_HEIGHT,
+   WINDOW_HEIGHT,
+   WINDOW_WIDTH,
+   YOUTUBE_HEIGHT,
+} from "../../../lib/styles/variables";
 import { Animated } from "react-native";
 
 function VideoList({
@@ -19,7 +26,6 @@ function VideoList({
    const listRef = useRef();
 
    useEffect(() => {
-      console.log("called");
       listRef.current?.current?.scrollToIndex({
          index: cur,
          viewPosition: 0.5,
@@ -147,11 +153,13 @@ function VideoList({
       [cur, playlist]
    );
 
+   const scroll = () => {
+      listRef.current?.current?.scrollToOffset({ offset: 0 });
+   };
    return (
       <DraggableFlatList
          data={playlist.items}
          renderItem={renderItem}
-         showsVerticalScrollIndicator={false}
          onRef={(ref) => {
             listRef.current = ref;
          }}
@@ -159,12 +167,13 @@ function VideoList({
          onDragEnd={({ data, from, to }) => changePlaylistOrder(data, from, to)}
          containerStyle={{
             width: "100%",
-            paddingBottom: 10,
-            marginBottom: CONTROLBAR_HEIGHT,
+            height:
+               WINDOW_HEIGHT -
+               YOUTUBE_HEIGHT -
+               CONTROLBAR_HEIGHT -
+               HEADERNAME_HEIGHT,
          }}
-         autoscrollSpeed={100}
          dragItemOverflow={true}
-         activationDistance={0}
       />
    );
 }
