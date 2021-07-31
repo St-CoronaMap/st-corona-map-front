@@ -1,5 +1,5 @@
 import React from "react";
-import { ModalPortal } from "react-native-modals";
+
 /*리덕스 */
 import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
@@ -9,14 +9,10 @@ import { Provider } from "react-redux";
 import rootReducer, { rootSaga } from "./src/modules";
 
 /*네비게이션 */
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 
 import { StatusBar } from "expo-status-bar";
-import TopTabContainer from "./src/components/topTab/container/TopTabContainer";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import palette from "./src/lib/styles/palette";
-import PlayScreen from "./src/screens/Play";
 import HeaderName from "./src/components/headerName/HeaderName";
 
 /* Sentry */
@@ -25,8 +21,13 @@ import { sentryDsn } from "./env";
 
 Sentry.init({
    dsn: sentryDsn,
+   enableInExpoDevelopment: true,
 });
 
+/* app loading */
+import AppInit from "./AppInit";
+
+/* logbox */
 import { LogBox } from "react-native";
 
 LogBox.ignoreLogs([
@@ -42,9 +43,6 @@ const store = createStore(
 );
 sagaMiddleware.run(rootSaga);
 
-/* 네비게이션 관련 */
-const Stack = createStackNavigator();
-
 /* 앱 함수 */
 export default function App() {
    return (
@@ -53,23 +51,7 @@ export default function App() {
          <SafeAreaView style={{ flex: 1 }}>
             <HeaderName />
             <Provider store={store}>
-               <NavigationContainer>
-                  <Stack.Navigator mode="modal" initialRouteName="Main">
-                     <Stack.Screen
-                        name="Main"
-                        component={TopTabContainer}
-                        options={{ headerShown: false }}
-                     />
-                     <Stack.Screen
-                        name="Play"
-                        component={PlayScreen}
-                        options={{
-                           headerShown: false,
-                        }}
-                     />
-                  </Stack.Navigator>
-               </NavigationContainer>
-               <ModalPortal />
+               <AppInit />
             </Provider>
          </SafeAreaView>
       </SafeAreaProvider>

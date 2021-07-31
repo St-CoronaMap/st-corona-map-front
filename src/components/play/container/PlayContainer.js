@@ -7,8 +7,6 @@ function PlayContainer({ route, navigation }) {
    const playerRef = useRef();
    const [cur, setCur] = useState(0);
    const [vol, setVol] = useState(80);
-   const [OFFSET_TO_FIX_AUTOSCROLL_BUG, setOFFSET_TO_FIX_AUTOSCROLL_BUG] =
-      useState(0);
 
    useEffect(() => {
       if (route.params.isCurItem) {
@@ -83,21 +81,17 @@ function PlayContainer({ route, navigation }) {
    }, [cur]);
 
    const changePlaylistOrder = useCallback(
-      (data, from, to) => {
+      ({ data, from, to }) => {
          if (from === to) {
             return;
          }
-         setOFFSET_TO_FIX_AUTOSCROLL_BUG(-1);
-         setTimeout(() => setOFFSET_TO_FIX_AUTOSCROLL_BUG(0), 100);
          /* 1. 서버로 요청 보내기
             2. 성공하면 백그라운드로 리스트 업데이트 -> 그 플레이 리스트만 받아서 업데이트
             3. 동시에 변경된 리스트로 상태 업데이트 
         */
          setPlaylist((prev) => ({ ...prev, items: data }));
-         setPlaying(false);
-
-         if ((from < cur && to < cur) || (from > cur && to > cur)) {
-            setPlaying(true);
+         if ((from >= cur && to <= cur) || (from <= cur && to >= cur)) {
+            setPlaying(false);
          }
       },
       [cur]
@@ -151,7 +145,6 @@ function PlayContainer({ route, navigation }) {
          onReady={onReady}
          pressBackward={pressBackward}
          pressForwardward={pressForwardward}
-         OFFSET_TO_FIX_AUTOSCROLL_BUG={OFFSET_TO_FIX_AUTOSCROLL_BUG}
       />
    );
 }

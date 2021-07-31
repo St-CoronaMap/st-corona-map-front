@@ -44,16 +44,13 @@ function Play({
    vol,
    pressBackward,
    pressForwardward,
-   OFFSET_TO_FIX_AUTOSCROLL_BUG,
 }) {
-   console.log(OFFSET_TO_FIX_AUTOSCROLL_BUG);
    const youtubePlayerWrap = (cur) => {
       return (
          <YoutubePlayer
             ref={playerRef}
             play={playing}
             volume={vol}
-            forceAndroidAutoplay
             height={YOUTUBE_HEIGHT}
             onReady={onReady}
             webViewStyle={{
@@ -71,12 +68,7 @@ function Play({
    };
    return (
       <View style={styles.container}>
-         <View
-            style={{
-               height: YOUTUBE_HEIGHT,
-            }}>
-            {youtubePlayerWrap(cur)}
-         </View>
+         <View>{youtubePlayerWrap(cur)}</View>
          <View
             style={{
                height:
@@ -84,7 +76,7 @@ function Play({
                   YOUTUBE_HEIGHT -
                   CONTROLBAR_HEIGHT -
                   HEADERNAME_HEIGHT -
-                  OFFSET_TO_FIX_AUTOSCROLL_BUG,
+                  Math.random(),
             }}>
             <VideoList
                playlist={playlist}

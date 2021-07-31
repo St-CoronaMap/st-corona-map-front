@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default HeaderName;
+export default React.memo(HeaderName);

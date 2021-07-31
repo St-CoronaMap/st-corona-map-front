@@ -51,7 +51,6 @@ function VideoEdit({
                ref={playerRef}
                play={playing}
                height={PLAYER_HEIGHT}
-               forceAndroidAutoplay
                videoId={item?.id}
                onReady={onReady}
                volume={vol}

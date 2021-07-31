@@ -1,18 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, Image, View, TouchableOpacity } from "react-native";
-import { Button, ButtonGroup, ListItem } from "react-native-elements";
+import React, { useCallback, useEffect, useRef } from "react";
+import { StyleSheet, Text, Image, View } from "react-native";
+import { Button, ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
-import {
-   CONTROLBAR_HEIGHT,
-   HEADERNAME_HEIGHT,
-   WINDOW_HEIGHT,
-   WINDOW_WIDTH,
-   YOUTUBE_HEIGHT,
-} from "../../../lib/styles/variables";
+import { WINDOW_WIDTH } from "../../../lib/styles/variables";
 import { Animated } from "react-native";
+import ButtonsForItem from "./ButtonsForItem";
 
 function VideoList({
    playlist,
@@ -29,6 +24,7 @@ function VideoList({
       listRef.current?.current?.scrollToIndex({
          index: cur,
          viewPosition: 0.5,
+         useNativeDriver: true,
       });
    }, [cur]);
 
@@ -107,10 +103,10 @@ function VideoList({
                         </ListItem.Subtitle>
                      </ListItem.Content>
                      <Button
-                        containerStyle={styles().chevronContainer}
+                        containerStyle={stylesObj.chevronContainer}
                         onLongPress={drag}
                         onPress={() => onReightPress(index)}
-                        buttonStyle={styles().chevronButton}
+                        buttonStyle={stylesObj.chevronButton}
                         icon={{
                            name: "chevron-right",
                            type: "font-awesome",
@@ -120,32 +116,12 @@ function VideoList({
                      />
                   </ListItem>
                </Animated.View>
-               <Button
-                  title="취소"
-                  type="clear"
-                  containerStyle={styles(null, null, 0).buttonContainer}
-                  buttonStyle={styles().buttonStyle}
-                  titleStyle={{
-                     color: palette.blackBerry,
-                  }}
-                  onPress={() => onCancleRight(index)}
-               />
-               <Button
-                  title="수정"
-                  type="clear"
-                  containerStyle={styles(null, null, 1).buttonContainer}
-                  buttonStyle={styles().buttonStyle}
-                  onPress={() => onPressEdit(index)}
-               />
-               <Button
-                  title="삭제"
-                  type="clear"
-                  containerStyle={styles(null, null, 2).buttonContainer}
-                  buttonStyle={styles().buttonStyle}
-                  titleStyle={{
-                     color: palette.redRose,
-                  }}
-                  onPress={() => onPressDelete(index, item.id)}
+               <ButtonsForItem
+                  onCancleRight={onCancleRight}
+                  onPressDelete={onPressDelete}
+                  onPressEdit={onPressEdit}
+                  index={index}
+                  id={item.id}
                />
             </View>
          );
@@ -153,9 +129,6 @@ function VideoList({
       [cur, playlist]
    );
 
-   const scroll = () => {
-      listRef.current?.current?.scrollToOffset({ offset: 0 });
-   };
    return (
       <DraggableFlatList
          data={playlist.items}
@@ -163,16 +136,9 @@ function VideoList({
          onRef={(ref) => {
             listRef.current = ref;
          }}
-         keyExtractor={(item, index) => `draggable-item-${index}`}
-         onDragEnd={({ data, from, to }) => changePlaylistOrder(data, from, to)}
-         containerStyle={{
-            width: "100%",
-            height:
-               WINDOW_HEIGHT -
-               YOUTUBE_HEIGHT -
-               CONTROLBAR_HEIGHT -
-               HEADERNAME_HEIGHT,
-         }}
+         keyExtractor={(item, index) => "draggable-item-" + index}
+         onDragEnd={changePlaylistOrder}
+         containerStyle={styles().draggableListContainer}
          dragItemOverflow={true}
       />
    );
@@ -200,12 +166,6 @@ const styles = (isCur, isActive, buttonOffset) =>
 
          elevation: isActive ? 7 : 3,
       },
-      chevronContainer: { width: "10%" },
-      chevronButton: {
-         height: "100%",
-         width: "100%",
-         backgroundColor: palette.ivory,
-      },
       buttonContainer: {
          position: "absolute",
          right: WINDOW_WIDTH * 0.05 + 50 * buttonOffset,
@@ -213,10 +173,22 @@ const styles = (isCur, isActive, buttonOffset) =>
          paddingTop: 10,
          zIndex: -1,
       },
-      buttonStyle: {
-         height: 100,
-         width: 50,
+      draggableListContainer: {
+         width: "100%",
       },
    });
+
+const stylesObj = StyleSheet.create({
+   chevronContainer: { width: "10%" },
+   chevronButton: {
+      height: "100%",
+      width: "100%",
+      backgroundColor: palette.ivory,
+   },
+   buttonStyle: {
+      height: 100,
+      width: 50,
+   },
+});
 
 export default React.memo(VideoList);

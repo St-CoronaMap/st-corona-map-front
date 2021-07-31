@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import palette from "../../../lib/styles/palette";
-import Slider from "@react-native-community/slider";
 import { Button } from "react-native-elements";
 import { CONTROLBAR_HEIGHT } from "../../../lib/styles/variables";
+import ForwardBackButton from "./ForwardBackButton";
+import VolumeSlider from "./VolumeSlider";
 
 function ControlBar({
    vol,
@@ -15,22 +16,8 @@ function ControlBar({
 }) {
    return (
       <View style={styles.control}>
-         <Slider
-            style={{ width: 120 }}
-            minimumValue={0}
-            maximumValue={100}
-            value={vol}
-            thumbTintColor={palette.blackBerry}
-            minimumTrackTintColor={palette.blackBerry}
-            maximumTrackTintColor={palette.lightPink}
-            onValueChange={changeVol}
-         />
-         <View
-            style={{
-               width: 120,
-               justifyContent: "flex-end",
-               alignItems: "center",
-            }}>
+         <VolumeSlider vol={vol} changeVol={changeVol} />
+         <View style={styles.pauseButtonCotnainer}>
             <Button
                icon={{
                   name: `${playing ? "pause" : "play"}`,
@@ -43,30 +30,10 @@ function ControlBar({
                raised
             />
          </View>
-         <View style={styles.forwardBackContainer}>
-            <Button
-               icon={{
-                  name: "backward",
-                  type: "font-awesome",
-                  color: palette.blackBerry,
-               }}
-               containerStyle={styles.forwardBackButton}
-               buttonStyle={styles.forwardBackButton}
-               raised
-               onPress={pressBackward}
-            />
-            <Button
-               icon={{
-                  name: "forward",
-                  type: "font-awesome",
-                  color: palette.blackBerry,
-               }}
-               containerStyle={styles.forwardBackButton}
-               buttonStyle={styles.forwardBackButton}
-               raised
-               onPress={pressForwardward}
-            />
-         </View>
+         <ForwardBackButton
+            pressBackward={pressBackward}
+            pressForwardward={pressForwardward}
+         />
       </View>
    );
 }
@@ -82,21 +49,15 @@ const styles = StyleSheet.create({
       alignItems: "center",
       backgroundColor: palette.redRose,
    },
+   pauseButtonCotnainer: {
+      width: 120,
+      justifyContent: "flex-end",
+      alignItems: "center",
+   },
    pauseButton: {
       width: 60,
       height: 60,
       borderRadius: 35,
-      backgroundColor: palette.deepRedRose,
-   },
-   forwardBackContainer: {
-      width: 120,
-      flexDirection: "row",
-      justifyContent: "space-between",
-   },
-   forwardBackButton: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
       backgroundColor: palette.deepRedRose,
    },
 });
