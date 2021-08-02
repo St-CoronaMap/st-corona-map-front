@@ -51,9 +51,9 @@ function Playlist({
                                     <Card.Image
                                        resizeMode="cover"
                                        source={{
-                                          uri:
-                                             item.items &&
-                                             item.items[0]?.thumbnails,
+                                          uri: item.thumbnail
+                                             ? item.thumbnail
+                                             : null,
                                        }}
                                        style={styles.thumbnail}
                                     />
@@ -64,7 +64,7 @@ function Playlist({
                                           width: "60%",
                                           textAlign: "center",
                                        }}>
-                                       {item?.name}
+                                       {item?.title}
                                     </Text>
                                     <Icon
                                        name="ellipsis-v"

@@ -33,7 +33,7 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
             <View style={styles.item}>
                <ListItem containerStyle={styles.listItem}>
                   <Image
-                     source={{ uri: item.thumbnails }}
+                     source={{ uri: item.thumbnail }}
                      style={{ width: 100, height: 100 }}
                      transition
                   />

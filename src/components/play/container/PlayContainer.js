@@ -1,4 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { changeOrder, deleteVideo } from "../../../lib/api/videos";
+import { clearThumbnail, setThumbnail } from "../../../modules/playlist";
 import Play from "../view/Play";
 
 function PlayContainer({ route, navigation }) {
@@ -6,12 +9,12 @@ function PlayContainer({ route, navigation }) {
    const [playlist, setPlaylist] = useState(route.params.playlistInput);
    const playerRef = useRef();
    const [cur, setCur] = useState(0);
-   const [vol, setVol] = useState(80);
+   const [vol, setVol] = useState(50);
+   const dispatch = useDispatch();
 
    useEffect(() => {
-      if (route.params.isCurItem) {
-         setPlaying(false);
-         route.params.isCurItem = false;
+      if (!route.params.isCurItem) {
+         setPlaying(true);
       }
       setPlaylist(route.params.playlistInput);
    }, [route]);
@@ -28,11 +31,11 @@ function PlayContainer({ route, navigation }) {
       (e) => {
          if (e === "ended") {
             setPlaying(false);
-            if (cur === playlist.items.length - 1) {
+            if (cur === playlist?.items.length - 1) {
                setCur(0);
-               if (playlist.items.length === 1) {
+               if (playlist?.items.length === 1) {
                   setPlaying(true);
-                  playerRef.current?.seekTo(playlist.items[0].lapse[0], true);
+                  playerRef.current?.seekTo(playlist?.items[0].start, true);
                }
             } else {
                setCur((prev) => prev + 1);
@@ -57,75 +60,79 @@ function PlayContainer({ route, navigation }) {
    }, []);
 
    const pressBackward = useCallback(() => {
-      if (playlist.items.length === 1) {
+      if (playlist?.items.length === 1) {
          return;
       }
       setPlaying(false);
       if (cur === 0) {
-         setCur(playlist.items.length - 1);
+         setCur(playlist?.items.length - 1);
       } else {
          setCur((prev) => prev - 1);
       }
-   }, [cur]);
+   }, [cur, playlist.items.length]);
 
    const pressForwardward = useCallback(() => {
       if (playlist.items.length === 1) {
          return;
       }
       setPlaying(false);
-      if (cur === playlist.items.length - 1) {
+      if (cur === playlist?.items.length - 1) {
          setCur(0);
       } else {
          setCur((prev) => prev + 1);
       }
-   }, [cur]);
+   }, [cur, playlist.items.length]);
 
    const changePlaylistOrder = useCallback(
-      ({ data, from, to }) => {
+      async ({ data, from, to }) => {
          if (from === to) {
             return;
          }
-         /* 1. 서버로 요청 보내기
-            2. 성공하면 백그라운드로 리스트 업데이트 -> 그 플레이 리스트만 받아서 업데이트
-            3. 동시에 변경된 리스트로 상태 업데이트 
-        */
-         setPlaylist((prev) => ({ ...prev, items: data }));
+         await changeOrder(playlist.id, data);
+         setPlaylist((prev) => ({ id: prev.id, items: data }));
          if ((from >= cur && to <= cur) || (from <= cur && to >= cur)) {
             setPlaying(false);
          }
       },
-      [cur]
+      [cur, playlist.id]
    );
 
    const onPressEditVideo = useCallback(
       (index) => {
+         setPlaying(false);
          navigation.navigate("videoEdit_play", {
             item: playlist.items[index],
-            from: "play",
             isCurItem: index === cur,
+            from: "play",
             playlist: playlist,
          });
       },
       [cur, playlist]
    );
+
    const onPressDeleteVideo = useCallback(
       async (index, id) => {
-         /* 1. 서버로 요청 보내기
-            2. 성공하면 백그라운드로 리스트 업데이트 -> 그 플레이 리스트만 받아서 업데이트
-            3. 동시에 삭제된 리스트로 상태 업데이트 
-        */
-         setPlaylist((prev) => ({
-            id: prev.id,
-            items: prev.items.filter((item) => item.id !== id),
-         }));
-         if (cur !== 0 && index <= cur) {
-            setCur((prev) => prev - 1);
-         }
-         if (index === cur) {
-            setPlaying(false);
+         await deleteVideo(id);
+         if (playlist.items.length === 1) {
+            navigation.navigate("Playlist");
+            dispatch(clearThumbnail(playlist.id));
+         } else {
+            if (index === 0) {
+               dispatch(setThumbnail(playlist.id, playlist.items[1].thumbnail));
+            }
+            setPlaylist((prev) => ({
+               id: prev.id,
+               items: prev.items.filter((item) => item.id !== id),
+            }));
+            if (cur !== 0 && index <= cur) {
+               setCur((prev) => prev - 1);
+            }
+            if (index === cur) {
+               setPlaying(false);
+            }
          }
       },
-      [cur]
+      [cur, playlist]
    );
 
    return (

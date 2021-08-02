@@ -16,9 +16,9 @@ function SearchContainer({ navigation }) {
          );
          setResult(
             res.data.data.items.map((item) => ({
-               id: item.id,
+               videoId: item.id,
                title: item.title,
-               thumbnails: item.thumbnails[0]?.url || item.bestThumbnail.url,
+               thumbnail: item.thumbnails[0]?.url || item.bestThumbnail.url,
                channelTitle: item.author.name,
                channelAvatar: item.author.bestAvatar.url,
                duration: item.duration,

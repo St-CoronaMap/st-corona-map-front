@@ -1,72 +1,37 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { Address } from "./constants";
 
-export const addPlaylistLocal = async (list, name) => {
+export const getPlaylistApi = async (id) => {
    try {
-      list.push({ id: list.length, name: name, items: [] });
-      const jsonValue = JSON.stringify(list);
-      await AsyncStorage.setItem("@playlists", jsonValue);
+      const res = await axios.get(`${Address}/api/playlist/${id}`);
+      return res.data.response;
    } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
    }
 };
 
-export const addItemLocal = async (list, id, item) => {
+export const deletePlaylist = async (id) => {
    try {
-      const jsonValue = JSON.stringify(
-         list.map((list) => {
-            if (list.id === id) {
-               list.items.push(item);
-            }
-            return list;
-         })
-      );
-      await AsyncStorage.setItem("@playlists", jsonValue);
+      await axios.delete(`${Address}/api/playlist/delete/${id}`);
    } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
    }
 };
 
-export const deletePlaylistLocal = async (list, id) => {
+export const addPlaylist = async (obj) => {
    try {
-      const newList = list.filter((item) => item.id !== id);
-      if (newList.length !== 0) {
-         const jsonValue = JSON.stringify(newList);
-         await AsyncStorage.setItem("@playlists", jsonValue);
-      } else {
-         await AsyncStorage.removeItem("@playlists");
-      }
+      await axios.post(`${Address}/api/playlist/create`, obj);
    } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
    }
 };
 
-export const deleteItemLocal = async (list, id, videoId) => {
+export const editPlaylist = async (obj) => {
    try {
-      const jsonValue = JSON.stringify(
-         list.map((list) => {
-            let newList = list;
-            if (list.id === id) {
-               newList = list.filter((item) => item.id !== videoId);
-            }
-            return newList;
-         })
-      );
-      await AsyncStorage.setItem("@playlists", jsonValue);
+      await axios.put(`${Address}/api/playlist/edit`, obj);
    } catch (err) {
-      console.log(err);
-   }
-};
-
-export const getPlaylistLocal = async () => {
-   try {
-      let jsonValue = await AsyncStorage.getItem("@playlists");
-      if (!jsonValue || jsonValue.length === 0) {
-         await addPlaylistLocal([], "default");
-         jsonValue = await AsyncStorage.getItem("@playlists");
-      }
-      return JSON.parse(jsonValue);
-   } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
    }
 };
 

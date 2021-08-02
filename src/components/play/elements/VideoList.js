@@ -26,7 +26,7 @@ function VideoList({
          viewPosition: 0.5,
          useNativeDriver: true,
       });
-   }, [cur]);
+   }, [cur, playlist]);
 
    const interpolations = playlist.items.map((item, index) => {
       const inputRange = [index - 0.3, index, index + 0.3];
@@ -53,21 +53,14 @@ function VideoList({
          useNativeDriver: true,
       }).start();
    };
-   const onPressEdit = useCallback(
-      (index) => {
-         onCancleRight(index);
-         onPressEditVideo(index);
-      },
-      [cur, playlist]
-   );
-   const onPressDelete = useCallback(
-      async (index, id) => {
-         onCancleRight(index);
-         await onPressDeleteVideo(index, id);
-      },
-      [cur]
-   );
-
+   const onPressEdit = (index) => {
+      onCancleRight(index);
+      onPressEditVideo(index);
+   };
+   const onPressDelete = async (index, id) => {
+      onCancleRight(index);
+      await onPressDeleteVideo(index, id);
+   };
    const renderItem = useCallback(
       ({ item, index, drag, isActive }) => {
          return (
@@ -89,7 +82,7 @@ function VideoList({
                      onLongPress={drag}>
                      <Text>{index + 1}) </Text>
                      <Image
-                        source={{ uri: item.thumbnails }}
+                        source={{ uri: item.thumbnail }}
                         style={{ width: 100, height: 100 }}
                         transition
                      />
@@ -98,8 +91,8 @@ function VideoList({
                            {item.title}
                         </ListItem.Title>
                         <ListItem.Subtitle>
-                           {seperateSecond(item.lapse[0])} ~{" "}
-                           {seperateSecond(item.lapse[1])}
+                           {seperateSecond(item.start)} ~{" "}
+                           {seperateSecond(item.end)}
                         </ListItem.Subtitle>
                      </ListItem.Content>
                      <Button
@@ -131,7 +124,7 @@ function VideoList({
 
    return (
       <DraggableFlatList
-         data={playlist.items}
+         data={playlist?.items}
          renderItem={renderItem}
          onRef={(ref) => {
             listRef.current = ref;

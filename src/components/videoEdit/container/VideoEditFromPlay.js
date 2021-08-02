@@ -6,36 +6,21 @@ import React, {
    useState,
 } from "react";
 import { copilot } from "react-native-copilot";
-import { useDispatch, useSelector } from "react-redux";
-import { setUniqueId } from "../../../modules/uniqueId";
 import CustomStepNumber from "../../elements/CustomStepNumber";
 import CustomTootip from "../../elements/CustomTootip";
 import VideoEdit from "../view/VideoEdit";
 import CheckItemModal from "../view/CheckItemModal";
-import SelectPlaylist from "../view/SelectPlaylist";
+import { changeLapse } from "../../../lib/api/videos";
 
-function VideoEditFromPlay({ route, navigation, start }) {
+function VideoEditFromPlay({ route, navigation }) {
    const item = route.params.item;
    const [playing, setPlaying] = useState(false);
    const playerRef = useRef();
-   const [lapse, setLapse] = useState([item.lapse[0], item.lapse[1]]);
-   const [selectedLapsed, setSelectedLapsed] = useState([
-      item.lapse[0],
-      item.lapse[1],
-   ]);
+   const [lapse, setLapse] = useState([item.start, item.end]);
+   const [selectedLapsed, setSelectedLapsed] = useState([item.start, item.end]);
    const [endTime, setEndTime] = useState(1000);
    const [loaded, setLoaded] = useState(false);
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
-
-   const uniqueId = useSelector(({ uniqueId }) => uniqueId);
-   const dispatch = useDispatch();
-
-   useEffect(() => {
-      if (uniqueId.first && loaded) {
-         setTimeout(start, 250);
-         dispatch(setUniqueId({ id: uniqueId.id, first: false }));
-      }
-   }, [uniqueId, loaded]);
 
    useEffect(() => {
       const getEndTime = async () => {
@@ -74,25 +59,21 @@ function VideoEditFromPlay({ route, navigation, start }) {
    }, []);
 
    // checkItemModal에서 클릭시 재생목록 창 키거나, 취소
-   const doneEdit = useCallback(() => {
-      if (
-         item.lapse[0] === selectedLapsed[0] &&
-         item.lapse[1] === selectedLapsed[1]
-      ) {
+   const doneEdit = useCallback(async () => {
+      if (item.start === selectedLapsed[0] && item.end === selectedLapsed[1]) {
          navigation.goBack();
       } else {
-         /* 1. 서버로 수정 요청 보내기
-            2. 성공하면 백그라운드로 리스트 업데이트 -> 그 플레이 리스트만 받아서 업데이트
-            3. 동시에 수정한 리스트 다시 보내기     
-        */
+         await changeLapse(item.id, selectedLapsed[0], selectedLapsed[1]);
+
          const updatedList = route.params.playlist.items.map((inItem) => {
             if (inItem.id === item.id) {
-               inItem.lapse = selectedLapsed;
+               inItem.start = selectedLapsed[0];
+               inItem.end = selectedLapsed[1];
             }
             return inItem;
          });
          navigation.navigate("PlayScreen", {
-            playlistInput: { ...route.params.playlist, items: updatedList },
+            playlistInput: { id: route.params.playlist.id, items: updatedList },
             isCurItem: route.params.isCurItem,
          });
       }

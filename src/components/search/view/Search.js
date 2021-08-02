@@ -1,5 +1,12 @@
-import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import React, { useCallback } from "react";
+import {
+   Dimensions,
+   FlatList,
+   ScrollView,
+   StyleSheet,
+   TouchableOpacity,
+   View,
+} from "react-native";
 import { Button, ListItem, SearchBar, Image } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import LottieView from "lottie-react-native";
@@ -34,7 +41,7 @@ const styles = StyleSheet.create({
    listItem: {
       backgroundColor: palette.ivory,
       height: 100,
-      width: "90%",
+      width: Dimensions.get("window").width * 0.9,
       overflow: "hidden",
       borderColor: palette.ivory,
       borderWidth: 1,
@@ -84,6 +91,27 @@ const styles = StyleSheet.create({
 });
 
 function Search({ onSearch, typing, onChange, result, loading, onPressItem }) {
+   const renderItem = useCallback(({ item, index }) => {
+      return (
+         <ListItem
+            key={`${item.title}_${index}`}
+            underlayColor={palette.ivory}
+            activeOpacity={0.5}
+            onPress={() => onPressItem(item)}
+            containerStyle={styles.listItem}>
+            <Image
+               source={{ uri: item.thumbnail }}
+               style={{ width: 100, height: 100 }}
+               transition
+            />
+            <ListItem.Content>
+               <ListItem.Title style={{ color: palette.blackBerry }}>
+                  {item.title}
+               </ListItem.Title>
+            </ListItem.Content>
+         </ListItem>
+      );
+   });
    return (
       <>
          <View style={styles.container}>
@@ -99,45 +127,29 @@ function Search({ onSearch, typing, onChange, result, loading, onPressItem }) {
                   onSubmitEditing={onSearch}
                />
             </View>
-            <ScrollView>
-               <View style={styles.result}>
-                  {loading ? (
-                     <View style={{ height: 100, justifyContent: "center" }}>
-                        <LottieView
-                           style={{
-                              width: 50,
-                              height: 50,
-                           }}
-                           autoPlay
-                           source={require("../../../lib/styles/loading.json")}
-                        />
-                     </View>
-                  ) : (
-                     result?.map((item, idx) => {
-                        return (
-                           <ListItem
-                              key={idx}
-                              underlayColor={palette.ivory}
-                              activeOpacity={0.5}
-                              onPress={() => onPressItem(item)}
-                              containerStyle={styles.listItem}>
-                              <Image
-                                 source={{ uri: item.thumbnails }}
-                                 style={{ width: 100, height: 100 }}
-                                 transition
-                              />
-                              <ListItem.Content>
-                                 <ListItem.Title
-                                    style={{ color: palette.blackBerry }}>
-                                    {item.title}
-                                 </ListItem.Title>
-                              </ListItem.Content>
-                           </ListItem>
-                        );
-                     })
-                  )}
-               </View>
-            </ScrollView>
+            <View style={styles.result}>
+               {loading ? (
+                  <View style={{ height: 100, justifyContent: "center" }}>
+                     <LottieView
+                        style={{
+                           width: 50,
+                           height: 50,
+                        }}
+                        autoPlay
+                        source={require("../../../lib/styles/loading.json")}
+                     />
+                  </View>
+               ) : (
+                  <FlatList
+                     data={result}
+                     keyExtractor={(item, index) => `${index}`}
+                     renderItem={renderItem}
+                     showsVerticalScrollIndicator={false}
+                     showsHorizontalScrollIndicator={false}
+                     contentContainerStyle={{ paddingBottom: 100 }}
+                  />
+               )}
+            </View>
          </View>
       </>
    );

@@ -57,11 +57,11 @@ function Play({
                backgroundColor: "black",
                opacity: 0.99,
             }}
-            videoId={playlist.items[cur].id}
+            videoId={playlist?.items[cur]?.videoId}
             onChangeState={handleStateChange}
             initialPlayerParams={{
-               start: playlist.items[cur].lapse[0],
-               end: playlist.items[cur].lapse[1],
+               start: playlist?.items[cur]?.start,
+               end: playlist?.items[cur]?.end,
             }}
          />
       );

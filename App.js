@@ -28,12 +28,14 @@ Sentry.init({
 import AppInit from "./AppInit";
 
 /* logbox */
-import { LogBox } from "react-native";
+import { LogBox, Platform } from "react-native";
 
-LogBox.ignoreLogs([
-   "ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.",
-   "%s: Calling %s on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.",
-]);
+if (Platform.OS !== "web") {
+   LogBox.ignoreLogs([
+      "ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.",
+      "%s: Calling %s on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.",
+   ]);
+}
 
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();

@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { addPlaylistLocal } from "../../../lib/api/playlist";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addPlaylist } from "../../../lib/api/playlist";
 import { getPlaylist } from "../../../modules/playlist";
 import AddPlaylistModal from "../view/AddPlaylistModal";
 
-function AddPlaylistModalContainer({ visible, cancel, playlist }) {
+function AddPlaylistModalContainer({ visible, cancel }) {
    const [name, setName] = useState("");
    const [errMsg, setErrMsg] = useState("");
+   const uniqueId = useSelector(({ uniqueId }) => uniqueId);
    const dispatch = useDispatch();
    const onChange = (v) => {
       if (errMsg) {
@@ -27,22 +28,18 @@ function AddPlaylistModalContainer({ visible, cancel, playlist }) {
          setErrMsg("최대 20자까지 가능합니다.");
          return;
       }
-      for (let i of playlist) {
-         if (i.name === name) {
-            setErrMsg("이미 있는 이름입니다.");
-            return;
-         }
-      }
-
       callAddPlaylist(name);
-      setName("");
-      setErrMsg("");
-      cancel();
    };
 
    const callAddPlaylist = async (name) => {
-      await addPlaylistLocal(playlist, name);
-      dispatch(getPlaylist());
+      await addPlaylist({
+         loginId: uniqueId.id,
+         title: name,
+         isPublic: false,
+         category: "OTHER",
+      });
+      dispatch(getPlaylist(uniqueId.id));
+      cancel();
    };
 
    return (
@@ -57,4 +54,4 @@ function AddPlaylistModalContainer({ visible, cancel, playlist }) {
    );
 }
 
-export default AddPlaylistModalContainer;
+export default React.memo(AddPlaylistModalContainer);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemLocal } from "../../../lib/api/playlist";
-import { getPlaylist } from "../../../modules/playlist";
+import { addVideo } from "../../../lib/api/videos";
+import { getPlaylist, setThumbnail } from "../../../modules/playlist";
 import Playlist from "../view/Playlist";
 import AddPlaylistModalContainer from "./AddPlaylistModalContainer";
 
@@ -11,8 +11,10 @@ function AddItemContainer({ item, afterAdd }) {
    const dispatch = useDispatch();
 
    const addItemCallback = async (list) => {
-      await addItemLocal(playlist, list.id, item);
-      dispatch(getPlaylist());
+      await addVideo(list.id, item);
+      if (!list.thumbnail) {
+         dispatch(setThumbnail(list.id, item.thumbnail));
+      }
       afterAdd();
    };
 

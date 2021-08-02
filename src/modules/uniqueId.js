@@ -2,9 +2,9 @@
 const SET_UNIQUEID = "SET_UNIQUEID";
 
 //액션 생성 함수
-export const setUniqueId = (id) => ({
+export const setUniqueId = (user) => ({
    type: SET_UNIQUEID,
-   payload: id,
+   payload: user,
 });
 
 const initialState = {

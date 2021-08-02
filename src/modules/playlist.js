@@ -1,11 +1,13 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { getPlaylistLocal } from "../lib/api/playlist";
+import { getPlaylistApi } from "../lib/api/playlist";
 
 //액션 타입
 const ADD_ITEM = "ADD_ITEM";
 const ADD_PLAYLIST = "ADD_PLAYLIST";
 const GET_PLAYLIST = "GET_PLAYLIST";
 const GET_PLAYLIST_ASYNC = "GET_PLAYLIST_ASYNC";
+const CLEAR_THUMBNAIL = "CLEAR_THUMBNAIL";
+const SET_THUMBNAIL = "SET_THUMBNAIL";
 
 //액션 생성 함수
 export const addItem = (id, item) => ({
@@ -13,12 +15,17 @@ export const addItem = (id, item) => ({
    payload: { id: id, item: item },
 });
 export const addPlaylist = (name) => ({ type: ADD_PLAYLIST, payload: name });
-export const getPlaylist = () => ({ type: GET_PLAYLIST });
+export const getPlaylist = (id) => ({ type: GET_PLAYLIST, payload: id });
+export const clearThumbnail = (id) => ({ type: CLEAR_THUMBNAIL, payload: id });
+export const setThumbnail = (id, thumbnail) => ({
+   type: SET_THUMBNAIL,
+   payload: { id: id, thumbnail: thumbnail },
+});
 
 const initialState = [];
 
-function* getPlaylistAsync() {
-   const res = yield call(getPlaylistLocal);
+function* getPlaylistAsync(action) {
+   const res = yield call(getPlaylistApi, action.payload);
    yield put({ type: GET_PLAYLIST_ASYNC, payload: res });
 }
 
@@ -44,6 +51,20 @@ export default function playlist(state = initialState, action) {
          return [...state];
       case GET_PLAYLIST_ASYNC:
          return action.payload;
+      case CLEAR_THUMBNAIL:
+         return state.map((item) => {
+            if (item.id === action.payload) {
+               item.thumbnail = null;
+            }
+            return item;
+         });
+      case SET_THUMBNAIL:
+         return state.map((item) => {
+            if (item.id === action.payload.id) {
+               item.thumbnail = action.payload.thumbnail;
+            }
+            return item;
+         });
       default:
          return state;
    }

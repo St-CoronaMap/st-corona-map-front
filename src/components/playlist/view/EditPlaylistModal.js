@@ -1,42 +1,73 @@
 import React from "react";
+import { Text } from "react-native";
 import { StyleSheet, View } from "react-native";
-import { ListItem } from "react-native-elements";
+import { Input, ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
-import CustomModalHeader from "../../elements/CustomModalHeader";
 
-function EditPlaylistModal({ visible, cancel, onDelete }) {
+function EditPlaylistModal({
+   visible,
+   cancel,
+   onDelete,
+   onEdit,
+   onEditTitle,
+   onChange,
+   addPlaylist,
+   errMsg,
+}) {
    const buttons = [{ text: "취소", onPress: cancel }];
+   const editTitleButtons = [
+      {
+         text: "취소",
+         onPress: cancel,
+         textStyle: { color: palette.redRose },
+      },
+      {
+         text: "수정",
+         onPress: addPlaylist,
+      },
+   ];
    return (
       <CustomModal
          visible={visible}
          rounded={true}
-         footer={<CustomModalFooter buttons={buttons} />}>
-         <View style={styles.container}>
-            <ListItem
-               onPress={onDelete}
-               underlayColor={palette.ivory}
-               activeOpacity={0.5}
-               containerStyle={styles.listItem}>
-               <ListItem.Content style={{ alignItems: "center" }}>
-                  <ListItem.Title style={{ color: "#03a9f4" }}>
-                     이름 변경
-                  </ListItem.Title>
-               </ListItem.Content>
-            </ListItem>
-            <ListItem
-               onPress={onDelete}
-               underlayColor={palette.ivory}
-               activeOpacity={0.5}
-               containerStyle={styles.listItem}>
-               <ListItem.Content style={{ alignItems: "center" }}>
-                  <ListItem.Title style={{ color: palette.redRose }}>
-                     삭제
-                  </ListItem.Title>
-               </ListItem.Content>
-            </ListItem>
-         </View>
+         footer={
+            <CustomModalFooter
+               buttons={onEditTitle ? editTitleButtons : buttons}
+            />
+         }>
+         {!onEditTitle ? (
+            <View style={styles.container}>
+               <ListItem
+                  onPress={onEdit}
+                  underlayColor={palette.ivory}
+                  activeOpacity={0.5}
+                  containerStyle={styles.listItem}>
+                  <ListItem.Content style={{ alignItems: "center" }}>
+                     <ListItem.Title style={{ color: "#03a9f4" }}>
+                        이름 변경
+                     </ListItem.Title>
+                  </ListItem.Content>
+               </ListItem>
+               <ListItem
+                  onPress={onDelete}
+                  underlayColor={palette.ivory}
+                  activeOpacity={0.5}
+                  containerStyle={styles.listItem}>
+                  <ListItem.Content style={{ alignItems: "center" }}>
+                     <ListItem.Title style={{ color: palette.redRose }}>
+                        삭제
+                     </ListItem.Title>
+                  </ListItem.Content>
+               </ListItem>
+            </View>
+         ) : (
+            <View style={styles.containerEdit}>
+               <Text>새로운 재생목록의 이름을 입력해주세요.</Text>
+               <Input onChangeText={onChange} errorMessage={errMsg} />
+            </View>
+         )}
       </CustomModal>
    );
 }
@@ -47,6 +78,13 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       paddingTop: 20,
+   },
+   containerEdit: {
+      padding: 30,
+      paddingBottom: 0,
+      backgroundColor: palette.ivory,
+      alignItems: "center",
+      justifyContent: "center",
    },
    listItem: {
       backgroundColor: palette.ivory,

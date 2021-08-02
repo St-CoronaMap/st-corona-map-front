@@ -51,7 +51,7 @@ function VideoEdit({
                ref={playerRef}
                play={playing}
                height={PLAYER_HEIGHT}
-               videoId={item?.id}
+               videoId={item?.videoId}
                onReady={onReady}
                volume={vol}
                onChangeState={onChangeState}

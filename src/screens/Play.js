@@ -6,7 +6,7 @@ import VideoEditFromPlay from "../components/videoEdit/container/VideoEditFromPl
 const Stack = createStackNavigator();
 
 export default function PlayScreen({ route, navigation }) {
-   const { playlist } = route.params;
+   const playlist = route.params;
    return (
       <Stack.Navigator initialRouteName="PlayScreen">
          <Stack.Screen

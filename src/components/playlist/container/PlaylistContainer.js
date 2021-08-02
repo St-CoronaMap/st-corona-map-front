@@ -4,6 +4,7 @@ import AddPlaylistModalContainer from "./AddPlaylistModalContainer";
 import Snackbar from "rn-animated-snackbar";
 import { useSelector } from "react-redux";
 import EditPlaylistModalContainer from "./EditPlaylistModalContainer";
+import { getVideoList } from "../../../lib/api/videos";
 
 function PlaylistContainer({ navigation }) {
    const [visibleAddPlaylist, setVisibleAddPlaylist] = useState(false);
@@ -13,12 +14,16 @@ function PlaylistContainer({ navigation }) {
    const playlist = useSelector(({ playlist }) => playlist);
    const firstTime = useSelector(({ uniqueId }) => uniqueId.first);
 
-   const enterPlaylist = (item) => {
-      if (item.items.length === 0) {
+   const enterPlaylist = async (list) => {
+      const res = await getVideoList(list.id);
+      if (res.length === 0) {
          setVisible(true);
          return;
       }
-      navigation.navigate("Play", { playlist: item });
+      navigation.navigate("Play", {
+         id: list.id,
+         items: res.sort((a, b) => a.sequence - b.sequence),
+      });
    };
    const onPressVisible = useCallback(() => {
       setVisibleAddPlaylist(true);
@@ -62,7 +67,6 @@ function PlaylistContainer({ navigation }) {
             visible={visibleEditPlaylist}
             cancel={cancelEditPlaylist}
             edittingPlaylist={edittingPlaylist}
-            playlist={playlist}
          />
       </>
    );
