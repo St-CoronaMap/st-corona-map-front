@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPlaylist } from "../../../lib/api/playlist";
+import { setLoading, setUnloading } from "../../../modules/loading";
 import { getPlaylist } from "../../../modules/playlist";
 import AddPlaylistModal from "../view/AddPlaylistModal";
 
@@ -32,13 +33,14 @@ function AddPlaylistModalContainer({ visible, cancel }) {
    };
 
    const callAddPlaylist = async (name) => {
+      dispatch(setLoading());
       await addPlaylist({
          loginId: uniqueId.id,
          title: name,
          isPublic: false,
          category: "OTHER",
       });
-      dispatch(getPlaylist(uniqueId.id));
+      dispatch(getPlaylist(uniqueId.id, dispatch));
       cancel();
    };
 

@@ -15,7 +15,10 @@ export const addItem = (id, item) => ({
    payload: { id: id, item: item },
 });
 export const addPlaylist = (name) => ({ type: ADD_PLAYLIST, payload: name });
-export const getPlaylist = (id) => ({ type: GET_PLAYLIST, payload: id });
+export const getPlaylist = (id, dispatch) => ({
+   type: GET_PLAYLIST,
+   payload: { id: id, dispatch: dispatch },
+});
 export const clearThumbnail = (id) => ({ type: CLEAR_THUMBNAIL, payload: id });
 export const setThumbnail = (id, thumbnail) => ({
    type: SET_THUMBNAIL,

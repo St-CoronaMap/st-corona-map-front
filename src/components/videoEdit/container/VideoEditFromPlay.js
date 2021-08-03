@@ -11,6 +11,8 @@ import CustomTootip from "../../elements/CustomTootip";
 import VideoEdit from "../view/VideoEdit";
 import CheckItemModal from "../view/CheckItemModal";
 import { changeLapse } from "../../../lib/api/videos";
+import { useDispatch } from "react-redux";
+import { setLoading, setUnloading } from "../../../modules/loading";
 
 function VideoEditFromPlay({ route, navigation }) {
    const item = route.params.item;
@@ -21,6 +23,7 @@ function VideoEditFromPlay({ route, navigation }) {
    const [endTime, setEndTime] = useState(1000);
    const [loaded, setLoaded] = useState(false);
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
+   const dispatch = useDispatch();
 
    useEffect(() => {
       const getEndTime = async () => {
@@ -63,6 +66,7 @@ function VideoEditFromPlay({ route, navigation }) {
       if (item.start === selectedLapsed[0] && item.end === selectedLapsed[1]) {
          navigation.goBack();
       } else {
+         dispatch(setLoading());
          await changeLapse(item.id, selectedLapsed[0], selectedLapsed[1]);
 
          const updatedList = route.params.playlist.items.map((inItem) => {
@@ -72,6 +76,7 @@ function VideoEditFromPlay({ route, navigation }) {
             }
             return inItem;
          });
+         dispatch(setUnloading());
          navigation.navigate("PlayScreen", {
             playlistInput: { id: route.params.playlist.id, items: updatedList },
             isCurItem: route.params.isCurItem,

@@ -9,13 +9,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import TopTabContainer from "./src/components/topTab/container/TopTabContainer";
 import PlayScreen from "./src/screens/Play";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUniqueId } from "./src/modules/uniqueId";
+
+import Spinner from "react-native-loading-spinner-overlay";
 
 const Stack = createStackNavigator();
 
 function AppInit() {
-   const [loading, setLoading] = useState(true);
+   const [preLoading, setPreLoading] = useState(true);
+   const loading = useSelector(({ loading }) => loading);
    const dispatch = useDispatch();
 
    const preload = async () => {
@@ -26,8 +29,8 @@ function AppInit() {
       dispatch(getPlaylist(res.id));
    };
 
-   const onFinish = () => setLoading(false);
-   if (loading) {
+   const onFinish = () => setPreLoading(false);
+   if (preLoading) {
       return (
          <AppLoading
             startAsync={preload}
@@ -55,6 +58,14 @@ function AppInit() {
                />
             </Stack.Navigator>
          </NavigationContainer>
+         <Spinner
+            visible={loading}
+            cancelable={true}
+            textContent={"Loading..."}
+            textStyle={{
+               color: "#FFF",
+            }}
+         />
          <ModalPortal />
       </>
    );

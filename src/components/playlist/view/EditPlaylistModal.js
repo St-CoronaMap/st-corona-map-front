@@ -13,7 +13,7 @@ function EditPlaylistModal({
    onEdit,
    onEditTitle,
    onChange,
-   addPlaylist,
+   editPlaylist,
    errMsg,
 }) {
    const buttons = [{ text: "취소", onPress: cancel }];
@@ -25,7 +25,7 @@ function EditPlaylistModal({
       },
       {
          text: "수정",
-         onPress: addPlaylist,
+         onPress: editPlaylist,
       },
    ];
    return (

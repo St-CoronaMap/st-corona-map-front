@@ -1,10 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { setUnloading } from "../../modules/loading";
 import { Address } from "./constants";
 
-export const getPlaylistApi = async (id) => {
+export const getPlaylistApi = async ({ id, dispatch }) => {
    try {
       const res = await axios.get(`${Address}/api/playlist/${id}`);
+      if (dispatch) {
+         dispatch(setUnloading());
+      }
       return res.data.response;
    } catch (err) {
       console.log(err.response.data);

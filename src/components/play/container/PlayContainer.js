@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeOrder, deleteVideo } from "../../../lib/api/videos";
+import { setLoading, setUnloading } from "../../../modules/loading";
 import { clearThumbnail, setThumbnail } from "../../../modules/playlist";
 import Play from "../view/Play";
 
@@ -88,8 +89,10 @@ function PlayContainer({ route, navigation }) {
          if (from === to) {
             return;
          }
+         dispatch(setLoading());
          await changeOrder(playlist.id, data);
          setPlaylist((prev) => ({ id: prev.id, items: data }));
+         dispatch(setUnloading());
          if ((from >= cur && to <= cur) || (from <= cur && to >= cur)) {
             setPlaying(false);
          }
@@ -112,6 +115,7 @@ function PlayContainer({ route, navigation }) {
 
    const onPressDeleteVideo = useCallback(
       async (index, id) => {
+         dispatch(setLoading());
          await deleteVideo(id);
          if (playlist.items.length === 1) {
             navigation.navigate("Playlist");
@@ -131,6 +135,7 @@ function PlayContainer({ route, navigation }) {
                setPlaying(false);
             }
          }
+         dispatch(setUnloading());
       },
       [cur, playlist]
    );

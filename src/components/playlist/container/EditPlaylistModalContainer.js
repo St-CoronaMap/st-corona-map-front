@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePlaylist, editPlaylist } from "../../../lib/api/playlist";
+import { setLoading } from "../../../modules/loading";
 import { getPlaylist } from "../../../modules/playlist";
 import EditPlaylistModal from "../view/EditPlaylistModal";
 
@@ -12,12 +13,13 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
    const uniqueId = useSelector(({ uniqueId }) => uniqueId);
 
    const onDelete = useCallback(async () => {
+      dispatch(setLoading());
       await deletePlaylist(edittingPlaylist.id);
-      dispatch(getPlaylist(uniqueId.id));
+      dispatch(getPlaylist(uniqueId.id, dispatch));
       cancel();
    }, [edittingPlaylist]);
 
-   const addPlaylistCallback = () => {
+   const editPlaylistCallback = () => {
       if (!name) {
          setErrMsg("이름을 입력해주세요");
          return;
@@ -30,17 +32,21 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
          setErrMsg("최대 20자까지 가능합니다.");
          return;
       }
-      callAddPlaylist(name);
+      callEditPlaylist(name);
    };
-   const callAddPlaylist = useCallback(async (name) => {
-      await editPlaylist({
-         id: edittingPlaylist.id,
-         title: name,
-      });
-      dispatch(getPlaylist(uniqueId.id));
-      setOnEditTitle(false);
-      cancel();
-   }, []);
+   const callEditPlaylist = useCallback(
+      async (name) => {
+         dispatch(setLoading());
+         await editPlaylist({
+            id: edittingPlaylist.id,
+            title: name,
+         });
+         dispatch(getPlaylist(uniqueId.id, dispatch));
+         setOnEditTitle(false);
+         cancel();
+      },
+      [edittingPlaylist]
+   );
 
    const onEdit = useCallback(() => {
       setOnEditTitle(true);
@@ -63,7 +69,7 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
          onEdit={onEdit}
          onEditTitle={onEditTitle}
          onChange={onChange}
-         addPlaylist={addPlaylistCallback}
+         editPlaylist={editPlaylistCallback}
          errMsg={errMsg}
       />
    );
