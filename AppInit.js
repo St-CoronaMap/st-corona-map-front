@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUniqueId } from "./src/modules/uniqueId";
 
 import Spinner from "react-native-loading-spinner-overlay";
+import { Dimensions, Platform, View } from "react-native";
+import HeaderName from "./src/components/headerName/HeaderName";
 
 const Stack = createStackNavigator();
 
@@ -30,6 +32,7 @@ function AppInit() {
    };
 
    const onFinish = () => setPreLoading(false);
+
    if (preLoading) {
       return (
          <AppLoading
@@ -43,30 +46,42 @@ function AppInit() {
    return (
       <>
          <NavigationContainer>
-            <Stack.Navigator mode="modal" initialRouteName="Main">
-               <Stack.Screen
-                  name="Main"
-                  component={TopTabContainer}
-                  options={{ headerShown: false }}
-               />
-               <Stack.Screen
-                  name="Play"
-                  component={PlayScreen}
-                  options={{
-                     headerShown: false,
-                  }}
-               />
-            </Stack.Navigator>
+            <View
+               style={{
+                  width:
+                     Platform.OS === "web"
+                        ? 600
+                        : Dimensions.get("window").width,
+                  height: "100%",
+               }}>
+               <HeaderName />
+               <Stack.Navigator mode="modal" initialRouteName="Main">
+                  <Stack.Screen
+                     name="Main"
+                     component={TopTabContainer}
+                     options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                     name="Play"
+                     component={PlayScreen}
+                     options={{
+                        headerShown: false,
+                     }}
+                  />
+               </Stack.Navigator>
+            </View>
          </NavigationContainer>
-         <Spinner
-            visible={loading}
-            cancelable={true}
-            textContent={"Loading..."}
-            textStyle={{
-               color: "#FFF",
-            }}
-         />
          <ModalPortal />
+         {Platform.OS !== "web" && (
+            <Spinner
+               visible={loading}
+               cancelable={true}
+               textContent={"Loading..."}
+               textStyle={{
+                  color: "#FFF",
+               }}
+            />
+         )}
       </>
    );
 }

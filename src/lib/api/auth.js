@@ -18,7 +18,7 @@ export const getNomMemberId = async () => {
       }
       return { id: id, first: false };
    } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
    }
 };
 
@@ -28,6 +28,6 @@ export const nonSignIn = async (newId) => {
          deviceId: newId,
       });
    } catch (err) {
-      console.log(err.response.data.message);
+      console.log(err.response.data);
    }
 };

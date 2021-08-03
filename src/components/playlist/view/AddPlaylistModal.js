@@ -6,14 +6,7 @@ import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
 
-function AddPlaylistModal({
-   visible,
-   cancel,
-   name,
-   onChange,
-   addPlaylist,
-   errMsg,
-}) {
+function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
    const titleProps = { title: "재생목록 추가", hasTitleBar: true };
    const buttons = [
       {

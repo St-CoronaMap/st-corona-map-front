@@ -50,8 +50,12 @@ export default function App() {
    return (
       <SafeAreaProvider>
          <StatusBar backgroundColor={palette.blackBerry} />
-         <SafeAreaView style={{ flex: 1 }}>
-            <HeaderName />
+         <SafeAreaView
+            style={{
+               flex: 1,
+               alignItems: "center",
+               backgroundColor: "black",
+            }}>
             <Provider store={store}>
                <AppInit />
             </Provider>

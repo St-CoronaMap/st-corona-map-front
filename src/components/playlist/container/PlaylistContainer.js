@@ -19,11 +19,11 @@ function PlaylistContainer({ navigation }) {
    const enterPlaylist = async (list) => {
       dispatch(setLoading());
       const res = await getVideoList(list.id);
+      dispatch(setUnloading());
       if (res.length === 0) {
          setVisible(true);
          return;
       }
-      dispatch(setUnloading());
       navigation.navigate("Play", {
          id: list.id,
          items: res.sort((a, b) => a.sequence - b.sequence),

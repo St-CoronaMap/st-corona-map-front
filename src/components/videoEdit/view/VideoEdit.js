@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Dimensions, Platform } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 import { ScrollView } from "react-native-gesture-handler";
