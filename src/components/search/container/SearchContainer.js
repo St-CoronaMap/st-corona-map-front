@@ -1,18 +1,20 @@
 import axios from "axios";
 import React, { useState } from "react";
 import Search from "../view/Search";
-import { requestUrl } from "../../../../env";
+import { searchUrl } from "../../../../env";
+import { useDispatch } from "react-redux";
+import { setLoading, setUnloading } from "../../../modules/loading";
 
 function SearchContainer({ navigation }) {
    const [result, setResult] = useState([]);
    const [typing, setTyping] = useState("");
-   const [loading, setLoading] = useState(false);
+   const dispatch = useDispatch();
 
    const onSearch = async () => {
       try {
-         setLoading(true);
+         dispatch(setLoading());
          const res = await axios.get(
-            `${requestUrl}${decodeURIComponent(typing)}`
+            `${searchUrl}${decodeURIComponent(typing)}`
          );
          setResult(
             res.data.data.items.map((item) => ({
@@ -24,10 +26,10 @@ function SearchContainer({ navigation }) {
                duration: item.duration,
             }))
          );
+         dispatch(setUnloading());
       } catch (err) {
-         console.log(err.response);
+         console.log(err);
       }
-      setLoading(false);
    };
    const onPressItem = (item) => {
       navigation.navigate("videoEdit_search", { item: item, from: "search" });
@@ -41,7 +43,6 @@ function SearchContainer({ navigation }) {
          typing={typing}
          onChange={onChange}
          result={result}
-         loading={loading}
          onPressItem={onPressItem}
       />
    );

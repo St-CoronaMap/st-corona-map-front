@@ -45,7 +45,7 @@ function SecondController({
                   <RangeSlider
                      min={0}
                      floatingLabel
-                     max={endTime}
+                     max={endTime === 0 ? 10 : endTime}
                      low={lapse[0]}
                      high={lapse[1]}
                      step={1}

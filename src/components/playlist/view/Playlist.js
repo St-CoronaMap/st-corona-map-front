@@ -5,6 +5,7 @@ import {
    Text,
    Dimensions,
    TouchableOpacity,
+   Platform,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { FAB, Icon, Card } from "react-native-elements";
@@ -122,7 +123,8 @@ const styles = StyleSheet.create({
    },
    card: {
       width: "40%",
-      height: Dimensions.get("screen").width * 0.35,
+      height:
+         Platform.OS === "web" ? 200 : Dimensions.get("screen").width * 0.35,
       padding: 0,
       borderRadius: 30,
 

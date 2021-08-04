@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import {
    Dimensions,
    FlatList,
+   Platform,
    ScrollView,
    StyleSheet,
    TouchableOpacity,
@@ -41,7 +42,8 @@ const styles = StyleSheet.create({
    listItem: {
       backgroundColor: palette.ivory,
       height: 100,
-      width: Dimensions.get("window").width * 0.9,
+      width:
+         Platform.OS === "web" ? "90%" : Dimensions.get("window").width * 0.9,
       overflow: "hidden",
       borderColor: palette.ivory,
       borderWidth: 1,
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
    },
 });
 
-function Search({ onSearch, typing, onChange, result, loading, onPressItem }) {
+function Search({ onSearch, typing, onChange, result, onPressItem }) {
    const renderItem = useCallback(({ item, index }) => {
       return (
          <ListItem
@@ -119,7 +121,6 @@ function Search({ onSearch, typing, onChange, result, loading, onPressItem }) {
                <SearchBar
                   placeholder="검색"
                   round
-                  loading={loading}
                   platform="android"
                   containerStyle={styles.input}
                   onChangeText={onChange}
@@ -128,27 +129,14 @@ function Search({ onSearch, typing, onChange, result, loading, onPressItem }) {
                />
             </View>
             <View style={styles.result}>
-               {loading ? (
-                  <View style={{ height: 100, justifyContent: "center" }}>
-                     <LottieView
-                        style={{
-                           width: 50,
-                           height: 50,
-                        }}
-                        autoPlay
-                        source={require("../../../lib/styles/loading.json")}
-                     />
-                  </View>
-               ) : (
-                  <FlatList
-                     data={result}
-                     keyExtractor={(item, index) => `${index}`}
-                     renderItem={renderItem}
-                     showsVerticalScrollIndicator={false}
-                     showsHorizontalScrollIndicator={false}
-                     contentContainerStyle={{ paddingBottom: 100 }}
-                  />
-               )}
+               <FlatList
+                  data={result}
+                  keyExtractor={(item, index) => `${index}`}
+                  renderItem={renderItem}
+                  showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 100 }}
+               />
             </View>
          </View>
       </>

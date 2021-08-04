@@ -24,6 +24,7 @@ function VideoEditContainer({ route, navigation, start }) {
    const [loaded, setLoaded] = useState(false);
    const [visible, setVisible] = useState(false);
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
+   const [isBanned, setIsBanned] = useState(false);
 
    const uniqueId = useSelector(({ uniqueId }) => uniqueId);
    const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function VideoEditContainer({ route, navigation, start }) {
    useEffect(() => {
       const getEndTime = async () => {
          const res = await playerRef.current?.getDuration();
+         if (res === 0) setIsBanned(true);
          setLapse([0, res]);
          setPlaying(false);
          setSelectedLapsed([0, res]);
@@ -54,9 +56,14 @@ function VideoEditContainer({ route, navigation, start }) {
       if (count >= 4) {
          if (low <= high) {
             setLapse([low, high]);
-
-            if (low != saveLow) playerRef.current?.seekTo(low, true);
-            else playerRef.current?.seekTo(high, true);
+            console.log("implemented");
+            try {
+               if (low != saveLow) playerRef.current?.seekTo(low, true);
+               else playerRef.current?.seekTo(high, true);
+               console.log("done");
+            } catch (err) {
+               console.log(err);
+            }
             saveLow = low;
          }
       } else if (count < 4) {
