@@ -54,7 +54,8 @@ export default function App() {
             style={{
                flex: 1,
                alignItems: "center",
-               backgroundColor: "black",
+               justifyContent: "center",
+               backgroundColor: palette.softGray,
             }}>
             <Provider store={store}>
                <AppInit />

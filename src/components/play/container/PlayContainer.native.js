@@ -118,8 +118,8 @@ function PlayContainer({ route, navigation }) {
          dispatch(setLoading());
          await deleteVideo(id);
          if (playlist.items.length === 1) {
-            navigation.navigate("Playlist");
             dispatch(clearThumbnail(playlist.id));
+            navigation.navigate("Playlist");
          } else {
             if (index === 0) {
                dispatch(setThumbnail(playlist.id, playlist.items[1].thumbnail));

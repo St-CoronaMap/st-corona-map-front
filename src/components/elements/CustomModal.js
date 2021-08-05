@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, Platform, StyleSheet, View } from "react-native";
 import { Modal, ModalContent, SlideAnimation } from "react-native-modals";
 import palette from "../../lib/styles/palette";
 function CustomModal({
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
    },
    content: {
       height: Dimensions.get("window").height * 0.7,
-      width: Dimensions.get("window").width,
+      width: Platform.OS === "web" ? 600 : Dimensions.get("window").width,
    },
 });
 

@@ -1,21 +1,16 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, Platform } from "react-native";
+import palette from "../../../lib/styles/palette";
 
 function Summary({ item }) {
    return (
       <View style={styles.summaryContainer}>
          <View style={styles.summaryBorder}>
-            <Text style={{ padding: 10, fontSize: 20 }}>{item?.title}</Text>
-            <View
-               style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingLeft: 10,
-                  paddingBottom: 10,
-               }}>
+            <Text style={styles.text}>{item?.title}</Text>
+            <View style={styles.channelContainer}>
                <Image
                   source={{ uri: item?.channelAvatar }}
-                  style={{ width: 40, height: 40, borderRadius: 20 }}
+                  style={styles.image}
                   transition
                />
                <Text>
@@ -35,8 +30,19 @@ const styles = StyleSheet.create({
    summaryBorder: {
       paddingBottom: 10,
       borderBottomWidth: 0.5,
-      borderRadius: 20,
+      borderColor: palette.blackBerry,
+      borderRadius: Platform.OS === "web" ? 0 : 20,
    },
+   text: {
+      padding: 10,
+      fontSize: 20,
+   },
+   channelContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingLeft: 10,
+      paddingBottom: Platform.OS === "web" ? 5 : 10,
+   },
+   image: { width: 40, height: 40, borderRadius: 20 },
 });
-
 export default React.memo(Summary);

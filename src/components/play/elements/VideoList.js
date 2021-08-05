@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { StyleSheet, Text, Image, View } from "react-native";
+import { StyleSheet, Text, Image, View, Platform } from "react-native";
 import { Button, ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
@@ -168,6 +168,7 @@ const styles = (isCur, isActive, buttonOffset) =>
       },
       draggableListContainer: {
          width: "100%",
+         marginBottom: Platform.OS === "web" ? 0 : 30,
       },
    });
 

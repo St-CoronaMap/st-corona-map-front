@@ -6,43 +6,28 @@ import React, {
    useState,
 } from "react";
 import { copilot } from "react-native-copilot";
-import { useDispatch, useSelector } from "react-redux";
-import { setUniqueId } from "../../../modules/uniqueId";
 import CustomStepNumber from "../../elements/CustomStepNumber";
 import CustomTootip from "../../elements/CustomTootip";
 import VideoEdit from "../view/VideoEdit";
 import CheckItemModal from "../view/CheckItemModal";
-import SelectPlaylist from "../view/SelectPlaylist";
+import { changeLapse } from "../../../lib/api/videos";
+import { useDispatch } from "react-redux";
+import { setLoading, setUnloading } from "../../../modules/loading";
 
-function VideoEditContainer({ route, navigation, start }) {
+function VideoEditFromPlay({ route, navigation }) {
    const item = route.params.item;
    const [playing, setPlaying] = useState(false);
    const playerRef = useRef();
-   const [lapse, setLapse] = useState([0, 10000]);
-   const [selectedLapsed, setSelectedLapsed] = useState([0, 10000]);
+   const [lapse, setLapse] = useState([item.start, item.end]);
+   const [selectedLapsed, setSelectedLapsed] = useState([item.start, item.end]);
    const [endTime, setEndTime] = useState(1000);
    const [loaded, setLoaded] = useState(false);
-   const [visible, setVisible] = useState(false);
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
-   const [isBanned, setIsBanned] = useState(false);
-
-   const uniqueId = useSelector(({ uniqueId }) => uniqueId);
    const dispatch = useDispatch();
-
-   useEffect(() => {
-      if (uniqueId.first && loaded) {
-         setTimeout(start, 250);
-         dispatch(setUniqueId({ id: uniqueId.id, first: false }));
-      }
-   }, [uniqueId, loaded]);
 
    useEffect(() => {
       const getEndTime = async () => {
          const res = await playerRef.current?.getDuration();
-         if (res === 0) setIsBanned(true);
-         setLapse([0, res]);
-         setPlaying(false);
-         setSelectedLapsed([0, res]);
          setEndTime(res);
       };
       if (loaded) {
@@ -52,39 +37,67 @@ function VideoEditContainer({ route, navigation, start }) {
 
    let count = 0,
       saveLow = 0;
-   const handleValueChange = useCallback((low, high) => {
-      if (count >= 4) {
-         if (low <= high) {
+   const handleValueChange = useCallback(([low, high]) => {
+      if (count >= 1) {
+         if (low < high) {
             setLapse([low, high]);
-            console.log("implemented");
-            try {
-               if (low != saveLow) playerRef.current?.seekTo(low, true);
-               else playerRef.current?.seekTo(high, true);
-               console.log("done");
-            } catch (err) {
-               console.log(err);
-            }
+
+            if (low != saveLow) playerRef.current?.seekTo(low, "seconds");
+            else playerRef.current?.seekTo(high, "seconds");
             saveLow = low;
          }
-      } else if (count < 4) {
+      } else if (count < 3) {
          count++;
       }
    }, []);
+
+   const onStart = useCallback(() => {
+      playerRef.current?.seekTo(selectedLapsed[0], "seconds");
+   }, [selectedLapsed]);
+
+   const handleOnProgress = useCallback(
+      (playedSeconds, cur) => {
+         if (playedSeconds > selectedLapsed[1]) {
+            playerRef.current?.seekTo(selectedLapsed[0], "seconds");
+         }
+      },
+      [selectedLapsed]
+   );
 
    const checkItem = useCallback(() => {
       setVisibleCheckModal(true);
    }, []);
    const lapseLowCounter = useCallback((v) => {
+      playerRef.current?.seekTo(v, "seconds");
       setLapse((prev) => [v, prev[1]]);
    }, []);
    const lapseHighCounter = useCallback((v) => {
+      playerRef.current?.seekTo(v, "seconds");
       setLapse((prev) => [prev[0], v]);
    }, []);
 
    // checkItemModal에서 클릭시 재생목록 창 키거나, 취소
-   const pressSelectPlaylist = useCallback(() => {
-      setVisible(true);
-   }, []);
+   const doneEdit = useCallback(async () => {
+      if (item.start === selectedLapsed[0] && item.end === selectedLapsed[1]) {
+         navigation.goBack();
+      } else {
+         dispatch(setLoading());
+         await changeLapse(item.id, selectedLapsed[0], selectedLapsed[1]);
+
+         const updatedList = route.params.playlist.items.map((inItem) => {
+            if (inItem.id === item.id) {
+               inItem.start = selectedLapsed[0];
+               inItem.end = selectedLapsed[1];
+            }
+            return inItem;
+         });
+         dispatch(setUnloading());
+         navigation.navigate("PlayScreen", {
+            playlistInput: { id: route.params.playlist.id, items: updatedList },
+            isCurItem: route.params.isCurItem,
+         });
+      }
+   }, [selectedLapsed]);
    const closeCheckItemModel = useCallback(() => {
       setVisibleCheckModal(false);
    }, []);
@@ -92,12 +105,10 @@ function VideoEditContainer({ route, navigation, start }) {
       () => ({ ...item, lapse: selectedLapsed }),
       [selectedLapsed]
    );
-
-   // 재생목록 창 끄기
-   const closeSelectPlaylist = useCallback(() => {
-      setVisible(false);
-      setVisibleCheckModal(false);
-   }, []);
+   const onSelectLapse = useCallback(() => {
+      setSelectedLapsed(lapse);
+      playerRef.current?.seekTo(lapse[0], "seconds");
+   }, [lapse]);
 
    return (
       <>
@@ -113,20 +124,17 @@ function VideoEditContainer({ route, navigation, start }) {
             loaded={loaded}
             setLoaded={setLoaded}
             setPlaying={setPlaying}
-            setSelectedLapsed={setSelectedLapsed}
+            onSelectLapse={onSelectLapse}
             checkItem={checkItem}
             lapseLowCounter={lapseLowCounter}
             lapseHighCounter={lapseHighCounter}
-         />
-         <SelectPlaylist
-            visible={visible}
-            cancel={closeSelectPlaylist}
-            item={CheckItemModalObject}
+            handleOnProgress={handleOnProgress}
+            onStart={onStart}
          />
          <CheckItemModal
             visible={visibleCheckModal}
             close={closeCheckItemModel}
-            onOk={pressSelectPlaylist}
+            onOk={doneEdit}
             item={CheckItemModalObject}
             from={`${route.params.from}`}
          />
@@ -137,4 +145,4 @@ function VideoEditContainer({ route, navigation, start }) {
 export default copilot({
    tooltipComponent: CustomTootip,
    stepNumberComponent: CustomStepNumber,
-})(VideoEditContainer);
+})(VideoEditFromPlay);

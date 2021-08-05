@@ -15,16 +15,18 @@ function ControlVideo({ vol, setVol, setPlaying, playing, checkItem }) {
    }, []);
    return (
       <View style={styles.control}>
-         <Slider
-            style={{ width: 120 }}
-            minimumValue={0}
-            maximumValue={100}
-            value={vol}
-            thumbTintColor={palette.blackBerry}
-            minimumTrackTintColor={palette.blackBerry}
-            maximumTrackTintColor={palette.lightPink}
-            onValueChange={volumneChange}
-         />
+         <View style={styles.buttonContainer}>
+            <Slider
+               style={{ width: 120 }}
+               minimumValue={0}
+               maximumValue={100}
+               value={vol}
+               thumbTintColor={palette.blackBerry}
+               minimumTrackTintColor={palette.blackBerry}
+               maximumTrackTintColor={palette.lightPink}
+               onValueChange={volumneChange}
+            />
+         </View>
          <View style={styles.buttonContainer}>
             <Button
                icon={{

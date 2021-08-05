@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePlaylist, editPlaylist } from "../../../lib/api/playlist";
 import { setLoading } from "../../../modules/loading";
@@ -34,6 +34,7 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
       }
       callEditPlaylist(name);
    };
+
    const callEditPlaylist = useCallback(
       async (name) => {
          dispatch(setLoading());
@@ -42,8 +43,7 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
             title: name,
          });
          dispatch(getPlaylist(uniqueId.id, dispatch));
-         setOnEditTitle(false);
-         cancel();
+         cancelCallback();
       },
       [edittingPlaylist]
    );
@@ -61,9 +61,15 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
       },
       [errMsg]
    );
+
+   const cancelCallback = useCallback(() => {
+      setOnEditTitle(false);
+      cancel();
+   }, []);
+
    return (
       <EditPlaylistModal
-         cancel={cancel}
+         cancel={cancelCallback}
          visible={visible}
          onDelete={onDelete}
          onEdit={onEdit}

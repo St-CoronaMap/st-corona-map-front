@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
       width: 300,
       justifyContent: "center",
       alignItems: "center",
-      paddingTop: 20,
    },
    containerEdit: {
       padding: 30,
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
    listItem: {
       backgroundColor: palette.ivory,
       height: 50,
-      width: "90%",
+      width: 270,
       overflow: "hidden",
       borderColor: palette.ivory,
       borderWidth: 1,

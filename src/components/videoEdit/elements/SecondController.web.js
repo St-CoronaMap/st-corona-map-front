@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import {
@@ -6,14 +6,9 @@ import {
    CustomCounterRight,
 } from "../../elements/CustomCounter";
 
-import Label from "../../elements/Label";
-import Notch from "../../elements/Notch";
-import Rail from "../../elements/Rail";
-import RailSelected from "../../elements/RailSelected";
-import Thumb from "../../elements/Thumb";
 import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
-
+import { RangeSlider } from "@sharcoux/slider";
 import { walkthroughable, CopilotStep } from "react-native-copilot";
 
 const CopilotView = walkthroughable(View);
@@ -24,15 +19,8 @@ function SecondController({
    lapseHighCounter,
    handleValueChange,
    endTime,
-   setSelectedLapsed,
-   setPlaying,
+   onSelectLapse,
 }) {
-   const renderThumb = useCallback(() => <Thumb />, []);
-   const renderRail = useCallback(() => <Rail />, []);
-   const renderRailSelected = useCallback(() => <RailSelected />, []);
-   const renderLabel = useCallback((value) => <Label text={value} />, []);
-   const renderNotch = useCallback(() => <Notch />, []);
-
    return (
       <View style={styles.lapseContainer}>
          <CopilotStep
@@ -41,6 +29,20 @@ function SecondController({
             name="lapse_controll">
             <CopilotView>
                <View style={styles.sliderContainer}>
+                  <View style={{ height: 30 }}>
+                     <RangeSlider
+                        range={lapse}
+                        minimumValue={0}
+                        maximumValue={endTime}
+                        minimumRange={1}
+                        step={1}
+                        onValueChange={handleValueChange}
+                        inboundColor={palette.redRose}
+                        outboundColor="#7f7f7f"
+                        thumbStyle={styles.thumbStyle}
+                        thumbSize={24}
+                     />
+                  </View>
                   <View
                      style={{
                         flexDirection: "row",
@@ -84,10 +86,7 @@ function SecondController({
                   buttonStyle={styles.applyButton}
                   titleStyle={styles.applyButtonTitle}
                   type="outline"
-                  onPress={() => {
-                     setSelectedLapsed(lapse);
-                     setPlaying(false);
-                  }}
+                  onPress={onSelectLapse}
                   raised
                />
             </CopilotView>
@@ -97,6 +96,13 @@ function SecondController({
 }
 
 const styles = StyleSheet.create({
+   lapseContainer: {
+      alignContent: "center",
+      paddingLeft: "10%",
+      paddingRight: "10%",
+      paddingTop: 10,
+      paddingBottom: "10%",
+   },
    counterButtonContainer: {
       flexDirection: "row",
       marginTop: 10,
@@ -105,14 +111,6 @@ const styles = StyleSheet.create({
    },
    sliderContainer: {
       flex: 1,
-   },
-   lapseContainer: {
-      flex: 6,
-      alignContent: "center",
-      paddingLeft: "10%",
-      paddingRight: "10%",
-      paddingTop: 10,
-      paddingBottom: "10%",
    },
    applyButtonContainer: {
       width: 100,
@@ -123,6 +121,14 @@ const styles = StyleSheet.create({
    },
    applyButtonTitle: {
       color: palette.blackBerry,
+   },
+   thumbStyle: {
+      width: 12 * 2,
+      height: 12 * 2,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: palette.blackBerry,
+      backgroundColor: palette.ivory,
    },
 });
 

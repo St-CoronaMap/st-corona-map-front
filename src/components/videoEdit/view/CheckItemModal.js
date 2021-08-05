@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
+import {
+   StyleSheet,
+   View,
+   Text,
+   Image,
+   Dimensions,
+   Platform,
+} from "react-native";
 import { ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
@@ -56,7 +63,7 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
 
 const styles = StyleSheet.create({
    container: {
-      width: Dimensions.get("window").width - 100,
+      width: Platform.OS === "web" ? 500 : Dimensions.get("window").width - 100,
       backgroundColor: palette.ivory,
       alignItems: "center",
       justifyContent: "center",

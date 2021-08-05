@@ -6,6 +6,7 @@ import {
    Dimensions,
    TouchableOpacity,
    Platform,
+   Image,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { FAB, Icon, Card } from "react-native-elements";
@@ -29,7 +30,6 @@ function Playlist({
          setTimeout(start, 250);
       }
    }, [firstTime, playlist]);
-
    return (
       <View style={styles.topView}>
          <ScrollView>
@@ -49,7 +49,7 @@ function Playlist({
                               onPress={() => listPressCallback(item)}>
                               <View style={{ flex: 1 }}>
                                  <View style={styles.cardImageContainer}>
-                                    <Card.Image
+                                    <Image
                                        resizeMode="cover"
                                        source={{
                                           uri: item.thumbnail
@@ -67,16 +67,20 @@ function Playlist({
                                        }}>
                                        {item?.title}
                                     </Text>
-                                    <Icon
-                                       name="ellipsis-v"
-                                       type="font-awesome"
-                                       containerStyle={
-                                          styles.settingIconContainer
-                                       }
-                                       iconStyle={styles.settingIcon}
-                                       color={palette.deepCoolGray}
-                                       onPress={() => onPressVisibleEdit(item)}
-                                    />
+                                    {onPressVisibleEdit && (
+                                       <Icon
+                                          name="ellipsis-v"
+                                          type="font-awesome"
+                                          containerStyle={
+                                             styles.settingIconContainer
+                                          }
+                                          iconStyle={styles.settingIcon}
+                                          color={palette.deepCoolGray}
+                                          onPress={() =>
+                                             onPressVisibleEdit(item)
+                                          }
+                                       />
+                                    )}
                                  </View>
                               </View>
                            </TouchableOpacity>

@@ -1,16 +1,7 @@
 import React, { useCallback } from "react";
-import {
-   Dimensions,
-   FlatList,
-   Platform,
-   ScrollView,
-   StyleSheet,
-   TouchableOpacity,
-   View,
-} from "react-native";
-import { Button, ListItem, SearchBar, Image } from "react-native-elements";
+import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
+import { ListItem, SearchBar, Image } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
-import LottieView from "lottie-react-native";
 
 const styles = StyleSheet.create({
    main: {
@@ -42,8 +33,7 @@ const styles = StyleSheet.create({
    listItem: {
       backgroundColor: palette.ivory,
       height: 100,
-      width:
-         Platform.OS === "web" ? "90%" : Dimensions.get("window").width * 0.9,
+      width: Platform.OS === "web" ? 540 : Dimensions.get("window").width * 0.9,
       overflow: "hidden",
       borderColor: palette.ivory,
       borderWidth: 1,
@@ -64,31 +54,7 @@ const styles = StyleSheet.create({
    result: {
       width: "100%",
       backgroundColor: palette.ivory,
-      justifyContent: "center",
       alignItems: "center",
-   },
-   pagination: {
-      position: "absolute",
-      bottom: 0,
-      width: "100%",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-   },
-   paginationButtonContainer: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: palette.deepRedRose,
-      marginBottom: 5,
-      marginLeft: 10,
-      marginRight: 10,
-   },
-   paginationButton: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: palette.deepRedRose,
    },
 });
 
@@ -133,9 +99,9 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
                   data={result}
                   keyExtractor={(item, index) => `${index}`}
                   renderItem={renderItem}
+                  contentContainerStyle={{ paddingBottom: 100 }}
                   showsVerticalScrollIndicator={false}
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 100 }}
                />
             </View>
          </View>

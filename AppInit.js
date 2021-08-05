@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUniqueId } from "./src/modules/uniqueId";
 
 import Spinner from "react-native-loading-spinner-overlay";
-import { Dimensions, Platform, View } from "react-native";
+import { Dimensions, Platform, StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
 
 const Stack = createStackNavigator();
@@ -47,13 +47,11 @@ function AppInit() {
       <>
          <NavigationContainer>
             <View
-               style={{
-                  width:
-                     Platform.OS === "web"
-                        ? 600
-                        : Dimensions.get("window").width,
-                  height: "100%",
-               }}>
+               style={
+                  Platform.OS === "web"
+                     ? styles.containerWeb
+                     : styles.containerNative
+               }>
                <HeaderName />
                <Stack.Navigator mode="modal" initialRouteName="Main">
                   <Stack.Screen
@@ -85,5 +83,27 @@ function AppInit() {
       </>
    );
 }
+
+const styles = StyleSheet.create({
+   containerWeb: {
+      width: 600,
+      height: "95%",
+      borderRadius: 30,
+      overflow: "hidden",
+      shadowColor: "#000",
+      shadowOffset: {
+         width: 0,
+         height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+
+      elevation: 5,
+   },
+   containerNative: {
+      width: "100%",
+      height: "100%",
+   },
+});
 
 export default AppInit;

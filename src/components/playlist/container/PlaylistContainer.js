@@ -65,6 +65,8 @@ function PlaylistContainer({ navigation }) {
             containerStyle={{
                position: "absolute",
                bottom: 10,
+               width: "50%",
+               borderRadius: 20,
             }}
          />
          <EditPlaylistModalContainer

@@ -1,14 +1,5 @@
 import React from "react";
-import {
-   View,
-   StyleSheet,
-   Dimensions,
-   Text,
-   Image,
-   Platform,
-} from "react-native";
-import { ListItem } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
+import { View, StyleSheet } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 import palette from "../../../lib/styles/palette";
 import {
@@ -17,7 +8,6 @@ import {
    WINDOW_HEIGHT,
    YOUTUBE_HEIGHT,
 } from "../../../lib/styles/variables";
-import seperateSecond from "../../../lib/utils/seperateSecond";
 import ControlBar from "../elements/ControlBar";
 import VideoList from "../elements/VideoList";
 
@@ -57,11 +47,11 @@ function Play({
                backgroundColor: "black",
                opacity: 0.99,
             }}
-            videoId={playlist.items[cur].videoId}
+            videoId={playlist?.items[cur]?.videoId}
             onChangeState={handleStateChange}
             initialPlayerParams={{
-               start: playlist.items[cur].start,
-               end: playlist.items[cur].end,
+               start: playlist.items[cur]?.start,
+               end: playlist.items[cur]?.end,
             }}
          />
       );

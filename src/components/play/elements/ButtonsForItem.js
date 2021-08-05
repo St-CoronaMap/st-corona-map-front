@@ -20,6 +20,7 @@ function ButtonsForItem({
             buttonStyle={stylesObj.buttonStyle}
             titleStyle={{
                color: palette.blackBerry,
+               fontSize: 16,
             }}
             onPress={() => onCancleRight(index)}
          />
@@ -29,6 +30,9 @@ function ButtonsForItem({
             containerStyle={styles(1).buttonContainer}
             buttonStyle={stylesObj.buttonStyle}
             onPress={() => onPressEdit(index)}
+            titleStyle={{
+               fontSize: 16,
+            }}
          />
          <Button
             title="삭제"
@@ -37,6 +41,7 @@ function ButtonsForItem({
             buttonStyle={stylesObj.buttonStyle}
             titleStyle={{
                color: palette.redRose,
+               fontSize: 16,
             }}
             onPress={() => onPressDelete(index, id)}
          />
