@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Platform } from "react-native";
 import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import { WINDOW_WIDTH } from "../../../lib/styles/variables";
@@ -52,7 +52,10 @@ const styles = (buttonOffset) =>
    StyleSheet.create({
       buttonContainer: {
          position: "absolute",
-         right: WINDOW_WIDTH * 0.05 + 50 * buttonOffset,
+         right:
+            Platform.OS === "web"
+               ? 30 + 50 * buttonOffset
+               : WINDOW_WIDTH * 0.05 + 50 * buttonOffset,
          height: "100%",
          paddingTop: 10,
          zIndex: -1,

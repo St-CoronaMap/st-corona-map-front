@@ -59,7 +59,7 @@ function VideoEdit({
          </View>
          <ScrollView>
             <Summary item={item} />
-            {loaded && lapse[1] && (
+            {loaded && lapse[1] ? (
                <SecondController
                   lapse={lapse}
                   lapseLowCounter={lapseLowCounter}
@@ -69,6 +69,8 @@ function VideoEdit({
                   onSelectLapse={onSelectLapse}
                   setPlaying={setPlaying}
                />
+            ) : (
+               <></>
             )}
          </ScrollView>
          <ControlVideo

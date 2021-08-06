@@ -3,10 +3,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import PlaylistScreen from "../../../screens/Playlist";
 import Auth from "../../../screens/Auth";
 import SearchScreen from "../../../screens/Search";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import palette from "../../../lib/styles/palette";
 import { useNavigationState } from "@react-navigation/native";
-import HeaderName from "../../headerName/HeaderName";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -48,7 +47,7 @@ function TopTab() {
       <>
          <Tab.Navigator
             initialRouteName="Playlist"
-            swipeEnabled={swipeEnabled}
+            swipeEnabled={Platform.OS === "web" ? false : swipeEnabled}
             tabBarOptions={{
                activeTintColor: palette.blackBerry,
                indicatorStyle: styles.indicator,

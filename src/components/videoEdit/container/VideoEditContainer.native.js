@@ -59,11 +59,9 @@ function VideoEditContainer({ route, navigation, start }) {
       if (count >= 4) {
          if (low <= high) {
             setLapse([low, high]);
-            console.log("implemented");
             try {
                if (low != saveLow) playerRef.current?.seekTo(low, true);
                else playerRef.current?.seekTo(high, true);
-               console.log("done");
             } catch (err) {
                console.log(err);
             }
@@ -121,18 +119,22 @@ function VideoEditContainer({ route, navigation, start }) {
             lapseLowCounter={lapseLowCounter}
             lapseHighCounter={lapseHighCounter}
          />
-         <SelectPlaylist
-            visible={visible}
-            cancel={closeSelectPlaylist}
-            item={CheckItemModalObject}
-         />
-         <CheckItemModal
-            visible={visibleCheckModal}
-            close={closeCheckItemModel}
-            onOk={pressSelectPlaylist}
-            item={CheckItemModalObject}
-            from={`${route.params.from}`}
-         />
+         {!isBanned && (
+            <>
+               <SelectPlaylist
+                  visible={visible}
+                  cancel={closeSelectPlaylist}
+                  item={CheckItemModalObject}
+               />
+               <CheckItemModal
+                  visible={visibleCheckModal}
+                  close={closeCheckItemModel}
+                  onOk={pressSelectPlaylist}
+                  item={CheckItemModalObject}
+                  from={`${route.params.from}`}
+               />
+            </>
+         )}
       </>
    );
 }

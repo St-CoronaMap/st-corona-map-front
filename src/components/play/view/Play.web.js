@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import palette from "../../../lib/styles/palette";
 import {
    CONTROLBAR_HEIGHT,
@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
 
 function Play({
    playlist,
-   handleOnProgress,
    changePlaylistOrder,
    onPressEditVideo,
    onPressDeleteVideo,
@@ -41,7 +40,6 @@ function Play({
    pressForwardward,
    setPlaying,
    onEnded,
-   onStart,
 }) {
    const youtubePlayerWrap = (cur) => {
       return (
@@ -53,10 +51,14 @@ function Play({
             playing={playing}
             volume={vol / 100}
             controls={true}
-            onProgress={({ playedSeconds }) =>
-               handleOnProgress(playedSeconds, cur)
-            }
-            onStart={() => onStart(cur)}
+            config={{
+               youtube: {
+                  playerVars: {
+                     start: playlist.items[cur]?.start,
+                     end: playlist.items[cur]?.end,
+                  },
+               },
+            }}
             onReady={onReady}
             onPause={() => setPlaying(false)}
             onPlay={() => setPlaying(true)}
@@ -77,14 +79,16 @@ function Play({
                   50 -
                   Math.random(),
             }}>
-            <VideoList
-               playlist={playlist}
-               changePlaylistOrder={changePlaylistOrder}
-               onPressEditVideo={onPressEditVideo}
-               onPressDeleteVideo={onPressDeleteVideo}
-               onPressItem={onPressItem}
-               cur={cur}
-            />
+            <ScrollView>
+               <VideoList
+                  playlist={playlist}
+                  changePlaylistOrder={changePlaylistOrder}
+                  onPressEditVideo={onPressEditVideo}
+                  onPressDeleteVideo={onPressDeleteVideo}
+                  onPressItem={onPressItem}
+                  cur={cur}
+               />
+            </ScrollView>
          </View>
          <ControlBar
             vol={vol}

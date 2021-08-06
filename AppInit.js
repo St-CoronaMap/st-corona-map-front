@@ -13,8 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUniqueId } from "./src/modules/uniqueId";
 
 import Spinner from "react-native-loading-spinner-overlay";
-import { Dimensions, Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
+import Loading from "./src/components/elements/Loading";
 
 const Stack = createStackNavigator();
 
@@ -45,7 +46,7 @@ function AppInit() {
 
    return (
       <>
-         <NavigationContainer>
+         <NavigationContainer documentTitle={{ enabled: false }}>
             <View
                style={
                   Platform.OS === "web"
@@ -70,16 +71,7 @@ function AppInit() {
             </View>
          </NavigationContainer>
          <ModalPortal />
-         {Platform.OS !== "web" && (
-            <Spinner
-               visible={loading}
-               cancelable={true}
-               textContent={"Loading..."}
-               textStyle={{
-                  color: "#FFF",
-               }}
-            />
-         )}
+         <Loading loading={loading} />
       </>
    );
 }

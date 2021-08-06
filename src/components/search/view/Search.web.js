@@ -1,16 +1,7 @@
 import React, { useCallback } from "react";
-import {
-   Dimensions,
-   FlatList,
-   Platform,
-   ScrollView,
-   StyleSheet,
-   TouchableOpacity,
-   View,
-} from "react-native";
-import { Button, ListItem, SearchBar, Image } from "react-native-elements";
+import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
+import { ListItem, SearchBar, Image } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
-import LottieView from "lottie-react-native";
 
 const styles = StyleSheet.create({
    main: {
@@ -19,9 +10,6 @@ const styles = StyleSheet.create({
    container: {
       backgroundColor: palette.ivory,
       flex: 1,
-      borderColor: palette.deepCoolGray,
-      borderLeftWidth: 1,
-      borderRightWidth: 1,
    },
    search: {
       width: "100%",
@@ -29,17 +17,15 @@ const styles = StyleSheet.create({
       borderColor: palette.softGray,
    },
    input: {
-      width: "100%",
       backgroundColor: palette.ivory,
+      width: "100%",
       shadowColor: "#000",
       shadowOffset: {
          width: 0,
-         height: 2,
+         height: 3,
       },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
-
-      elevation: 3,
    },
    listItem: {
       backgroundColor: palette.ivory,
@@ -55,12 +41,10 @@ const styles = StyleSheet.create({
       shadowColor: "#000",
       shadowOffset: {
          width: 0,
-         height: 2,
+         height: 3,
       },
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
-
-      elevation: 3,
    },
    result: {
       flex: 1,

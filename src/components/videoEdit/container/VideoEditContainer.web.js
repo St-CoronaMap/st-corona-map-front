@@ -27,8 +27,13 @@ function VideoEditContainer({ route, navigation, start }) {
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
    const [isBanned, setIsBanned] = useState(false);
 
+   const isPlay = useSelector(({ isPlay }) => isPlay);
    const uniqueId = useSelector(({ uniqueId }) => uniqueId);
    const dispatch = useDispatch();
+
+   useEffect(() => {
+      setPlaying(false);
+   }, [isPlay]);
 
    useEffect(() => {
       if (uniqueId.first && loaded) {
@@ -42,9 +47,9 @@ function VideoEditContainer({ route, navigation, start }) {
       const getEndTime = async () => {
          const res = await playerRef.current?.getDuration();
          if (res === 0) setIsBanned(true);
-         setLapse([0, res]);
-         setSelectedLapsed([0, res]);
-         setEndTime(res);
+         setLapse([0, res === 0 ? 1 : res]);
+         setSelectedLapsed([0, res === 0 ? 1 : res]);
+         setEndTime(res === 0 ? 1 : res);
       };
       if (loaded) {
          dispatch(setUnloading());
@@ -137,18 +142,22 @@ function VideoEditContainer({ route, navigation, start }) {
             handleOnProgress={handleOnProgress}
             onStart={onStart}
          />
-         <SelectPlaylist
-            visible={visible}
-            cancel={closeSelectPlaylist}
-            item={CheckItemModalObject}
-         />
-         <CheckItemModal
-            visible={visibleCheckModal}
-            close={closeCheckItemModel}
-            onOk={pressSelectPlaylist}
-            item={CheckItemModalObject}
-            from={`${route.params.from}`}
-         />
+         {!isBanned && (
+            <>
+               <SelectPlaylist
+                  visible={visible}
+                  cancel={closeSelectPlaylist}
+                  item={CheckItemModalObject}
+               />
+               <CheckItemModal
+                  visible={visibleCheckModal}
+                  close={closeCheckItemModel}
+                  onOk={pressSelectPlaylist}
+                  item={CheckItemModalObject}
+                  from={`${route.params.from}`}
+               />
+            </>
+         )}
       </>
    );
 }

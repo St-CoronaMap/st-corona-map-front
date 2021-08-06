@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addVideo } from "../../../lib/api/videos";
-import { getPlaylist, setThumbnail } from "../../../modules/playlist";
+import { setThumbnail } from "../../../modules/playlist";
 import Playlist from "../view/Playlist";
 import AddPlaylistModalContainer from "./AddPlaylistModalContainer";
 

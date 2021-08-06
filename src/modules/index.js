@@ -4,9 +4,16 @@ import auth from "./auth";
 import playlist, { playlistSaga } from "./playlist";
 import uniqueId from "./uniqueId";
 import loading from "./loading";
+import isPlay from "./isPlay";
 
 // 일반 redux 연결
-const rootReducer = combineReducers({ auth, playlist, uniqueId, loading });
+const rootReducer = combineReducers({
+   auth,
+   playlist,
+   uniqueId,
+   loading,
+   isPlay,
+});
 
 // react saga 연결
 export function* rootSaga() {

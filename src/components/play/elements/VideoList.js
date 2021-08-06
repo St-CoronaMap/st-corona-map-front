@@ -1,11 +1,17 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { StyleSheet, Text, Image, View, Platform } from "react-native";
+import {
+   StyleSheet,
+   Text,
+   Image,
+   View,
+   Platform,
+   ScrollView,
+} from "react-native";
 import { Button, ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
-import { WINDOW_WIDTH } from "../../../lib/styles/variables";
 import { Animated } from "react-native";
 import ButtonsForItem from "./ButtonsForItem";
 
@@ -21,12 +27,13 @@ function VideoList({
    const listRef = useRef();
 
    useEffect(() => {
+      listItemAnimation.setValue(-1);
       listRef.current?.current?.scrollToIndex({
          index: cur,
          viewPosition: 0.5,
          useNativeDriver: true,
       });
-   }, [cur, playlist]);
+   }, [cur]);
 
    const interpolations = playlist.items.map((item, index) => {
       const inputRange = [index - 0.3, index, index + 0.3];
@@ -63,6 +70,16 @@ function VideoList({
    };
    const renderItem = useCallback(
       ({ item, index, drag, isActive }) => {
+         let shadow = {};
+         if (isActive) {
+            shadow = {
+               shadowOffset: {
+                  width: 0,
+                  height: 7,
+               },
+               elevation: 7,
+            };
+         }
          return (
             <View>
                <Animated.View
@@ -77,7 +94,7 @@ function VideoList({
                      key={index}
                      underlayColor={palette.ivory}
                      activeOpacity={0.5}
-                     containerStyle={[styles(cur === index, isActive).listItem]}
+                     containerStyle={[styles(cur === index).listItem, shadow]}
                      onPress={() => onPressItem(index)}
                      onLongPress={drag}>
                      <Text>{index + 1}) </Text>
@@ -137,7 +154,7 @@ function VideoList({
    );
 }
 
-const styles = (isCur, isActive, buttonOffset) =>
+const styles = (isCur) =>
    StyleSheet.create({
       listItem: {
          backgroundColor: palette.ivory,
@@ -155,16 +172,13 @@ const styles = (isCur, isActive, buttonOffset) =>
          paddingLeft: 5,
          shadowColor: "#000",
          shadowOpacity: 0.25,
+         shadowOffset: {
+            width: 0,
+            height: 3,
+         },
          shadowRadius: 3.84,
 
-         elevation: isActive ? 7 : 3,
-      },
-      buttonContainer: {
-         position: "absolute",
-         right: WINDOW_WIDTH * 0.05 + 50 * buttonOffset,
-         height: "100%",
-         paddingTop: 10,
-         zIndex: -1,
+         elevation: 3,
       },
       draggableListContainer: {
          width: "100%",

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { changeOrder, deleteVideo } from "../../../lib/api/videos";
+import { setInPlay, setOutPlay } from "../../../modules/isPlay";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { clearThumbnail, setThumbnail } from "../../../modules/playlist";
 import Play from "../view/Play";
@@ -12,6 +13,11 @@ function PlayContainer({ route, navigation }) {
    const [cur, setCur] = useState(0);
    const [vol, setVol] = useState(50);
    const dispatch = useDispatch();
+
+   useEffect(() => {
+      dispatch(setInPlay());
+      return () => dispatch(setOutPlay());
+   }, []);
 
    useEffect(() => {
       if (!route.params.isCurItem) {
@@ -27,12 +33,6 @@ function PlayContainer({ route, navigation }) {
    const onReady = useCallback(() => {
       setPlaying(true);
    }, []);
-   const onStart = useCallback(
-      (cur) => {
-         playerRef.current?.seekTo(playlist?.items[cur].start, "seconds");
-      },
-      [playlist]
-   );
 
    const onEnded = useCallback(() => {
       if (cur === playlist?.items.length - 1) {
@@ -117,8 +117,8 @@ function PlayContainer({ route, navigation }) {
          dispatch(setLoading());
          await deleteVideo(id);
          if (playlist.items.length === 1) {
-            navigation.navigate("Playlist");
             dispatch(clearThumbnail(playlist.id));
+            navigation.navigate("Playlist");
          } else {
             if (index === 0) {
                dispatch(setThumbnail(playlist.id, playlist.items[1].thumbnail));
@@ -139,30 +139,10 @@ function PlayContainer({ route, navigation }) {
       [cur, playlist]
    );
 
-   const handleOnProgress = useCallback(
-      (playedSeconds, cur) => {
-         if (playedSeconds > playlist.items[cur].end) {
-            if (cur === playlist?.items.length - 1) {
-               setCur(0);
-               if (playlist?.items.length === 1) {
-                  playerRef.current?.seekTo(
-                     playlist?.items[0].start,
-                     "seconds"
-                  );
-               }
-            } else {
-               setCur((prev) => prev + 1);
-            }
-         }
-      },
-      [playlist]
-   );
-
    return (
       <Play
          onPressItem={onPressItem}
          playlist={playlist}
-         handleOnProgress={handleOnProgress}
          changePlaylistOrder={changePlaylistOrder}
          onPressEditVideo={onPressEditVideo}
          onPressDeleteVideo={onPressDeleteVideo}
@@ -177,7 +157,6 @@ function PlayContainer({ route, navigation }) {
          pressForwardward={pressForwardward}
          setPlaying={setPlaying}
          onEnded={onEnded}
-         onStart={onStart}
       />
    );
 }
