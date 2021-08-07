@@ -6,7 +6,7 @@ import CustomModalHeader from "../../elements/CustomModalHeader";
 import AddItemContainer from "../../playlist/container/AddItemContainer";
 
 function SelectPlaylist({ visible, cancel, item }) {
-   const titleProps = { title: "재생목록 선택" };
+   const titleProps = { title: "재생목록 선택", style: { fontWeight: "600" } };
    const buttons = [
       {
          text: "취소",

@@ -21,6 +21,9 @@ export default function PlayScreen({ route, navigation }) {
                   backgroundColor: palette.ivory,
                   height: 50,
                },
+               headerTitleStyle: {
+                  fontWeight: "800",
+               },
                title: "뒤로가기",
             }}
          />
@@ -32,6 +35,9 @@ export default function PlayScreen({ route, navigation }) {
                headerStyle: {
                   backgroundColor: palette.ivory,
                   height: 50,
+               },
+               headerTitleStyle: {
+                  fontWeight: "800",
                },
                title: "뒤로가기",
             }}

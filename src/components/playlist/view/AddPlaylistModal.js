@@ -7,7 +7,10 @@ import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
 
 function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
-   const titleProps = { title: "재생목록 추가", hasTitleBar: true };
+   const titleProps = {
+      title: "재생목록 추가",
+      hasTitleBar: true,
+   };
    const buttons = [
       {
          text: "취소",

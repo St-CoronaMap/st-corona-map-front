@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
       backgroundColor: palette.ivory,
    },
    titleText: {
+      fontWeight: "600",
       color: palette.blackBerry,
    },
 });

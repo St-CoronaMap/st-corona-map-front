@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { Text } from "react-native";
 import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
 import { ListItem, SearchBar, Image } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
@@ -56,6 +57,14 @@ const styles = StyleSheet.create({
       backgroundColor: palette.ivory,
       alignItems: "center",
    },
+   image: { width: 20, height: 20, borderRadius: 10 },
+   channelContainer: {
+      height: 20,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingTop: 10,
+      opacity: 0.7,
+   },
 });
 
 function Search({ onSearch, typing, onChange, result, onPressItem }) {
@@ -73,9 +82,21 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
                transition
             />
             <ListItem.Content>
-               <ListItem.Title style={{ color: palette.blackBerry }}>
+               <ListItem.Title
+                  style={{ color: palette.blackBerry, fontWeight: "500" }}>
                   {item.title}
                </ListItem.Title>
+               <View style={styles.channelContainer}>
+                  <Image
+                     source={{ uri: item?.channelAvatar }}
+                     style={styles.image}
+                     transition
+                  />
+                  <Text>
+                     {"  "}
+                     {item?.channelTitle}
+                  </Text>
+               </View>
             </ListItem.Content>
          </ListItem>
       );

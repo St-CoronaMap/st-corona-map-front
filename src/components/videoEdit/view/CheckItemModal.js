@@ -45,7 +45,7 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
                      transition
                   />
                   <ListItem.Content>
-                     <ListItem.Title>
+                     <ListItem.Title style={{ fontWeight: "500" }}>
                         {item.title.slice(0, 40)}
                         {item.title.length > 40 ? "..." : ""}
                      </ListItem.Title>

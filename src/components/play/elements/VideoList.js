@@ -104,7 +104,11 @@ function VideoList({
                         transition
                      />
                      <ListItem.Content>
-                        <ListItem.Title style={{ color: palette.blackBerry }}>
+                        <ListItem.Title
+                           style={{
+                              color: palette.blackBerry,
+                              fontWeight: "500",
+                           }}>
                            {item.title}
                         </ListItem.Title>
                         <ListItem.Subtitle>

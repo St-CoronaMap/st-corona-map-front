@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
    text: {
       padding: 10,
       fontSize: 20,
+      fontWeight: "500",
    },
    channelContainer: {
       flexDirection: "row",

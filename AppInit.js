@@ -12,7 +12,6 @@ import PlayScreen from "./src/screens/Play";
 import { useDispatch, useSelector } from "react-redux";
 import { setUniqueId } from "./src/modules/uniqueId";
 
-import Spinner from "react-native-loading-spinner-overlay";
 import { Platform, StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
 import Loading from "./src/components/elements/Loading";
@@ -26,6 +25,7 @@ function AppInit() {
 
    const preload = async () => {
       const res = await getNomMemberId();
+
       dispatch(setUniqueId(res));
 
       //TODO : 처음 유저 추가시, uniqueId를 넘겨서 받아오기

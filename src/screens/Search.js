@@ -27,6 +27,9 @@ export default function SearchScreen({ navigation }) {
                   backgroundColor: palette.ivory,
                   height: 50,
                },
+               headerTitleStyle: {
+                  fontWeight: "800",
+               },
             }}
          />
       </Stack.Navigator>
