@@ -21,7 +21,6 @@ export default function PlayScreen({ route, navigation }) {
                   backgroundColor: palette.ivory,
                   height: 50,
                },
-
                title: "뒤로가기",
             }}
          />

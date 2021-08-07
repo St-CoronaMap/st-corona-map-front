@@ -94,7 +94,7 @@ function VideoEditFromPlay({ route, navigation }) {
          dispatch(setUnloading());
          navigation.navigate("PlayScreen", {
             playlistInput: { id: route.params.playlist.id, items: updatedList },
-            isCurItem: route.params.isCurItem,
+            from: route.params.from,
          });
       }
    }, [selectedLapsed]);

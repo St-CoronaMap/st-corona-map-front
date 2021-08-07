@@ -9,47 +9,63 @@ import Play from "../view/Play";
 function PlayContainer({ route, navigation }) {
    const [playing, setPlaying] = useState(true);
    const [playlist, setPlaylist] = useState(route.params.playlistInput);
+   const [prevVideoId, setPrevVideoId] = useState(0);
    const playerRef = useRef();
    const [cur, setCur] = useState(0);
    const [vol, setVol] = useState(50);
    const dispatch = useDispatch();
 
+   // 백그라운드 재생 막기
    useEffect(() => {
       dispatch(setInPlay());
       return () => dispatch(setOutPlay());
    }, []);
 
    useEffect(() => {
-      if (!route.params.isCurItem) {
+      if (route.params.from === "play") {
          setPlaying(true);
       }
       setPlaylist(route.params.playlistInput);
    }, [route]);
 
+   useEffect(() => {
+      if (prevVideoId === playlist.items[cur]?.videoId) {
+         playerRef.current?.seekTo(playlist.items[cur]?.start, "seconds");
+      }
+      setPrevVideoId(playlist.items[cur]?.videoId);
+   }, [cur]);
+
    const togglePlaying = useCallback(() => {
       setPlaying((prev) => !prev);
    }, []);
 
-   const onReady = useCallback(() => {
-      setPlaying(true);
-   }, []);
+   const onStart = useCallback(() => {
+      playerRef.current?.seekTo(playlist.items[cur]?.start, "seconds");
+   }, [playlist.items, cur]);
 
-   const onEnded = useCallback(() => {
-      if (cur === playlist?.items.length - 1) {
-         setCur(0);
-         if (playlist?.items.length === 1) {
-            playerRef.current?.seekTo(playlist?.items[0].start, "seconds");
+   const onProgress = useCallback(
+      (playedSeconds) => {
+         if (playedSeconds >= playlist.items[cur]?.end) {
+            setCur((prev) =>
+               playlist?.items.length - 1 === cur ? 0 : prev + 1
+            );
+            if (playlist?.items.length === 1) {
+               playerRef.current?.seekTo(playlist?.items[0].start, "seconds");
+            }
+            setPlaying(true);
          }
-      } else {
-         setCur((prev) => prev + 1);
+      },
+      [cur, playlist]
+   );
+   const onEnded = useCallback(() => {
+      setCur((prev) => (playlist?.items.length - 1 === cur ? 0 : prev + 1));
+      if (playlist?.items.length === 1) {
+         playerRef.current?.seekTo(playlist?.items[0].start, "seconds");
       }
-   }, [cur]);
+   }, [cur, playlist]);
 
    const onPressItem = useCallback(
       (idx) => {
-         if (cur !== idx) {
-            setPlaying(false);
-         }
          setCur(idx);
       },
       [cur]
@@ -63,24 +79,14 @@ function PlayContainer({ route, navigation }) {
       if (playlist?.items.length === 1) {
          return;
       }
-      setPlaying(false);
-      if (cur === 0) {
-         setCur(playlist?.items.length - 1);
-      } else {
-         setCur((prev) => prev - 1);
-      }
+      setCur((prev) => (cur === 0 ? playlist?.items.length - 1 : prev - 1));
    }, [cur, playlist.items.length]);
 
    const pressForwardward = useCallback(() => {
       if (playlist.items.length === 1) {
          return;
       }
-      setPlaying(false);
-      if (cur === playlist?.items.length - 1) {
-         setCur(0);
-      } else {
-         setCur((prev) => prev + 1);
-      }
+      setCur((prev) => (playlist?.items.length - 1 === cur ? 0 : prev + 1));
    }, [cur, playlist.items.length]);
 
    const changePlaylistOrder = useCallback(
@@ -92,9 +98,6 @@ function PlayContainer({ route, navigation }) {
          await changeOrder(playlist.id, data);
          setPlaylist((prev) => ({ id: prev.id, items: data }));
          dispatch(setUnloading());
-         if ((from >= cur && to <= cur) || (from <= cur && to >= cur)) {
-            setPlaying(false);
-         }
       },
       [cur, playlist.id]
    );
@@ -104,7 +107,6 @@ function PlayContainer({ route, navigation }) {
          setPlaying(false);
          navigation.navigate("videoEdit_play", {
             item: playlist.items[index],
-            isCurItem: index === cur,
             from: "play",
             playlist: playlist,
          });
@@ -130,9 +132,6 @@ function PlayContainer({ route, navigation }) {
             if (cur !== 0 && index <= cur) {
                setCur((prev) => prev - 1);
             }
-            if (index === cur) {
-               setPlaying(false);
-            }
          }
          dispatch(setUnloading());
       },
@@ -152,11 +151,12 @@ function PlayContainer({ route, navigation }) {
          cur={cur}
          vol={vol}
          changeVol={changeVol}
-         onReady={onReady}
          pressBackward={pressBackward}
          pressForwardward={pressForwardward}
          setPlaying={setPlaying}
+         onStart={onStart}
          onEnded={onEnded}
+         onProgress={onProgress}
       />
    );
 }

@@ -26,7 +26,6 @@ export const addVideo = async (id, item) => {
 export const deleteVideo = async (id) => {
    try {
       await axios.delete(`${Address}/api/play/delete/${id}`);
-      console.log("deleted");
    } catch (err) {
       console.log(err.response.data);
    }

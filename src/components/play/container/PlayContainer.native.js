@@ -7,6 +7,7 @@ import Play from "../view/Play";
 
 function PlayContainer({ route, navigation }) {
    const [playing, setPlaying] = useState(true);
+   const [prevVideoId, setPrevVideoId] = useState(0);
    const [playlist, setPlaylist] = useState(route.params.playlistInput);
    const playerRef = useRef();
    const [cur, setCur] = useState(0);
@@ -20,6 +21,14 @@ function PlayContainer({ route, navigation }) {
       setPlaylist(route.params.playlistInput);
    }, [route]);
 
+   useEffect(() => {
+      if (prevVideoId === playlist.items[cur]?.videoId) {
+         playerRef.current?.seekTo(playlist.items[cur].start, true);
+         setPlaying(true);
+      }
+      setPrevVideoId(playlist.items[cur]?.videoId);
+   }, [cur]);
+
    const togglePlaying = useCallback(() => {
       setPlaying((prev) => !prev);
    }, []);
@@ -27,18 +36,17 @@ function PlayContainer({ route, navigation }) {
    const onReady = useCallback(() => {
       setPlaying(true);
    }, []);
+
    const handleStateChange = useCallback(
       (e) => {
          if (e === "ended") {
             setPlaying(false);
-            if (cur === playlist?.items.length - 1) {
-               setCur(0);
-               if (playlist?.items.length === 1) {
-                  setPlaying(true);
-                  playerRef.current?.seekTo(playlist?.items[0].start, true);
-               }
-            } else {
-               setCur((prev) => prev + 1);
+            setCur((prev) =>
+               cur === playlist?.items.length - 1 ? 0 : prev + 1
+            );
+            if (playlist?.items.length === 1) {
+               setPlaying(true);
+               playerRef.current?.seekTo(playlist?.items[0].start, true);
             }
          }
       },
@@ -64,11 +72,7 @@ function PlayContainer({ route, navigation }) {
          return;
       }
       setPlaying(false);
-      if (cur === 0) {
-         setCur(playlist?.items.length - 1);
-      } else {
-         setCur((prev) => prev - 1);
-      }
+      setCur((prev) => (cur === 0 ? playlist?.items.length - 1 : prev - 1));
    }, [cur, playlist.items.length]);
 
    const pressForwardward = useCallback(() => {
@@ -76,11 +80,7 @@ function PlayContainer({ route, navigation }) {
          return;
       }
       setPlaying(false);
-      if (cur === playlist?.items.length - 1) {
-         setCur(0);
-      } else {
-         setCur((prev) => prev + 1);
-      }
+      setCur((prev) => (cur === playlist?.items.length - 1 ? 0 : prev + 1));
    }, [cur, playlist.items.length]);
 
    const changePlaylistOrder = useCallback(
@@ -104,8 +104,7 @@ function PlayContainer({ route, navigation }) {
          setPlaying(false);
          navigation.navigate("videoEdit_play", {
             item: playlist.items[index],
-            isCurItem: index === cur,
-            from: "play",
+            isCurItem: cur === index,
             playlist: playlist,
          });
       },

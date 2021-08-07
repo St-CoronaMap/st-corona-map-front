@@ -31,7 +31,6 @@ function Play({
    playerRef,
    playing,
    cur,
-   onReady,
    togglePlaying,
    onPressItem,
    changeVol,
@@ -39,7 +38,9 @@ function Play({
    pressBackward,
    pressForwardward,
    setPlaying,
+   onStart,
    onEnded,
+   onProgress,
 }) {
    const youtubePlayerWrap = (cur) => {
       return (
@@ -51,17 +52,10 @@ function Play({
             playing={playing}
             volume={vol / 100}
             controls={true}
-            config={{
-               youtube: {
-                  playerVars: {
-                     start: playlist.items[cur]?.start,
-                     end: playlist.items[cur]?.end,
-                  },
-               },
-            }}
-            onReady={onReady}
+            onStart={onStart}
             onPause={() => setPlaying(false)}
             onPlay={() => setPlaying(true)}
+            onProgress={({ playedSeconds }) => onProgress(playedSeconds)}
             onEnded={onEnded}
          />
       );
