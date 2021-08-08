@@ -1,0 +1,38 @@
+{
+  "files": {
+    "app.js": "/youtubePlaylist-front/static/js/app.3fbff6fa.chunk.js",
+    "app.js.map": "/youtubePlaylist-front/static/js/app.3fbff6fa.chunk.js.map",
+    "runtime~app.js": "/youtubePlaylist-front/static/js/runtime~app.e118721c.js",
+    "runtime~app.js.map": "/youtubePlaylist-front/static/js/runtime~app.e118721c.js.map",
+    "static/js/2.5b3fd43c.chunk.js": "/youtubePlaylist-front/static/js/2.5b3fd43c.chunk.js",
+    "static/js/2.5b3fd43c.chunk.js.map": "/youtubePlaylist-front/static/js/2.5b3fd43c.chunk.js.map",
+    "fonts/AntDesign.ttf": "/youtubePlaylist-front/./fonts/AntDesign.ttf",
+    "fonts/Entypo.ttf": "/youtubePlaylist-front/./fonts/Entypo.ttf",
+    "fonts/Feather.ttf": "/youtubePlaylist-front/./fonts/Feather.ttf",
+    "fonts/FontAwesome.ttf": "/youtubePlaylist-front/./fonts/FontAwesome.ttf",
+    "fonts/FontAwesome5_Brands.ttf": "/youtubePlaylist-front/./fonts/FontAwesome5_Brands.ttf",
+    "fonts/FontAwesome5_Solid.ttf": "/youtubePlaylist-front/./fonts/FontAwesome5_Solid.ttf",
+    "fonts/Fontisto.ttf": "/youtubePlaylist-front/./fonts/Fontisto.ttf",
+    "fonts/Foundation.ttf": "/youtubePlaylist-front/./fonts/Foundation.ttf",
+    "fonts/Ionicons.ttf": "/youtubePlaylist-front/./fonts/Ionicons.ttf",
+    "fonts/MaterialCommunityIcons.ttf": "/youtubePlaylist-front/./fonts/MaterialCommunityIcons.ttf",
+    "fonts/MaterialIcons.ttf": "/youtubePlaylist-front/./fonts/MaterialIcons.ttf",
+    "fonts/SimpleLineIcons.ttf": "/youtubePlaylist-front/./fonts/SimpleLineIcons.ttf",
+    "favicon-16.png": "/youtubePlaylist-front/favicon-16.png",
+    "favicon-32.png": "/youtubePlaylist-front/favicon-32.png",
+    "favicon.ico": "/youtubePlaylist-front/favicon.ico",
+    "index.html": "/youtubePlaylist-front/index.html",
+    "manifest.json": "/youtubePlaylist-front/manifest.json",
+    "serve.json": "/youtubePlaylist-front/serve.json",
+    "static/js/2.5b3fd43c.chunk.js.LICENSE.txt": "/youtubePlaylist-front/static/js/2.5b3fd43c.chunk.js.LICENSE.txt",
+    "static/media/bell.png": "/youtubePlaylist-front/static/media/bell.cf04af27.png",
+    "static/media/heart.png": "/youtubePlaylist-front/static/media/heart.23b5c2c0.png",
+    "static/media/rocket.png": "/youtubePlaylist-front/static/media/rocket.d2f3bf41.png",
+    "static/media/star.png": "/youtubePlaylist-front/static/media/star.69c71386.png"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.e118721c.js",
+    "static/js/2.5b3fd43c.chunk.js",
+    "static/js/app.3fbff6fa.chunk.js"
+  ]
+}
