@@ -24,11 +24,13 @@ function AppInit() {
    const dispatch = useDispatch();
 
    const preload = async () => {
+      // 유저정보가 있으면 재로그인 -> 프로필정보 받아서 리덕스에 저장
+      // 없으면 Nonmember
       const res = await getNomMemberId();
 
+      // 유저면, 유저접근 식별자를 저장
       dispatch(setUniqueId(res));
 
-      //TODO : 처음 유저 추가시, uniqueId를 넘겨서 받아오기
       dispatch(getPlaylist(res.id));
    };
 

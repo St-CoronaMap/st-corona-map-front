@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import PlaylistScreen from "../../../screens/Playlist";
 import Auth from "../../../screens/Auth";
 import SearchScreen from "../../../screens/Search";
 import { Platform, StyleSheet } from "react-native";
 import palette from "../../../lib/styles/palette";
-import { useNavigationState } from "@react-navigation/native";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -23,35 +22,20 @@ const styles = StyleSheet.create({
       elevation: 5,
    },
    indicator: {
-      backgroundColor: palette.blackBerry,
+      backgroundColor: palette.ivory,
+      color: palette.ivory,
    },
-   labelStyle: {},
 });
 
-function TopTab() {
-   const [swipeEnabled, setSwipeEnabled] = useState(true);
-   const state = useNavigationState((state) => state.routes[0].state);
-   useEffect(() => {
-      if (
-         state &&
-         state.index === 1 &&
-         state.routes &&
-         state.routes[1]?.state?.index === 1
-      ) {
-         setSwipeEnabled(false);
-      } else {
-         setSwipeEnabled(true);
-      }
-   }, [state]);
+function TopTab({ swipeEnabled, signined }) {
    return (
       <>
          <Tab.Navigator
             initialRouteName="Playlist"
             swipeEnabled={Platform.OS === "web" ? false : swipeEnabled}
             tabBarOptions={{
-               activeTintColor: palette.blackBerry,
+               activeTintColor: palette.ivory,
                indicatorStyle: styles.indicator,
-               labelStyle: styles.labelStyle,
                style: styles.barStyle,
             }}>
             <Tab.Screen
@@ -67,7 +51,7 @@ function TopTab() {
             <Tab.Screen
                name="Auth"
                component={Auth}
-               options={{ tabBarLabel: "로그인" }}
+               options={{ tabBarLabel: signined ? "프로필" : "로그인" }}
             />
          </Tab.Navigator>
       </>

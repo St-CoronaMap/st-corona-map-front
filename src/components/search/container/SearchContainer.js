@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import Search from "../view/Search";
-import { searchUrl } from "../../../../env";
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
+import { CrawlAddress } from "../../../lib/api/constants";
 
 function SearchContainer({ navigation }) {
    const [result, setResult] = useState([]);
@@ -14,7 +14,7 @@ function SearchContainer({ navigation }) {
       try {
          dispatch(setLoading());
          const res = await axios.get(
-            `${searchUrl}${decodeURIComponent(typing)}`
+            `${CrawlAddress}${decodeURIComponent(typing)}`
          );
          setResult(
             res.data.data.items.map((item) => ({

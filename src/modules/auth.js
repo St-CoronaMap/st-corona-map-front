@@ -10,7 +10,7 @@ export const signin = (email, uid, type, token) => ({
 export const signout = () => ({ type: SIGNOUT });
 
 const initialState = {
-   signined: false,
+   signined: true,
    email: "",
    uid: "",
    type: "",

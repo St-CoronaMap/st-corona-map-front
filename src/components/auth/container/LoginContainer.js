@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Login from "../view/Login";
 import { useDispatch } from "react-redux";
 import { signin } from "../../../modules/auth";
 import { View } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
-import { googleSignIn } from "../../../../env";
-
 WebBrowser.maybeCompleteAuthSession();
 
 function LoginContainer({ navigation }) {
@@ -27,12 +24,6 @@ function LoginContainer({ navigation }) {
    const [modalVisible, setModalVisible] = useState(false);
    const [loadingPwReset, setLoadingPwReset] = useState(false);
    const [PwResetSended, setPwResetSended] = useState(false);
-   const [request, response, promptAsync] = Google.useAuthRequest({
-      expoClientId: googleSignIn.expoGoClientId,
-      androidClientId: googleSignIn.androidClientId,
-      iosClientId: googleSignIn.iosClientId,
-      webClientId: googleSignIn.webClientId,
-   });
    const dispatch = useDispatch();
 
    const onChange = (name, value) => {
@@ -144,21 +135,6 @@ function LoginContainer({ navigation }) {
       setLoadingPwReset(false);
    };
 
-   useEffect(() => {
-      if (response?.type === "success") {
-         const { authentication } = response;
-         dispatch(signin("", "", "google", authentication.accessToken));
-      }
-   }, [response]);   
-   const onGoogleSignin = async () => {
-      try {
-         await promptAsync();
-         navigation.navigate("Home");
-      } catch (err) {
-         console.log(err);
-      }
-   };
-
    return (
       <View style={{ flex: 1 }}>
          <Login
@@ -172,7 +148,6 @@ function LoginContainer({ navigation }) {
             loading={loading}
             wrongPW={wrongPW}
             passwordReset={passwordReset}
-            onGoogleSignin={onGoogleSignin}
          />
       </View>
    );
