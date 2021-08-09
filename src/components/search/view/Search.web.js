@@ -3,6 +3,7 @@ import { Text } from "react-native";
 import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
 import { ListItem, SearchBar, Image } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
+import { cutTitle } from "../../../lib/utils/cutTitle";
 
 const styles = StyleSheet.create({
    main: {
@@ -80,7 +81,7 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
             <ListItem.Content>
                <ListItem.Title
                   style={{ color: palette.blackBerry, fontWeight: "500" }}>
-                  {item.title}
+                  {cutTitle(item.title)}
                </ListItem.Title>
 
                <View style={styles.channelContainer}>

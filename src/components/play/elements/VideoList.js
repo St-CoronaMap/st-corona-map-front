@@ -14,6 +14,7 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { Animated } from "react-native";
 import ButtonsForItem from "./ButtonsForItem";
+import { cutTitle } from "../../../lib/utils/cutTitle";
 
 function VideoList({
    playlist,
@@ -109,7 +110,7 @@ function VideoList({
                               color: palette.blackBerry,
                               fontWeight: "500",
                            }}>
-                           {item.title}
+                           {cutTitle(item.title)}
                         </ListItem.Title>
                         <ListItem.Subtitle>
                            {seperateSecond(item.start)} ~{" "}
