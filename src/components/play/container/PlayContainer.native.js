@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+   cloneElement,
+   useCallback,
+   useEffect,
+   useRef,
+   useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { changeOrder, deleteVideo } from "../../../lib/api/videos";
 import { setLoading, setUnloading } from "../../../modules/loading";
@@ -9,6 +15,7 @@ function PlayContainer({ route, navigation }) {
    const [playing, setPlaying] = useState(true);
    const [prevVideoId, setPrevVideoId] = useState(0);
    const [playlist, setPlaylist] = useState(route.params.playlistInput);
+   const [first, setFirst] = useState(true);
    const playerRef = useRef();
    const [cur, setCur] = useState(0);
    const [vol, setVol] = useState(50);
@@ -29,6 +36,19 @@ function PlayContainer({ route, navigation }) {
       setPrevVideoId(playlist.items[cur]?.videoId);
    }, [cur]);
 
+   useEffect(() => {
+      const getCurrentTime = async () => {
+         const curTime = await playerRef.current?.getCurrentTime();
+         if (curTime >= playlist.items[cur]?.end) {
+            console.log("exceed");
+            const end = await playerRef.current?.getDuration();
+            playerRef.current?.seekTo(end, true);
+         }
+      };
+      const handle = setInterval(getCurrentTime, 1000);
+      return () => clearInterval(handle);
+   }, [cur, playlist.items]);
+
    const togglePlaying = useCallback(() => {
       setPlaying((prev) => !prev);
    }, []);
@@ -39,29 +59,32 @@ function PlayContainer({ route, navigation }) {
 
    const handleStateChange = useCallback(
       (e) => {
-         if (e === "ended") {
-            setPlaying(false);
-            setCur((prev) =>
-               cur === playlist?.items.length - 1 ? 0 : prev + 1
-            );
-            if (playlist?.items.length === 1) {
-               setPlaying(true);
-               playerRef.current?.seekTo(playlist?.items[0].start, true);
+         console.log(e);
+         if (e === "unstarted") {
+            if (first) {
+               setFirst(false);
+            } else {
+               console.log("next");
+
+               playerRef.current?.seekTo(
+                  playlist?.items[
+                     cur === playlist?.items.length - 1 ? 0 : cur + 1
+                  ].start,
+                  true
+               );
+               setCur((prev) =>
+                  cur === playlist?.items.length - 1 ? 0 : prev + 1
+               );
+               setFirst(true);
             }
          }
       },
-      [cur]
+      [cur, first, playlist?.items]
    );
 
-   const onPressItem = useCallback(
-      (idx) => {
-         if (cur !== idx) {
-            setPlaying(false);
-         }
-         setCur(idx);
-      },
-      [cur]
-   );
+   const onPressItem = useCallback((idx) => {
+      setCur(idx);
+   }, []);
 
    const changeVol = useCallback((v) => {
       setVol(v);
@@ -72,16 +95,16 @@ function PlayContainer({ route, navigation }) {
          return;
       }
       setPlaying(false);
-      setCur((prev) => (cur === 0 ? playlist?.items.length - 1 : prev - 1));
-   }, [cur, playlist.items.length]);
+      setCur((prev) => (prev === 0 ? playlist?.items.length - 1 : prev - 1));
+   }, [playlist.items.length]);
 
    const pressForwardward = useCallback(() => {
       if (playlist.items.length === 1) {
          return;
       }
       setPlaying(false);
-      setCur((prev) => (cur === playlist?.items.length - 1 ? 0 : prev + 1));
-   }, [cur, playlist.items.length]);
+      setCur((prev) => (prev === playlist?.items.length - 1 ? 0 : prev + 1));
+   }, [playlist.items.length]);
 
    const changePlaylistOrder = useCallback(
       async ({ data, from, to }) => {

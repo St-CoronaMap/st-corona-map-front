@@ -47,12 +47,8 @@ function Play({
                backgroundColor: "black",
                opacity: 0.99,
             }}
-            videoId={playlist?.items[cur]?.videoId}
+            playList={playlist.items?.map((item) => item.videoId)}
             onChangeState={handleStateChange}
-            initialPlayerParams={{
-               start: playlist.items[cur]?.start,
-               end: playlist.items[cur]?.end,
-            }}
          />
       );
    };
