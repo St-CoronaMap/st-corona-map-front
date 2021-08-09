@@ -35,7 +35,7 @@ function PlayContainer({ route, navigation }) {
 
    const onReady = useCallback(() => {
       setPlaying(true);
-   }, []);
+   }, [cur]);
 
    const handleStateChange = useCallback(
       (e) => {

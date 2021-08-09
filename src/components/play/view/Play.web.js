@@ -5,7 +5,6 @@ import {
    CONTROLBAR_HEIGHT,
    HEADERNAME_HEIGHT,
    WINDOW_HEIGHT,
-   YOUTUBE_HEIGHT,
 } from "../../../lib/styles/variables";
 import ControlBar from "../elements/ControlBar";
 import VideoList from "../elements/VideoList";
