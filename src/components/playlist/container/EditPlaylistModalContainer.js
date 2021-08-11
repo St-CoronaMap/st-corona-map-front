@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePlaylist, editPlaylist } from "../../../lib/api/playlist";
-import { setLoading } from "../../../modules/loading";
+import { setLoading, setUnloading } from "../../../modules/loading";
 import { getPlaylist } from "../../../modules/playlist";
+import { setSnackbar } from "../../../modules/snackbar";
 import EditPlaylistModal from "../view/EditPlaylistModal";
 
 function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
@@ -14,9 +15,18 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
 
    const onDelete = useCallback(async () => {
       dispatch(setLoading());
-      await deletePlaylist(edittingPlaylist.id);
-      dispatch(getPlaylist(uniqueId.id, dispatch));
-      cancel();
+      try {
+         await deletePlaylist(edittingPlaylist.id);
+         dispatch(getPlaylist(uniqueId.id, dispatch));
+         cancel();
+      } catch (err) {
+         dispatch(
+            setSnackbar(
+               "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
+            )
+         );
+         dispatch(setUnloading());
+      }
    }, [edittingPlaylist]);
 
    const editPlaylistCallback = () => {
@@ -38,12 +48,21 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
    const callEditPlaylist = useCallback(
       async (name) => {
          dispatch(setLoading());
-         await editPlaylist({
-            id: edittingPlaylist.id,
-            title: name,
-         });
-         dispatch(getPlaylist(uniqueId.id, dispatch));
-         cancelCallback();
+         try {
+            await editPlaylist({
+               id: edittingPlaylist.id,
+               title: name,
+            });
+            dispatch(getPlaylist(uniqueId.id, dispatch));
+            cancelCallback();
+         } catch (err) {
+            dispatch(
+               setSnackbar(
+                  "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
+               )
+            );
+            dispatch(setUnloading());
+         }
       },
       [edittingPlaylist]
    );

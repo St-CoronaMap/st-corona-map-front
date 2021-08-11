@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPlaylist } from "../../../lib/api/playlist";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { getPlaylist } from "../../../modules/playlist";
+import { setSnackbar } from "../../../modules/snackbar";
 import AddPlaylistModal from "../view/AddPlaylistModal";
 
 function AddPlaylistModalContainer({ visible, cancel }) {
@@ -34,14 +35,23 @@ function AddPlaylistModalContainer({ visible, cancel }) {
 
    const callAddPlaylist = async (name) => {
       dispatch(setLoading());
-      await addPlaylist({
-         loginId: uniqueId.id,
-         title: name,
-         isPublic: false,
-         category: "OTHER",
-      });
-      dispatch(getPlaylist(uniqueId.id, dispatch));
-      cancel();
+      try {
+         await addPlaylist({
+            loginId: uniqueId.id,
+            title: name,
+            isPublic: false,
+            category: "OTHER",
+         });
+         dispatch(getPlaylist(uniqueId.id));
+         cancel();
+      } catch (err) {
+         dispatch(
+            setSnackbar(
+               "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
+            )
+         );
+         dispatch(setUnloading());
+      }
    };
 
    return (

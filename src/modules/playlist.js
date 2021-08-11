@@ -8,6 +8,7 @@ const GET_PLAYLIST = "GET_PLAYLIST";
 const GET_PLAYLIST_ASYNC = "GET_PLAYLIST_ASYNC";
 const CLEAR_THUMBNAIL = "CLEAR_THUMBNAIL";
 const SET_THUMBNAIL = "SET_THUMBNAIL";
+const GET_PLAYLIST_ERROR = "GET_PLAYLIST_ERROR";
 
 //액션 생성 함수
 export const addItem = (id, item) => ({
@@ -28,8 +29,12 @@ export const setThumbnail = (id, thumbnail) => ({
 const initialState = [];
 
 function* getPlaylistAsync(action) {
-   const res = yield call(getPlaylistApi, action.payload);
-   yield put({ type: GET_PLAYLIST_ASYNC, payload: res });
+   try {
+      const res = yield call(getPlaylistApi, action.payload);
+      yield put({ type: GET_PLAYLIST_ASYNC, payload: res });
+   } catch (err) {
+      yield put({ type: GET_PLAYLIST_ERROR, payload: err });
+   }
 }
 
 export function* playlistSaga() {
@@ -68,6 +73,8 @@ export default function playlist(state = initialState, action) {
             }
             return item;
          });
+      case GET_PLAYLIST_ERROR:
+         return state;
       default:
          return state;
    }

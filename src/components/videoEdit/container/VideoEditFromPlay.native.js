@@ -13,6 +13,7 @@ import CheckItemModal from "../view/CheckItemModal";
 import { changeLapse } from "../../../lib/api/videos";
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
+import { setSnackbar } from "../../../modules/snackbar";
 
 function VideoEditFromPlay({ route, navigation }) {
    const item = route.params.item;
@@ -67,20 +68,32 @@ function VideoEditFromPlay({ route, navigation }) {
          navigation.goBack();
       } else {
          dispatch(setLoading());
-         await changeLapse(item.id, selectedLapsed[0], selectedLapsed[1]);
+         try {
+            await changeLapse(item.id, selectedLapsed[0], selectedLapsed[1]);
 
-         const updatedList = route.params.playlist.items.map((inItem) => {
-            if (inItem.id === item.id) {
-               inItem.start = selectedLapsed[0];
-               inItem.end = selectedLapsed[1];
-            }
-            return inItem;
-         });
-         dispatch(setUnloading());
-         navigation.navigate("PlayScreen", {
-            playlistInput: { id: route.params.playlist.id, items: updatedList },
-            isCurItem: route.params.isCurItem,
-         });
+            const updatedList = route.params.playlist.items.map((inItem) => {
+               if (inItem.id === item.id) {
+                  inItem.start = selectedLapsed[0];
+                  inItem.end = selectedLapsed[1];
+               }
+               return inItem;
+            });
+            dispatch(setUnloading());
+            navigation.navigate("PlayScreen", {
+               playlistInput: {
+                  id: route.params.playlist.id,
+                  items: updatedList,
+               },
+               isCurItem: route.params.isCurItem,
+            });
+         } catch (err) {
+            dispatch(
+               setSnackbar(
+                  "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
+               )
+            );
+            dispatch(setUnloading());
+         }
       }
    }, [selectedLapsed]);
    const closeCheckItemModel = useCallback(() => {

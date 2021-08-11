@@ -15,12 +15,15 @@ import { setUniqueId } from "./src/modules/uniqueId";
 import { Platform, StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
 import Loading from "./src/components/elements/Loading";
+import Snackbar from "rn-animated-snackbar";
+import { clearSnackbar } from "./src/modules/snackbar";
 
 const Stack = createStackNavigator();
 
 function AppInit() {
    const [preLoading, setPreLoading] = useState(true);
    const loading = useSelector(({ loading }) => loading);
+   const snackbar = useSelector(({ snackbar }) => snackbar);
    const dispatch = useDispatch();
 
    const preload = async () => {
@@ -70,6 +73,20 @@ function AppInit() {
                      }}
                   />
                </Stack.Navigator>
+               <Snackbar
+                  visible={snackbar}
+                  onDismiss={() => dispatch(clearSnackbar())}
+                  text={snackbar}
+                  duration={1000}
+                  textStyle={{ fontSize: 16 }}
+                  containerStyle={{
+                     position: "absolute",
+                     bottom: 10,
+                     left: 10,
+                     width: "50%",
+                     borderRadius: 20,
+                  }}
+               />
             </View>
          </NavigationContainer>
          <ModalPortal />

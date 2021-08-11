@@ -7,6 +7,7 @@ export const getVideoList = async (id) => {
       return res.data.response;
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -20,6 +21,7 @@ export const addVideo = async (id, item) => {
       });
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -28,6 +30,7 @@ export const deleteVideo = async (id) => {
       await axios.delete(`${Address}/api/play/delete/${id}`);
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -40,6 +43,7 @@ export const changeOrder = async (listId, data) => {
       });
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -52,5 +56,6 @@ export const changeLapse = async (id, start, end) => {
       });
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };

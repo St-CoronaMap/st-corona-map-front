@@ -5,6 +5,7 @@ import playlist, { playlistSaga } from "./playlist";
 import uniqueId from "./uniqueId";
 import loading from "./loading";
 import isPlay from "./isPlay";
+import snackbar from "./snackbar";
 
 // 일반 redux 연결
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
    uniqueId,
    loading,
    isPlay,
+   snackbar,
 });
 
 // react saga 연결

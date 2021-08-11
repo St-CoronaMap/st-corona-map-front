@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { Platform } from "react-native";
-import PlayContainer from "../components/play/container/PlayContainer";
+import PlayRootContainer from "../components/play/container/PlayRootContainer";
 import VideoEditFromPlay from "../components/videoEdit/container/VideoEditFromPlay";
 import palette from "../lib/styles/palette";
 
@@ -13,7 +13,7 @@ export default function PlayScreen({ route, navigation }) {
       <Stack.Navigator initialRouteName="PlayScreen">
          <Stack.Screen
             name="PlayScreen"
-            component={PlayContainer}
+            component={PlayRootContainer}
             initialParams={{ playlistInput: playlist }}
             options={{
                headerShown: Platform.OS === "web" ? true : false,

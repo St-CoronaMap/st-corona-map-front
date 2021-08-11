@@ -12,6 +12,7 @@ export const getPlaylistApi = async ({ id, dispatch }) => {
       return res.data.response;
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -20,6 +21,7 @@ export const deletePlaylist = async (id) => {
       await axios.delete(`${Address}/api/playlist/delete/${id}`);
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -28,6 +30,7 @@ export const addPlaylist = async (obj) => {
       await axios.post(`${Address}/api/playlist/create`, obj);
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -36,6 +39,7 @@ export const editPlaylist = async (obj) => {
       await axios.put(`${Address}/api/playlist/edit`, obj);
    } catch (err) {
       console.log(err.response.data);
+      throw err;
    }
 };
 

@@ -1,19 +1,27 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { changeOrder, deleteVideo } from "../../../lib/api/videos";
-import { setLoading, setUnloading } from "../../../modules/loading";
-import { clearThumbnail, setThumbnail } from "../../../modules/playlist";
+import React, { useCallback, useEffect, useState } from "react";
 import Play from "../view/Play";
 
-function PlayContainer({ route, navigation }) {
-   const [playing, setPlaying] = useState(true);
-   const [prevVideoId, setPrevVideoId] = useState(0);
-   const [playlist, setPlaylist] = useState(route.params.playlistInput);
-   const playerRef = useRef();
-   const [cur, setCur] = useState(0);
-   const [vol, setVol] = useState(50);
-   const dispatch = useDispatch();
-
+function PlayContainer({
+   route,
+   playing,
+   setPlaying,
+   playlist,
+   setPlaylist,
+   playerRef,
+   togglePlaying,
+   cur,
+   setCur,
+   vol,
+   changeVol,
+   onPressDeleteVideo,
+   onPressEditVideo,
+   changePlaylistOrder,
+   onPressItem,
+   pressForwardward,
+   pressBackward,
+}) {
+   const [block, setBlock] = useState(false);
+   // 수정에서 넘어왔을때. 새로 다시 받아오지는 않음.
    useEffect(() => {
       if (!route.params.isCurItem) {
          setPlaying(true);
@@ -21,121 +29,25 @@ function PlayContainer({ route, navigation }) {
       setPlaylist(route.params.playlistInput);
    }, [route]);
 
-   useEffect(() => {
-      if (prevVideoId === playlist.items[cur]?.videoId) {
-         playerRef.current?.seekTo(playlist.items[cur].start, true);
-         setPlaying(true);
-      }
-      setPrevVideoId(playlist.items[cur]?.videoId);
-   }, [cur]);
-
-   const togglePlaying = useCallback(() => {
-      setPlaying((prev) => !prev);
-   }, []);
-
    const onReady = useCallback(() => {
+      setBlock(false);
+      setPlaying(false);
       setPlaying(true);
-   }, [cur]);
+   }, []);
 
    const handleStateChange = useCallback(
       (e) => {
-         if (e === "ended") {
-            setPlaying(false);
+         if (e === "ended" && !block) {
+            setBlock(true);
             setCur((prev) =>
-               cur === playlist?.items.length - 1 ? 0 : prev + 1
+               prev === playlist.items?.length - 1 ? 0 : prev + 1
             );
             if (playlist?.items.length === 1) {
-               setPlaying(true);
                playerRef.current?.seekTo(playlist?.items[0].start, true);
             }
          }
       },
-      [cur]
-   );
-
-   const onPressItem = useCallback(
-      (idx) => {
-         if (cur !== idx) {
-            setPlaying(false);
-         }
-         setCur(idx);
-      },
-      [cur]
-   );
-
-   const changeVol = useCallback((v) => {
-      setVol(v);
-   }, []);
-
-   const pressBackward = useCallback(() => {
-      if (playlist?.items.length === 1) {
-         return;
-      }
-      setPlaying(false);
-      setCur((prev) => (cur === 0 ? playlist?.items.length - 1 : prev - 1));
-   }, [cur, playlist.items.length]);
-
-   const pressForwardward = useCallback(() => {
-      if (playlist.items.length === 1) {
-         return;
-      }
-      setPlaying(false);
-      setCur((prev) => (cur === playlist?.items.length - 1 ? 0 : prev + 1));
-   }, [cur, playlist.items.length]);
-
-   const changePlaylistOrder = useCallback(
-      async ({ data, from, to }) => {
-         if (from === to) {
-            return;
-         }
-         dispatch(setLoading());
-         await changeOrder(playlist.id, data);
-         setPlaylist((prev) => ({ id: prev.id, items: data }));
-         dispatch(setUnloading());
-         if ((from >= cur && to <= cur) || (from <= cur && to >= cur)) {
-            setPlaying(false);
-         }
-      },
-      [cur, playlist.id]
-   );
-
-   const onPressEditVideo = useCallback(
-      (index) => {
-         setPlaying(false);
-         navigation.navigate("videoEdit_play", {
-            item: playlist.items[index],
-            isCurItem: cur === index,
-            playlist: playlist,
-         });
-      },
-      [cur, playlist]
-   );
-
-   const onPressDeleteVideo = useCallback(
-      async (index, id) => {
-         dispatch(setLoading());
-         await deleteVideo(id);
-         if (playlist.items.length === 1) {
-            dispatch(clearThumbnail(playlist.id));
-            navigation.navigate("Playlist");
-         } else {
-            if (index === 0) {
-               dispatch(setThumbnail(playlist.id, playlist.items[1].thumbnail));
-            }
-            setPlaylist((prev) => ({
-               id: prev.id,
-               items: prev.items.filter((item) => item.id !== id),
-            }));
-            if (cur !== 0 && index <= cur) {
-               setCur((prev) => prev - 1);
-            }
-            if (index === cur) {
-               setPlaying(false);
-            }
-         }
-         dispatch(setUnloading());
-      },
-      [cur, playlist]
+      [playlist.items, block]
    );
 
    return (
