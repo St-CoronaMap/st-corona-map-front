@@ -1,34 +1,36 @@
 import React, { useState } from "react";
 import Login from "../view/Login";
 import { useDispatch } from "react-redux";
-import { signin } from "../../../modules/auth";
 import { View } from "react-native";
 
-import * as WebBrowser from "expo-web-browser";
-WebBrowser.maybeCompleteAuthSession();
+import { setLoading, setUnloading } from "../../../modules/loading";
+import { login, SignUp } from "../../../lib/api/auth";
+import { setUniqueId } from "../../../modules/uniqueId";
+import handleError, { checkLoginInfo } from "../../../lib/utils/handleAuthErr";
+import { signin } from "../../../modules/auth";
+import { getPlaylist } from "../../../modules/playlist";
 
 function LoginContainer({ navigation }) {
-   const [login, setLogIn] = useState(true);
+   const [isLogin, setIsLogIn] = useState(true);
    const [userInfo, setUserInfo] = useState({
       password: "",
       passwordCheck: "",
-      email: "",
+      id: "",
    });
    const [errMsg, setErrMsg] = useState({
-      email: "",
+      id: "",
       password: "",
       passwordCheck: "",
    });
    const [wrongPW, setWrongPW] = useState(false);
-   const [loading, setLoading] = useState(false);
    const [modalVisible, setModalVisible] = useState(false);
    const [loadingPwReset, setLoadingPwReset] = useState(false);
    const [PwResetSended, setPwResetSended] = useState(false);
    const dispatch = useDispatch();
 
    const onChange = (name, value) => {
-      if (name === "email" && errMsg.email) {
-         setErrMsg((prev) => ({ ...prev, email: "" }));
+      if (name === "id" && errMsg.id) {
+         setErrMsg((prev) => ({ ...prev, id: "" }));
       } else if (name === "password" && errMsg.password) {
          setErrMsg((prev) => ({ ...prev, password: "" }));
       } else if (name === "passwordCheck" && errMsg.passwordCheck) {
@@ -38,86 +40,46 @@ function LoginContainer({ navigation }) {
    };
 
    const onPressLogin = async () => {
-      if (!userInfo.email) {
-         setErrMsg((prev) => ({
-            ...prev,
-            email: "이메일을 입력해주세요.",
-         }));
-         return;
-      } else if (!userInfo.password) {
-         setErrMsg((prev) => ({
-            ...prev,
-            password: "비밀번호를 입력해주세요.",
-         }));
-         return;
-      }
-      setLoading(true);
-      if (login) {
+      if (!checkLoginInfo(userInfo, setErrMsg)) return;
+      dispatch(setLoading());
+      let res;
+      if (isLogin) {
          try {
-            const res = await fbAuth.signInWithEmailAndPassword(
-               userInfo.email,
-               userInfo.password
-            );
-            dispatch(signin(res.user.email, res.user.uid));
-            navigation.navigate("Home");
+            res = await login(userInfo.id, userInfo.password);
          } catch (err) {
-            if (err.code === "auth/wrong-password") {
-               setErrMsg((prev) => ({
-                  ...prev,
-                  password: "비밀번호가 틀렸습니다.",
-               }));
-               setWrongPW(true);
-            } else if (err.code === "auth/user-not-found") {
-               setErrMsg((prev) => ({
-                  ...prev,
-                  email: "존재하지 않는 회원입니다..",
-               }));
-            } else if (err.code === "auth/invalid-email") {
-               setErrMsg((prev) => ({
-                  ...prev,
-                  email: "이메일 형식을 지켜주세요.",
-               }));
+            console.log(err);
+            // 비밀번호, 아이디 처리
+            if (err.message === "비밀번호가 일치하지 않습니다.") {
+               handleError("auth/wrong-password", setErrMsg);
+            } else if (err.message === "존재하지 않는 회원입니다.") {
+               handleError("auth/user-not-found", setErrMsg);
             }
-            console.log(err.code);
+            dispatch(setUnloading());
+            return;
          }
       } else {
          if (userInfo.password !== userInfo.passwordCheck) {
-            setErrMsg((prev) => ({
-               ...prev,
-               passwordCheck: "비밀번호가 일치하지 않습니다.",
-            }));
+            handleError("not_match_password_and_check", setErrMsg);
             return;
          }
          try {
-            let res = await fbAuth.createUserWithEmailAndPassword(
-               userInfo.email,
-               userInfo.password
-            );
-            await fbStore.collection(res.user.uid).doc("user").set({
-               createdAt: Date.now(),
-            });
-            res = await fbAuth.signInWithEmailAndPassword(
-               userInfo.email,
-               userInfo.password
-            );
-            dispatch(signin(res.user.email, res.user.uid, "email"));
-            navigation.navigate("Home");
+            res = await SignUp(userInfo.id, userInfo.password);
          } catch (err) {
-            if (err.code === "auth/invalid-email") {
-               setErrMsg((prev) => ({
-                  ...prev,
-                  email: "이메일 형식을 지켜주세요.",
-               }));
-            } else if (err.code === "auth/email-already-in-use") {
-               setErrMsg((prev) => ({
-                  ...prev,
-                  email: "이미 사용중인 이메일입니다.",
-               }));
+            console.log(err);
+            // 중복 아이디 처리
+            if (err.message === "ID가 중복된 회원입니다.") {
+               handleError("auth/id-already-in-use", setErrMsg);
             }
-            console.log(err.code);
+            dispatch(setUnloading());
+            return;
          }
       }
-      setLoading(false);
+
+      dispatch(signin(userInfo.id));
+      dispatch(getPlaylist());
+      dispatch(setUniqueId({ tokens: res, first: false }));
+      navigation.navigate("Playlist");
+      dispatch(setUnloading());
    };
 
    const passwordReset = () => {
@@ -141,11 +103,10 @@ function LoginContainer({ navigation }) {
             navigation={navigation}
             userInfo={userInfo}
             onChange={onChange}
-            login={login}
-            setLogIn={setLogIn}
+            isLogin={isLogin}
+            setIsLogIn={setIsLogIn}
             onPressLogin={onPressLogin}
             errMsg={errMsg}
-            loading={loading}
             wrongPW={wrongPW}
             passwordReset={passwordReset}
          />

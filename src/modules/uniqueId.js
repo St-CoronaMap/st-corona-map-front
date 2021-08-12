@@ -8,7 +8,7 @@ export const setUniqueId = (user) => ({
 });
 
 const initialState = {
-   id: "",
+   tokens: {},
    first: false,
 };
 

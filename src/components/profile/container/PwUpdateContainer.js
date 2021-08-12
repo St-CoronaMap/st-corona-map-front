@@ -20,7 +20,7 @@ function PwUpdateContainer({ visible, setVisible }) {
          // 비밀번호 변경
          setSuccess(true);
       } catch (err) {
-         checkPassword(err.code, setErrMsg, "password");
+         handleError(err.code, setErrMsg, "password");
       }
       setLoading(false);
    };

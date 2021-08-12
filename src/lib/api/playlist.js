@@ -5,14 +5,14 @@ import { Address } from "./constants";
 
 export const getPlaylistApi = async ({ id, dispatch }) => {
    try {
-      const res = await axios.get(`${Address}/api/playlist/${id}`);
+      const res = await axios.get(`${Address}/api/playlist`);
       if (dispatch) {
          dispatch(setUnloading());
       }
       return res.data.response;
    } catch (err) {
       console.log(err.response.data);
-      throw err;
+      throw err.response.data;
    }
 };
 
@@ -21,7 +21,7 @@ export const deletePlaylist = async (id) => {
       await axios.delete(`${Address}/api/playlist/delete/${id}`);
    } catch (err) {
       console.log(err.response.data);
-      throw err;
+      throw err.response.data;
    }
 };
 
@@ -30,7 +30,7 @@ export const addPlaylist = async (obj) => {
       await axios.post(`${Address}/api/playlist/create`, obj);
    } catch (err) {
       console.log(err.response.data);
-      throw err;
+      throw err.response.data;
    }
 };
 
@@ -39,7 +39,7 @@ export const editPlaylist = async (obj) => {
       await axios.put(`${Address}/api/playlist/edit`, obj);
    } catch (err) {
       console.log(err.response.data);
-      throw err;
+      throw err.response.data;
    }
 };
 

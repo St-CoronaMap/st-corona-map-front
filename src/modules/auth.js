@@ -1,20 +1,18 @@
+// 프로필 데이터로 교체?
 //액션 타입
 const SIGNIN = "SIGNIN";
 const SIGNOUT = "SIGNOUT";
 
 //액션 생성 함수
-export const signin = (email, uid, type, token) => ({
+export const signin = (id) => ({
    type: SIGNIN,
-   payload: { email: email, uid: uid, type: type, accessToken: token },
+   payload: { id: id },
 });
 export const signout = () => ({ type: SIGNOUT });
 
 const initialState = {
-   signined: true,
-   email: "",
-   uid: "",
-   type: "",
-   accessToken: "",
+   signined: false,
+   id: "",
 };
 
 export default function auth(state = initialState, action) {
@@ -22,18 +20,12 @@ export default function auth(state = initialState, action) {
       case SIGNIN:
          return {
             signined: true,
-            email: action.payload.email,
-            uid: action.payload.uid,
-            type: action.payload.type,
-            accessToken: action.payload.accessToken,
+            id: action.payload.id,
          };
       case SIGNOUT:
          return {
             signined: false,
-            email: "",
-            uid: "",
-            type: "",
-            accessToken: "",
+            id: "",
          };
       default:
          return state;

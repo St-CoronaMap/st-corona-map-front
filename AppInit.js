@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppLoading from "expo-app-loading";
 import { ModalPortal } from "react-native-modals";
 
-import { getNomMemberId } from "./src/lib/api/auth";
+import { getToken, reissue } from "./src/lib/api/auth";
 import { getPlaylist } from "./src/modules/playlist";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -17,6 +17,9 @@ import HeaderName from "./src/components/headerName/HeaderName";
 import Loading from "./src/components/elements/Loading";
 import Snackbar from "rn-animated-snackbar";
 import { clearSnackbar } from "./src/modules/snackbar";
+import { Button } from "react-native-elements";
+import { removeAll } from "./src/lib/api/playlist";
+import axios from "axios";
 
 const Stack = createStackNavigator();
 
@@ -26,15 +29,24 @@ function AppInit() {
    const snackbar = useSelector(({ snackbar }) => snackbar);
    const dispatch = useDispatch();
 
+   useEffect(() => {
+      axios.interceptors.response.use(null, (err) => {
+         console.log(err.response.data);
+         console.log(err);
+         if (err.config && err.response && err.response.status === 401) {
+            return reissue("토큰 넣기").then((token) => {
+               // error.config.headers.xxxx <= set the token
+               return axios.request(config);
+            });
+         }
+         return Promise.reject(err);
+      });
+   }, []);
+
    const preload = async () => {
-      // 유저정보가 있으면 재로그인 -> 프로필정보 받아서 리덕스에 저장
-      // 없으면 Nonmember
-      const res = await getNomMemberId();
-
-      // 유저면, 유저접근 식별자를 저장
+      const res = await getToken();
       dispatch(setUniqueId(res));
-
-      dispatch(getPlaylist(res.id));
+      dispatch(getPlaylist());
    };
 
    const onFinish = () => setPreLoading(false);
@@ -48,6 +60,10 @@ function AppInit() {
          />
       );
    }
+   console.log(
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncGZxcHN4ajc1IiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYyODc3ODE0NH0.OLDrM7flGbrDb31reTp5HEjX-l3K7rTqLB7nerXzKgFv3GnIsjUTpjFkezjI0s880adQGSdsupagd84R0iSJkQ" ===
+         "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncGZxcHN4ajc1IiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYyODc3ODE0NH0.OLDrM7flGbrDb31reTp5HEjX-l3K7rTqLB7nerXzKgFv3GnIsjUTpjFkezjI0s880adQGSdsupagd84R0iSJkQ"
+   );
 
    return (
       <>
@@ -83,10 +99,11 @@ function AppInit() {
                      position: "absolute",
                      bottom: 10,
                      left: 10,
-                     width: "50%",
+                     width: "70%",
                      borderRadius: 20,
                   }}
                />
+               <Button title="remove" onPress={removeAll} />
             </View>
          </NavigationContainer>
          <ModalPortal />

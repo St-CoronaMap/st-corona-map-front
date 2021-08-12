@@ -3,6 +3,7 @@ import { Address } from "./constants";
 
 export const getVideoList = async (id) => {
    try {
+      console.log(id);
       const res = await axios.get(`${Address}/api/play/list/${id}`);
       return res.data.response;
    } catch (err) {

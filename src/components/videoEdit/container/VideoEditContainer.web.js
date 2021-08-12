@@ -154,7 +154,6 @@ function VideoEditContainer({ route, navigation, start }) {
                   close={closeCheckItemModel}
                   onOk={pressSelectPlaylist}
                   item={CheckItemModalObject}
-                  from={`${route.params.from}`}
                />
             </>
          )}

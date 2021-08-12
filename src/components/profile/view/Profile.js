@@ -2,11 +2,15 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import { Button } from "react-native-elements";
+import palette from "../../../lib/styles/palette";
 import Header from "./Header";
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: "#fff",
+      padding: 10,
+      paddingBottom: 0,
+      paddingTop: 30,
+      backgroundColor: palette.ivory,
    },
    avatar: {
       flex: 2,
@@ -15,6 +19,7 @@ const styles = StyleSheet.create({
    },
    content: {
       flex: 4,
+      backgroundColor: palette.ivory,
    },
    bottomBar: {
       flex: 1,
@@ -52,10 +57,12 @@ function Profile({
             />
          </View>
          <View style={styles.content}>
-            <ListItem bottomDivider>
-               <Text>이메일</Text>
+            <ListItem
+               bottomDivider
+               containerStyle={{ backgroundColor: palette.ivory }}>
+               <Text>아이디</Text>
                <ListItem.Content>
-                  <ListItem.Title>{user?.email}</ListItem.Title>
+                  <ListItem.Title>{user?.id}</ListItem.Title>
                </ListItem.Content>
             </ListItem>
          </View>
@@ -63,13 +70,14 @@ function Profile({
             <Button
                title="비밀번호 변경"
                type="clear"
+               titleStyle={{ color: palette.blackBerry }}
                onPress={showChangePassword}
             />
             <Button
                title="회원탈퇴"
                type="clear"
                color="red"
-               titleStyle={{ color: "red" }}
+               titleStyle={{ color: palette.redRose }}
                onPress={showRemoveUser}
             />
          </View>

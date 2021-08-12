@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addPlaylist } from "../../../lib/api/playlist";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { getPlaylist } from "../../../modules/playlist";
@@ -9,7 +9,6 @@ import AddPlaylistModal from "../view/AddPlaylistModal";
 function AddPlaylistModalContainer({ visible, cancel }) {
    const [name, setName] = useState("");
    const [errMsg, setErrMsg] = useState("");
-   const uniqueId = useSelector(({ uniqueId }) => uniqueId);
    const dispatch = useDispatch();
    const onChange = (v) => {
       if (errMsg) {
@@ -37,19 +36,26 @@ function AddPlaylistModalContainer({ visible, cancel }) {
       dispatch(setLoading());
       try {
          await addPlaylist({
-            loginId: uniqueId.id,
             title: name,
             isPublic: false,
             category: "OTHER",
          });
-         dispatch(getPlaylist(uniqueId.id));
+         dispatch(getPlaylist(null, dispatch));
          cancel();
       } catch (err) {
-         dispatch(
-            setSnackbar(
-               "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
-            )
-         );
+         if (err.message === "비회원 playlist 제한을 초과하였습니다.") {
+            dispatch(
+               setSnackbar(
+                  "비회원은 재생목록을 최대 10개까지 만들 수 있습니다."
+               )
+            );
+         } else {
+            dispatch(
+               setSnackbar(
+                  "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
+               )
+            );
+         }
          dispatch(setUnloading());
       }
    };

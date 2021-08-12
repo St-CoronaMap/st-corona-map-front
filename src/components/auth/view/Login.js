@@ -45,18 +45,17 @@ const styles = StyleSheet.create({
 function Login({
    userInfo,
    onChange,
-   login,
-   setLogIn,
+   isLogin,
+   setIsLogIn,
    onPressLogin,
    errMsg,
-   loading,
    wrongPW,
    passwordReset,
 }) {
    return (
       <KeyboardAvoidingView behavior="height" style={styles.container}>
          <View style={styles.headerContainer}>
-            <Text style={styles.header}>{login ? "로그인" : "회원가입"}</Text>
+            <Text style={styles.header}>{isLogin ? "로그인" : "회원가입"}</Text>
          </View>
          <View style={styles.inputContainer}>
             <Input
@@ -69,10 +68,10 @@ function Login({
                      color={palette.blackBerry}
                   />
                }
-               value={userInfo.email}
+               value={userInfo.id}
                style={styles.input}
-               errorMessage={errMsg.email}
-               onChangeText={(value) => onChange("email", value)}
+               errorMessage={errMsg.id}
+               onChangeText={(value) => onChange("id", value)}
                errorStyle={{ fontWeight: "600" }}
             />
             <Input
@@ -92,7 +91,7 @@ function Login({
                errorMessage={errMsg.password}
                errorStyle={{ fontWeight: "600" }}
             />
-            {!login && (
+            {!isLogin && (
                <Input
                   placeholder="비밀번호 확인"
                   leftIcon={
@@ -121,16 +120,15 @@ function Login({
                   />
                )}
                <Button
-                  title={login ? "회원가입" : "로그인"}
+                  title={isLogin ? "회원가입" : "로그인"}
                   type="clear"
                   containerStyle={styles.button}
                   titleStyle={{ color: palette.blackBerry, fontWeight: "600" }}
-                  onPress={() => setLogIn((prev) => !prev)}
+                  onPress={() => setIsLogIn((prev) => !prev)}
                />
                <Button
-                  title={login ? "로그인" : "회원가입"}
+                  title={isLogin ? "로그인" : "회원가입"}
                   onPress={onPressLogin}
-                  loading={loading}
                   titleStyle={{ fontWeight: "600" }}
                   containerStyle={styles.button}
                   buttonStyle={{ backgroundColor: palette.redRose }}

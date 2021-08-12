@@ -33,11 +33,7 @@ function VideoEdit({
    }, []);
    const onChangeState = useCallback(
       (e) => {
-         if (e === "paused") {
-            setPlaying(false);
-         } else if (e === "playing") {
-            setPlaying(true);
-         } else if (e === "ended") {
+         if (e === "ended") {
             playerRef.current?.seekTo(selectedLapsed[0], true);
             setPlaying(true);
          }

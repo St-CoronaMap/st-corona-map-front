@@ -45,8 +45,13 @@ function VideoList({
       return { translateX };
    });
 
-   const onReightPress = (index) => {
+   const onRightPress = (index) => {
       listItemAnimation.setValue(index - 0.3);
+      Animated.timing(listItemAnimation, {
+         toValue: index - 0.3,
+         duration: 400,
+         useNativeDriver: true,
+      }).start();
       Animated.timing(listItemAnimation, {
          toValue: index,
          duration: 400,
@@ -119,7 +124,7 @@ function VideoList({
                      <Button
                         containerStyle={stylesObj.chevronContainer}
                         onLongPress={drag}
-                        onPress={() => onReightPress(index)}
+                        onPress={() => onRightPress(index)}
                         buttonStyle={stylesObj.chevronButton}
                         icon={{
                            name: "chevron-right",

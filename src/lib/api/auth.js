@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { Platform } from "react-native";
 import uuid from "react-native-uuid";
 import { Address } from "./constants";
 
@@ -15,29 +16,127 @@ import { Address } from "./constants";
       2-1. 만약 비회원 아이디가 invalid 할 경우 새로 생성
 
 */
+const setTokens = async (tokens) => {
+   const tokensObj = {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+   };
+   axios.defaults.headers.common[
+      "Authorization"
+   ] = `Bearer ${tokensObj.accessToken}`;
+   console.log("setTokens", tokensObj);
+   await AsyncStorage.setItem("@tokens", JSON.stringify(tokensObj));
+   return tokensObj;
+};
 
-export const getNomMemberId = async () => {
+export const login = async (id, pw) => {
    try {
+      const res = await axios.post(`${Address}/api/member/login`, {
+         loginId: id,
+         password: pw,
+         isPC: Platform.OS === "web",
+      });
+      const tokens = await setTokens(res.data.response);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+      console.log(tokens);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+      return tokens;
+   } catch (err) {
+      throw err.response.data;
+   }
+};
+
+export const reissue = async (tokens) => {
+   try {
+      const res = await axios.post(`${Address}​/api/member/reissue`, {
+         ...tokens,
+         isPC: Platform.OS === "web",
+      });
+      tokens = await setTokens(res.data.response);
+      return tokens;
+   } catch (err) {
+      console.log(err.response.data);
+      throw err.response.data;
+   }
+};
+
+export const nonMemberLogin = async () => {
+   try {
+      let first = false;
+      // 비회원 아이디 받아오기
       let id = await AsyncStorage.getItem("@nomMemberId");
       if (!id) {
          // 가입 신청 후 받아오기
          let newId = uuid.v4();
-         await nonSignIn(newId);
-         await AsyncStorage.setItem("@nomMemberId", newId);
-         return { id: newId, first: true };
+         const res = await nonSignUp(newId);
+         await AsyncStorage.setItem("@nomMemberId", res.loginId);
+         id = res.loginId;
+         first = true;
       }
-      return { id: id, first: false };
+      //로그인
+      const res = await login(id, "");
+      const tokens = await setTokens(res);
+      return { tokens: tokens, first: first };
    } catch (err) {
       console.log(err.response.data);
    }
 };
 
-export const nonSignIn = async (newId) => {
+export const getToken = async () => {
    try {
-      await axios.post(`${Address}/api/member/register/non`, {
-         deviceId: newId,
-      });
+      const tokensJson = await AsyncStorage.getItem("@tokens");
+      let rtObj = { tokens: JSON.parse(tokensJson), first: false };
+
+      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+      console.log(rtObj.tokens);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+      if (rtObj.tokens) {
+         //reissue
+         try {
+            const res = await reissue(rtObj.tokens);
+            rtObj.tokens = res;
+         } catch (err) {
+            // 리프레시 토큰 만료시 비회원 재로그인
+            // 회원은 기존에 비회원으로 있던 기록이 나오고, 로그인은 자신이 해야함
+            console.log("non member login");
+            const res = await nonMemberLogin();
+            rtObj = res;
+         }
+      } else {
+         const res = await nonMemberLogin();
+         rtObj = res;
+      }
+      return rtObj;
    } catch (err) {
       console.log(err.response.data);
+   }
+};
+
+export const nonSignUp = async (newId) => {
+   try {
+      const res = await axios.post(`${Address}/api/member/signup/non`, {
+         deviceId: newId,
+         isPC: Platform.OS === "web",
+      });
+      return res.data.response;
+   } catch (err) {
+      console.log(err);
+      console.log(err.response.data);
+   }
+};
+
+export const SignUp = async (id, pw) => {
+   try {
+      await axios.post(`${Address}/api/member/signup/real`, {
+         loginId: id,
+         password: pw,
+         isPC: Platform.OS === "web",
+      });
+      const tokens = await login(id, pw);
+      return tokens;
+   } catch (err) {
+      console.log(err.response.data);
+      // 중복 아이디 처리
+      throw err.response.data;
    }
 };

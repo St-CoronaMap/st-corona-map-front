@@ -149,7 +149,7 @@ function VideoEditFromPlay({ route, navigation }) {
             close={closeCheckItemModel}
             onOk={doneEdit}
             item={CheckItemModalObject}
-            from={`${route.params.from}`}
+            from="play"
          />
       </>
    );
