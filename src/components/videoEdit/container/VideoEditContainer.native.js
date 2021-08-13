@@ -31,6 +31,17 @@ function VideoEditContainer({
    const dispatch = useDispatch();
 
    useEffect(() => {
+      const handleLapse = async () => {
+         const time = await playerRef.current?.getCurrentTime();
+         if (selectedLapsed[1] <= time) {
+            playerRef.current?.seekTo(selectedLapsed[0], true);
+         }
+      };
+      const intervalId = setInterval(handleLapse, 500);
+      return () => clearInterval(intervalId);
+   }, [selectedLapsed]);
+
+   useEffect(() => {
       if (uniqueId.first && loaded) {
          setTimeout(start, 250);
          dispatch(setUniqueId({ tokens: uniqueId.tokens, first: false }));
@@ -59,6 +70,11 @@ function VideoEditContainer({
       setLapse((prev) => [prev[0], v]);
    }, []);
 
+   const onSelectLapse = useCallback(() => {
+      playerRef.current?.seekTo(lapse[0], true);
+      setSelectedLapsed(lapse);
+   }, [lapse]);
+
    return (
       <VideoEdit
          item={item}
@@ -81,6 +97,7 @@ function VideoEditContainer({
          volumneChange={volumneChange}
          vol={vol}
          onReady={onReady}
+         onSelectLapse={onSelectLapse}
       />
    );
 }

@@ -16,10 +16,10 @@ function PlaylistContainer({ navigation }) {
    const dispatch = useDispatch();
 
    const enterPlaylist = async (list) => {
-      // dispatch(setLoading());
+      dispatch(setLoading());
       try {
          const res = await getVideoList(list.id);
-         //dispatch(setUnloading());
+         dispatch(setUnloading());
          if (res.length === 0) {
             dispatch(setSnackbar("재생목록이 비어있습니다."));
             return;
@@ -29,13 +29,12 @@ function PlaylistContainer({ navigation }) {
             items: res.sort((a, b) => a.sequence - b.sequence),
          });
       } catch (err) {
-         /*
          dispatch(
             setSnackbar(
                "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
             )
          );
-        dispatch(setUnloading());*/
+         dispatch(setUnloading());
       }
    };
    const onPressVisible = useCallback(() => {

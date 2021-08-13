@@ -45,9 +45,6 @@ export const login = async (id, pw) => {
 
 export const reissue = async (tokens) => {
    try {
-      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 진입~~~~~~~~~~~~~~~~");
-      console.log(tokens);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 진입~~~~~~~~~~~~~~~~");
       const res = await axios.post(
          `http://3.37.114.161:8080/api/member/reissue`,
          {
@@ -57,18 +54,9 @@ export const reissue = async (tokens) => {
          },
          { skipAuthRefresh: true }
       );
-      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 성공~~~~~~~~~~~~~~~~");
-      console.log(res);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈~~~~~~~~~~~~~~~~");
       const newTokens = await setTokens(res.data.response);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~뉴 토큰 받음~~~~~~~~~~~~~~~~");
-      console.log(newTokens);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~뉴토큰~~~~~~~~~~~~~~~~");
       return newTokens;
    } catch (err) {
-      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 에러~~~~~~~~~~~~~~~~");
-      // console.log(err);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 에러~~~~~~~~~~~~~~~~");
       throw err.response.data;
    }
 };

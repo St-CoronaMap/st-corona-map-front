@@ -29,6 +29,7 @@ function VideoEdit({
    volumneChange,
    vol,
    onReady,
+   onSelectLapse,
 }) {
    const onChangeState = useCallback(
       (e) => {
@@ -55,10 +56,6 @@ function VideoEdit({
                volume={vol}
                onChangeState={onChangeState}
                webViewStyle={{ backgroundColor: "black", opacity: 0.99 }}
-               initialPlayerParams={{
-                  start: selectedLapsed[0],
-                  end: selectedLapsed[1],
-               }}
             />
          </View>
          <ScrollView>
@@ -70,8 +67,7 @@ function VideoEdit({
                   lapseHighCounter={lapseHighCounter}
                   handleValueChange={handleValueChange}
                   endTime={endTime}
-                  setSelectedLapsed={setSelectedLapsed}
-                  setPlaying={setPlaying}
+                  onSelectLapse={onSelectLapse}
                />
             ) : (
                <></>

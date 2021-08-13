@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { copilot } from "react-native-copilot";
 import VideoEdit from "../view/VideoEdit";
 
@@ -22,6 +22,17 @@ function VideoEditFromPlay({
    vol,
    onReady,
 }) {
+   useEffect(() => {
+      const handleLapse = async () => {
+         const time = await playerRef.current?.getCurrentTime();
+         if (selectedLapsed[1] <= time) {
+            playerRef.current?.seekTo(selectedLapsed[0], true);
+         }
+      };
+      const intervalId = setInterval(handleLapse, 500);
+      return () => clearInterval(intervalId);
+   }, [selectedLapsed]);
+
    let count = 0,
       saveLow = 0;
    const handleValueChange = useCallback((low, high) => {
@@ -45,6 +56,11 @@ function VideoEditFromPlay({
       setLapse((prev) => [prev[0], v]);
    }, []);
 
+   const onSelectLapse = useCallback(() => {
+      playerRef.current?.seekTo(lapse[0], true);
+      setSelectedLapsed(lapse);
+   }, [lapse]);
+
    return (
       <VideoEdit
          item={item}
@@ -67,6 +83,7 @@ function VideoEditFromPlay({
          volumneChange={volumneChange}
          vol={vol}
          onReady={onReady}
+         onSelectLapse={onSelectLapse}
       />
    );
 }

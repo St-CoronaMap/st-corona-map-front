@@ -33,9 +33,6 @@ function VideoEditRootContainer({ route, navigation }) {
       const getEndTime = async () => {
          const res = await playerRef.current?.getDuration();
          if (res === 0) setIsBanned(true);
-         if (Platform.OS !== "web") {
-            setPlaying(false);
-         }
          setLapse([0, res === 0 ? 1 : res]);
          setSelectedLapsed([0, res === 0 ? 1 : res]);
          setEndTime(res === 0 ? 1 : res);

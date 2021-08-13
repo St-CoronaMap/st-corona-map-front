@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
 import VideoEditFromPlay from "./VideoEditFromPlay";
+import { Platform } from "react-native";
 
 function VideoEditRootContainer({ route, navigation }) {
    const item = route.params.item;
@@ -94,9 +95,13 @@ function VideoEditRootContainer({ route, navigation }) {
    const volumneChange = useCallback((v) => setVol(v), []);
 
    const onReady = useCallback(() => {
+      if (Platform.OS !== "web") {
+         playerRef.current?.seekTo(selectedLapsed[0], true);
+      }
       setLoaded(true);
       setPlaying(true);
    }, []);
+
    return (
       <>
          <VideoEditFromPlay

@@ -25,8 +25,7 @@ function SecondController({
    lapseHighCounter,
    handleValueChange,
    endTime,
-   setSelectedLapsed,
-   setPlaying,
+   onSelectLapse,
 }) {
    const renderThumb = useCallback(() => <Thumb />, []);
    const renderRail = useCallback(() => <Rail />, []);
@@ -99,10 +98,7 @@ function SecondController({
                   buttonStyle={styles.applyButton}
                   titleStyle={styles.applyButtonTitle}
                   type="outline"
-                  onPress={() => {
-                     setSelectedLapsed(lapse);
-                     setPlaying(false);
-                  }}
+                  onPress={onSelectLapse}
                   raised
                />
             </CopilotView>

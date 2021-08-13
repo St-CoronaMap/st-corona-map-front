@@ -20,6 +20,7 @@ import { clearSnackbar } from "./src/modules/snackbar";
 import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setUnloading } from "./src/modules/loading";
 
 const Stack = createStackNavigator();
 
@@ -30,40 +31,26 @@ function AppInit() {
    const dispatch = useDispatch();
 
    useEffect(() => {
-      const refreshAuthLogic = async (failedRequest) => {
-         const tokensJson = await AsyncStorage.getItem("@tokens");
-         try {
-            const res = await reissue(JSON.parse(tokensJson));
-            failedRequest.response.config.headers["Authorization"] =
-               "Bearer " + res.accessToken;
-            return Promise.resolve();
-         } catch (err) {
-            return Promise.reject();
+      const interceptorId = axios.interceptors.response.use(
+         (res) => res,
+         async (err) => {
+            const originalRequest = err.config;
+            if (err.response.status === 401 && !originalRequest._retry) {
+               originalRequest._retry = true;
+               const tokensJson = await AsyncStorage.getItem("@tokens");
+               const res = await reissue(JSON.parse(tokensJson));
+
+               axios.defaults.headers.common.Authorization = `Bearer ${res.accessToken}`;
+               originalRequest.headers.Authorization = `Bearer ${res.accessToken}`;
+
+               return axios(originalRequest);
+            }
+            return Promise.reject(err);
          }
-      };
-      createAuthRefreshInterceptor(axios, refreshAuthLogic);
+      );
+      return () => axios.interceptors.response.eject(interceptorId);
    }, []);
-   /*
-   axios.interceptors.response.use(
-      (res) => res,
-      async (err) => {
-         if (err.response.status === 401) {
-            console.log(
-               "재요청&&&&&&7&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-            );
-            console.log(tokens);
-            await reissue(tokens).then((res) => {
-               err.config.headers.Authorization = `Bearer ${res.accessToken}`;
-               console.log(
-                  "재요청&&&&&&7&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-               );
-               return axios.request(err.config);
-            });
-         }
-         return Promise.reject(err);
-      }
-   );
-*/
+
    const preload = async () => {
       const res = await getToken();
       dispatch(setUniqueId(res));
