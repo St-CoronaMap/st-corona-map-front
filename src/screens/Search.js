@@ -1,9 +1,9 @@
 import React from "react";
 import SearchContainer from "../components/search/container/SearchContainer";
 import { createStackNavigator } from "@react-navigation/stack";
-import VideoEditContainer from "../components/videoEdit/container/VideoEditContainer";
 import { Platform } from "react-native";
 import palette from "../lib/styles/palette";
+import VideoEditRootContainer from "../components/videoEdit/container/VideoEditRootContainer";
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,7 @@ export default function SearchScreen({ navigation }) {
          />
          <Stack.Screen
             name="videoEdit_search"
-            component={VideoEditContainer}
+            component={VideoEditRootContainer}
             options={{
                headerShown: Platform.OS === "web" ? true : false,
                title: "뒤로가기",

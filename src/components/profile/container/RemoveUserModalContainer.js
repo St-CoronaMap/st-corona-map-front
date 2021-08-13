@@ -1,33 +1,26 @@
 import React, { useState } from "react";
 import RemoveUserModal from "../view/RemoveUserModal";
 import { useDispatch } from "react-redux";
-import { signout } from "../../../modules/auth";
+import { setLoading, setUnloading } from "../../../modules/loading";
+import { removeUser } from "../../../lib/api/auth";
 
-function RemoveUserModalContainer({ visible, setVisible, navigation, user }) {
+function RemoveUserModalContainer({ visible, setVisible, navigation }) {
    const [success, setSuccess] = useState(false);
-   const [loading, setLoading] = useState(false);
    const dispatch = useDispatch();
 
    const removeUserFunc = async () => {
-      const uid = user.uid;
-      setLoading(true);
+      dispatch(setLoading());
       try {
-         await user.delete();
+         await removeUser();
+         // 뭔가 회원 정보 다 날리는 작업
+         setSuccess(true);
       } catch (err) {
          console.log(err);
       }
-      setSuccess(true);
-      dispatch(signout());
-
-      try {
-         // 유저 탈퇴
-      } catch (err) {
-         console.log(err);
-      }
-      setLoading(false);
+      dispatch(setUnloading());
    };
    const afterRemove = () => {
-      navigation.navigate("Home");
+      navigation.navigate("Playlist");
    };
    return (
       <RemoveUserModal
@@ -36,7 +29,6 @@ function RemoveUserModalContainer({ visible, setVisible, navigation, user }) {
          removeUserFunc={removeUserFunc}
          afterRemove={afterRemove}
          success={success}
-         loading={loading}
       />
    );
 }

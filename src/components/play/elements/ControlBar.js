@@ -13,6 +13,7 @@ function ControlBar({
    pressBackward,
    pressForwardward,
    playing,
+   playingByPlayer,
 }) {
    return (
       <View style={styles.control}>
@@ -20,7 +21,7 @@ function ControlBar({
          <View style={styles.pauseButtonCotnainer}>
             <Button
                icon={{
-                  name: `${playing ? "pause" : "play"}`,
+                  name: `${playing && playingByPlayer ? "pause" : "play"}`,
                   type: "font-awesome",
                   color: palette.blackBerry,
                }}

@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import {
-   StyleSheet,
-   Text,
-   Image,
-   View,
-   Platform,
-   ScrollView,
-} from "react-native";
+import { StyleSheet, Text, Image, View, Platform } from "react-native";
 import { Button, ListItem } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
@@ -39,31 +32,30 @@ function VideoList({
       const inputRange = [index - 0.3, index, index + 0.3];
       const translateX = listItemAnimation.interpolate({
          inputRange: inputRange,
-         outputRange: [0, -170, 0],
+         outputRange: [0, -120, 0],
          extrapolate: "clamp",
       });
       return { translateX };
    });
 
    const onRightPress = (index) => {
-      listItemAnimation.setValue(index - 0.3);
-      Animated.timing(listItemAnimation, {
-         toValue: index - 0.3,
-         duration: 400,
-         useNativeDriver: true,
-      }).start();
-      Animated.timing(listItemAnimation, {
-         toValue: index,
-         duration: 400,
-         useNativeDriver: true,
-      }).start();
+      if (listItemAnimation.__getValue() === index) {
+         onCancleRight(index);
+      } else {
+         listItemAnimation.setValue(index - 0.3);
+         Animated.timing(listItemAnimation, {
+            toValue: index,
+            duration: 400,
+            useNativeDriver: true,
+         }).start(() => listItemAnimation.setValue(index));
+      }
    };
    const onCancleRight = (index) => {
       Animated.timing(listItemAnimation, {
          toValue: index - 0.3,
          duration: 400,
          useNativeDriver: true,
-      }).start();
+      }).start(() => listItemAnimation.setValue(-1));
    };
    const onPressEdit = (index) => {
       onCancleRight(index);
@@ -136,7 +128,6 @@ function VideoList({
                   </ListItem>
                </Animated.View>
                <ButtonsForItem
-                  onCancleRight={onCancleRight}
                   onPressDelete={onPressDelete}
                   onPressEdit={onPressEdit}
                   index={index}

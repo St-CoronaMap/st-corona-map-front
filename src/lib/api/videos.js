@@ -3,11 +3,9 @@ import { Address } from "./constants";
 
 export const getVideoList = async (id) => {
    try {
-      console.log(id);
       const res = await axios.get(`${Address}/api/play/list/${id}`);
       return res.data.response;
    } catch (err) {
-      console.log(err.response.data);
       throw err;
    }
 };
@@ -21,7 +19,6 @@ export const addVideo = async (id, item) => {
          end: item.lapse[1],
       });
    } catch (err) {
-      console.log(err.response.data);
       throw err;
    }
 };
@@ -30,7 +27,6 @@ export const deleteVideo = async (id) => {
    try {
       await axios.delete(`${Address}/api/play/delete/${id}`);
    } catch (err) {
-      console.log(err.response.data);
       throw err;
    }
 };
@@ -43,7 +39,6 @@ export const changeOrder = async (listId, data) => {
          seqList: array,
       });
    } catch (err) {
-      console.log(err.response.data);
       throw err;
    }
 };
@@ -56,7 +51,6 @@ export const changeLapse = async (id, start, end) => {
          end: end,
       });
    } catch (err) {
-      console.log(err.response.data);
       throw err;
    }
 };

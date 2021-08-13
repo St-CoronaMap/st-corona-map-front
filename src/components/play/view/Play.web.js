@@ -40,6 +40,8 @@ function Play({
    onStart,
    onEnded,
    onProgress,
+   playingByPlayer,
+   setPlayingByPlayer,
 }) {
    const youtubePlayerWrap = (cur) => {
       return (
@@ -52,8 +54,13 @@ function Play({
             volume={vol / 100}
             controls={true}
             onStart={onStart}
-            onPause={() => setPlaying(false)}
-            onPlay={() => setPlaying(true)}
+            onPause={() => {
+               setPlayingByPlayer(false);
+            }}
+            onPlay={() => {
+               setPlayingByPlayer(true);
+               setPlaying(true);
+            }}
             onProgress={({ playedSeconds }) => onProgress(playedSeconds)}
             onEnded={onEnded}
          />
@@ -90,6 +97,7 @@ function Play({
             pressBackward={pressBackward}
             pressForwardward={pressForwardward}
             playing={playing}
+            playingByPlayer={playingByPlayer}
          />
       </View>
    );

@@ -4,40 +4,24 @@ import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import { WINDOW_WIDTH } from "../../../lib/styles/variables";
 
-function ButtonsForItem({
-   onCancleRight,
-   onPressDelete,
-   onPressEdit,
-   index,
-   id,
-}) {
+function ButtonsForItem({ onPressDelete, onPressEdit, index, id }) {
    return (
       <>
          <Button
-            title="취소"
-            type="clear"
-            containerStyle={styles(0).buttonContainer}
-            buttonStyle={stylesObj.buttonStyle}
-            titleStyle={{
-               color: palette.blackBerry,
-               fontSize: 16,
-            }}
-            onPress={() => onCancleRight(index)}
-         />
-         <Button
             title="수정"
             type="clear"
-            containerStyle={styles(1).buttonContainer}
+            containerStyle={styles(0).buttonContainer}
             buttonStyle={stylesObj.buttonStyle}
             onPress={() => onPressEdit(index)}
             titleStyle={{
                fontSize: 16,
+               color: palette.blackBerry,
             }}
          />
          <Button
             title="삭제"
             type="clear"
-            containerStyle={styles(2).buttonContainer}
+            containerStyle={styles(1).buttonContainer}
             buttonStyle={stylesObj.buttonStyle}
             titleStyle={{
                color: palette.redRose,

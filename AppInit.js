@@ -17,9 +17,9 @@ import HeaderName from "./src/components/headerName/HeaderName";
 import Loading from "./src/components/elements/Loading";
 import Snackbar from "rn-animated-snackbar";
 import { clearSnackbar } from "./src/modules/snackbar";
-import { Button } from "react-native-elements";
-import { removeAll } from "./src/lib/api/playlist";
 import axios from "axios";
+import createAuthRefreshInterceptor from "axios-auth-refresh";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 
@@ -30,19 +30,40 @@ function AppInit() {
    const dispatch = useDispatch();
 
    useEffect(() => {
-      axios.interceptors.response.use(null, (err) => {
-         console.log(err.response.data);
-         console.log(err);
-         if (err.config && err.response && err.response.status === 401) {
-            return reissue("토큰 넣기").then((token) => {
-               // error.config.headers.xxxx <= set the token
-               return axios.request(config);
+      const refreshAuthLogic = async (failedRequest) => {
+         const tokensJson = await AsyncStorage.getItem("@tokens");
+         try {
+            const res = await reissue(JSON.parse(tokensJson));
+            failedRequest.response.config.headers["Authorization"] =
+               "Bearer " + res.accessToken;
+            return Promise.resolve();
+         } catch (err) {
+            return Promise.reject();
+         }
+      };
+      createAuthRefreshInterceptor(axios, refreshAuthLogic);
+   }, []);
+   /*
+   axios.interceptors.response.use(
+      (res) => res,
+      async (err) => {
+         if (err.response.status === 401) {
+            console.log(
+               "재요청&&&&&&7&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+            );
+            console.log(tokens);
+            await reissue(tokens).then((res) => {
+               err.config.headers.Authorization = `Bearer ${res.accessToken}`;
+               console.log(
+                  "재요청&&&&&&7&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+               );
+               return axios.request(err.config);
             });
          }
          return Promise.reject(err);
-      });
-   }, []);
-
+      }
+   );
+*/
    const preload = async () => {
       const res = await getToken();
       dispatch(setUniqueId(res));
@@ -60,10 +81,6 @@ function AppInit() {
          />
       );
    }
-   console.log(
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncGZxcHN4ajc1IiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYyODc3ODE0NH0.OLDrM7flGbrDb31reTp5HEjX-l3K7rTqLB7nerXzKgFv3GnIsjUTpjFkezjI0s880adQGSdsupagd84R0iSJkQ" ===
-         "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncGZxcHN4ajc1IiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYyODc3ODE0NH0.OLDrM7flGbrDb31reTp5HEjX-l3K7rTqLB7nerXzKgFv3GnIsjUTpjFkezjI0s880adQGSdsupagd84R0iSJkQ"
-   );
 
    return (
       <>
@@ -89,6 +106,7 @@ function AppInit() {
                      }}
                   />
                </Stack.Navigator>
+               <ModalPortal />
                <Snackbar
                   visible={snackbar}
                   onDismiss={() => dispatch(clearSnackbar())}
@@ -103,10 +121,8 @@ function AppInit() {
                      borderRadius: 20,
                   }}
                />
-               <Button title="remove" onPress={removeAll} />
             </View>
          </NavigationContainer>
-         <ModalPortal />
          <Loading loading={loading} />
       </>
    );

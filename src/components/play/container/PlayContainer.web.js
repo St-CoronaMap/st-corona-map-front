@@ -9,6 +9,8 @@ function PlayContainer({
    setPlaying,
    playlist,
    setPlaylist,
+   playingByPlayer,
+   setPlayingByPlayer,
    playerRef,
    togglePlaying,
    cur,
@@ -70,6 +72,8 @@ function PlayContainer({
          onPressEditVideo={onPressEditVideo}
          onPressDeleteVideo={onPressDeleteVideo}
          playing={playing}
+         playingByPlayer={playingByPlayer}
+         setPlayingByPlayer={setPlayingByPlayer}
          playerRef={playerRef}
          togglePlaying={togglePlaying}
          cur={cur}

@@ -111,7 +111,6 @@ function ProfileContainer({ navigation }) {
                   visible={removeUserVisible}
                   setVisible={setRemoveUserVisible}
                   navigation={navigation}
-                  user={user}
                />
             </>
          )}

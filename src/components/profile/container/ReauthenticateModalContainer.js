@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ReauthenticateModal from "../view/ReauthenticateModal";
 import handleError, { checkPassword } from "../../../lib/utils/handleAuthErr";
+import { useDispatch } from "react-redux";
+import { setLoading, setUnloading } from "../../../modules/loading";
 
 function ReauthenticateModalContainer({
    setReauthenticated,
@@ -10,7 +12,7 @@ function ReauthenticateModalContainer({
    const [reauthPw, setReauthPw] = useState(false);
    const [password, setPassword] = useState("");
    const [errMsg, setErrMsg] = useState({ password: "" });
-   const [loading, setLoading] = useState(false);
+   const dispatch = useDispatch();
 
    const catchError = (code, setErrMsg, lastSection) => {
       if (!handleError(code, setErrMsg)) {
@@ -29,12 +31,15 @@ function ReauthenticateModalContainer({
          if (!checkPassword(password, setErrMsg)) {
             return;
          }
-         setLoading(true);
-         // 재 로그인
+         dispatch(setLoading());
+         // 아이디 받아온 걸로 재 로그인
       } catch (err) {
-         catchError(err.code, setErrMsg, "password");
+         //여기 에러처리
+         if (err.message === "비밀번호가 일치하지 않습니다.") {
+            handleError("auth/wrong-password", setErrMsg);
+         }
       }
-      setLoading(false);
+      dispatch(setUnloading());
    };
    const onChange = (v) => {
       if (errMsg.password) {
@@ -62,7 +67,6 @@ function ReauthenticateModalContainer({
          onChange={onChange}
          errMsg={errMsg}
          password={password}
-         loading={loading}
       />
    );
 }

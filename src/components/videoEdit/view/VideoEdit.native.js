@@ -18,23 +18,26 @@ function VideoEdit({
    handleValueChange,
    endTime,
    loaded,
-   setLoaded,
    setPlaying,
    setSelectedLapsed,
    checkItem,
    lapseLowCounter,
    lapseHighCounter,
+   playingByPlayer,
+   setPlayingByPlayer,
+   togglePlaying,
+   volumneChange,
+   vol,
+   onReady,
 }) {
-   const [vol, setVol] = useState(50);
-
-   const onReady = useCallback(() => {
-      setLoaded(true);
-      setPlaying(true);
-   }, []);
    const onChangeState = useCallback(
       (e) => {
          if (e === "ended") {
             playerRef.current?.seekTo(selectedLapsed[0], true);
+         } else if (e === "paused") {
+            setPlayingByPlayer(false);
+         } else if (e === "playing") {
+            setPlayingByPlayer(true);
             setPlaying(true);
          }
       },
@@ -60,7 +63,7 @@ function VideoEdit({
          </View>
          <ScrollView>
             <Summary item={item} />
-            {loaded && (
+            {loaded && lapse[1] ? (
                <SecondController
                   lapse={lapse}
                   lapseLowCounter={lapseLowCounter}
@@ -70,14 +73,17 @@ function VideoEdit({
                   setSelectedLapsed={setSelectedLapsed}
                   setPlaying={setPlaying}
                />
+            ) : (
+               <></>
             )}
          </ScrollView>
          <ControlVideo
             vol={vol}
-            setVol={setVol}
-            setPlaying={setPlaying}
             playing={playing}
+            playingByPlayer={playingByPlayer}
             checkItem={checkItem}
+            togglePlaying={togglePlaying}
+            volumneChange={volumneChange}
          />
       </View>
    );

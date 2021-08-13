@@ -17,7 +17,6 @@ function VideoEdit({
    selectedLapsed,
    endTime,
    loaded,
-   setLoaded,
    setPlaying,
    onSelectLapse,
    checkItem,
@@ -26,13 +25,13 @@ function VideoEdit({
    handleValueChange,
    onStart,
    handleOnProgress,
+   playingByPlayer,
+   setPlayingByPlayer,
+   togglePlaying,
+   volumneChange,
+   vol,
+   onReady,
 }) {
-   const [vol, setVol] = useState(50);
-
-   const onReady = useCallback(() => {
-      setLoaded(true);
-      setPlaying(true);
-   }, []);
    const onEnded = useCallback(() => {
       playerRef.current?.seekTo(selectedLapsed[0], "seconds");
    }, [selectedLapsed[0]]);
@@ -47,9 +46,15 @@ function VideoEdit({
                height={PLAYER_HEIGHT}
                playing={playing}
                volume={vol / 100}
+               controls={true}
                onReady={onReady}
-               onPause={() => setPlaying(false)}
-               onPlay={() => setPlaying(true)}
+               onPause={() => {
+                  setPlayingByPlayer(false);
+               }}
+               onPlay={() => {
+                  setPlaying(true);
+                  setPlayingByPlayer(true);
+               }}
                onEnded={onEnded}
                onProgress={({ playedSeconds }) =>
                   handleOnProgress(playedSeconds)
@@ -75,10 +80,11 @@ function VideoEdit({
          </ScrollView>
          <ControlVideo
             vol={vol}
-            setVol={setVol}
-            setPlaying={setPlaying}
             playing={playing}
             checkItem={checkItem}
+            playingByPlayer={playingByPlayer}
+            togglePlaying={togglePlaying}
+            volumneChange={volumneChange}
          />
       </View>
    );

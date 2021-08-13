@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import PwUpdate from "../view/PwUpdate";
-import handleError, { checkPassword } from "../../../lib/utils/handleAuthErr";
-import testPassword from "../../../lib/utils/testPassword";
+import handleError, {
+   catchError,
+   checkPassword,
+} from "../../../lib/utils/handleAuthErr";
+import { useDispatch } from "react-redux";
+import { setLoading, setUnloading } from "../../../modules/loading";
 
 function PwUpdateContainer({ visible, setVisible }) {
    const [password, setPassword] = useState("");
    const [success, setSuccess] = useState(false);
    const [errMsg, setErrMsg] = useState({ password: "" });
-   const [loading, setLoading] = useState(false);
+   const dispatch = useDispatch();
 
    const onPasswordUpdate = async (pw) => {
       if (success) {
@@ -16,13 +20,13 @@ function PwUpdateContainer({ visible, setVisible }) {
          return;
       }
       try {
-         setLoading(true);
+         dispatch(setLoading());
          // 비밀번호 변경
          setSuccess(true);
       } catch (err) {
-         handleError(err.code, setErrMsg, "password");
+         catchError(err.code, setErrMsg, "password");
       }
-      setLoading(false);
+      dispatch(setUnloading());
    };
    const onChange = (v) => {
       if (errMsg.password) {
@@ -51,7 +55,6 @@ function PwUpdateContainer({ visible, setVisible }) {
          onPasswordUpdate={onPasswordUpdate}
          errMsg={errMsg}
          success={success}
-         loading={loading}
       />
    );
 }

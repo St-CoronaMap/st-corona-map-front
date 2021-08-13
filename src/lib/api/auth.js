@@ -16,6 +16,7 @@ import { Address } from "./constants";
       2-1. 만약 비회원 아이디가 invalid 할 경우 새로 생성
 
 */
+
 const setTokens = async (tokens) => {
    const tokensObj = {
       accessToken: tokens.accessToken,
@@ -24,7 +25,6 @@ const setTokens = async (tokens) => {
    axios.defaults.headers.common[
       "Authorization"
    ] = `Bearer ${tokensObj.accessToken}`;
-   console.log("setTokens", tokensObj);
    await AsyncStorage.setItem("@tokens", JSON.stringify(tokensObj));
    return tokensObj;
 };
@@ -37,9 +37,6 @@ export const login = async (id, pw) => {
          isPC: Platform.OS === "web",
       });
       const tokens = await setTokens(res.data.response);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-      console.log(tokens);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
       return tokens;
    } catch (err) {
       throw err.response.data;
@@ -48,14 +45,30 @@ export const login = async (id, pw) => {
 
 export const reissue = async (tokens) => {
    try {
-      const res = await axios.post(`${Address}​/api/member/reissue`, {
-         ...tokens,
-         isPC: Platform.OS === "web",
-      });
-      tokens = await setTokens(res.data.response);
-      return tokens;
+      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 진입~~~~~~~~~~~~~~~~");
+      console.log(tokens);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 진입~~~~~~~~~~~~~~~~");
+      const res = await axios.post(
+         `http://3.37.114.161:8080/api/member/reissue`,
+         {
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+            isPC: Platform.OS === "web",
+         },
+         { skipAuthRefresh: true }
+      );
+      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 성공~~~~~~~~~~~~~~~~");
+      console.log(res);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈~~~~~~~~~~~~~~~~");
+      const newTokens = await setTokens(res.data.response);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~뉴 토큰 받음~~~~~~~~~~~~~~~~");
+      console.log(newTokens);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~뉴토큰~~~~~~~~~~~~~~~~");
+      return newTokens;
    } catch (err) {
-      console.log(err.response.data);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 에러~~~~~~~~~~~~~~~~");
+      // console.log(err);
+      console.log("~~~~~~~~~~~~~~~~~~~~~~리이슈 에러~~~~~~~~~~~~~~~~");
       throw err.response.data;
    }
 };
@@ -87,9 +100,6 @@ export const getToken = async () => {
       const tokensJson = await AsyncStorage.getItem("@tokens");
       let rtObj = { tokens: JSON.parse(tokensJson), first: false };
 
-      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-      console.log(rtObj.tokens);
-      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
       if (rtObj.tokens) {
          //reissue
          try {
@@ -98,7 +108,6 @@ export const getToken = async () => {
          } catch (err) {
             // 리프레시 토큰 만료시 비회원 재로그인
             // 회원은 기존에 비회원으로 있던 기록이 나오고, 로그인은 자신이 해야함
-            console.log("non member login");
             const res = await nonMemberLogin();
             rtObj = res;
          }
@@ -137,6 +146,14 @@ export const SignUp = async (id, pw) => {
    } catch (err) {
       console.log(err.response.data);
       // 중복 아이디 처리
+      throw err.response.data;
+   }
+};
+
+export const removeUser = async () => {
+   try {
+      await axios.delete(`${Address}/api/member/delete`);
+   } catch (err) {
       throw err.response.data;
    }
 };

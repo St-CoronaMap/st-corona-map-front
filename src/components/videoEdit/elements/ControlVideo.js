@@ -8,11 +8,14 @@ import { walkthroughable, CopilotStep } from "react-native-copilot";
 
 const CopilotView = walkthroughable(View);
 
-function ControlVideo({ vol, setVol, setPlaying, playing, checkItem }) {
-   const volumneChange = useCallback((v) => setVol(v), []);
-   const togglePlaying = useCallback(() => {
-      setPlaying((prev) => !prev);
-   }, []);
+function ControlVideo({
+   vol,
+   volumneChange,
+   playing,
+   checkItem,
+   playingByPlayer,
+   togglePlaying,
+}) {
    return (
       <View style={styles.control}>
          <View style={styles.buttonContainer}>
@@ -30,7 +33,7 @@ function ControlVideo({ vol, setVol, setPlaying, playing, checkItem }) {
          <View style={styles.buttonContainer}>
             <Button
                icon={{
-                  name: `${playing ? "pause" : "play"}`,
+                  name: `${playing && playingByPlayer ? "pause" : "play"}`,
                   type: "font-awesome",
                   color: palette.blackBerry,
                }}

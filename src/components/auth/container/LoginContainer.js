@@ -46,8 +46,8 @@ function LoginContainer({ navigation }) {
       if (isLogin) {
          try {
             res = await login(userInfo.id, userInfo.password);
+            console.log(res);
          } catch (err) {
-            console.log(err);
             // 비밀번호, 아이디 처리
             if (err.message === "비밀번호가 일치하지 않습니다.") {
                handleError("auth/wrong-password", setErrMsg);
@@ -60,6 +60,7 @@ function LoginContainer({ navigation }) {
       } else {
          if (userInfo.password !== userInfo.passwordCheck) {
             handleError("not_match_password_and_check", setErrMsg);
+            dispatch(setUnloading());
             return;
          }
          try {

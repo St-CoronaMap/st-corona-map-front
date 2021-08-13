@@ -25,6 +25,7 @@ function Play({
    onPressDeleteVideo,
    playerRef,
    playing,
+   playingByPlayer,
    cur,
    onReady,
    handleStateChange,
@@ -49,10 +50,6 @@ function Play({
             }}
             videoId={playlist?.items[cur]?.videoId}
             onChangeState={handleStateChange}
-            initialPlayerParams={{
-               start: playlist.items[cur]?.start,
-               end: playlist.items[cur]?.end,
-            }}
          />
       );
    };
@@ -84,6 +81,7 @@ function Play({
             pressBackward={pressBackward}
             pressForwardward={pressForwardward}
             playing={playing}
+            playingByPlayer={playingByPlayer}
          />
       </View>
    );

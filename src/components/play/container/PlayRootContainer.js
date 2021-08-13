@@ -9,6 +9,7 @@ import PlayContainer from "./PlayContainer";
 
 function PlayRootContainer({ route, navigation }) {
    const [playing, setPlaying] = useState(true);
+   const [playingByPlayer, setPlayingByPlayer] = useState(true);
    const [prevVideoId, setPrevVideoId] = useState(0);
    const [playlist, setPlaylist] = useState(route.params.playlistInput);
    const playerRef = useRef();
@@ -27,8 +28,15 @@ function PlayRootContainer({ route, navigation }) {
    }, [cur]);
 
    const togglePlaying = useCallback(() => {
-      setPlaying((prev) => !prev);
-   }, []);
+      if (!playingByPlayer && playing) {
+         setPlaying(false);
+         setPlayingByPlayer(true);
+         setTimeout(() => setPlaying(true), 0);
+      } else {
+         setPlayingByPlayer((prev) => !prev);
+         setPlaying((prev) => !prev);
+      }
+   }, [playing, playingByPlayer]);
 
    const changeVol = useCallback((v) => {
       setVol(v);
@@ -125,6 +133,8 @@ function PlayRootContainer({ route, navigation }) {
          route={route}
          playing={playing}
          setPlaying={setPlaying}
+         playingByPlayer={playingByPlayer}
+         setPlayingByPlayer={setPlayingByPlayer}
          playlist={playlist}
          setPlaylist={setPlaylist}
          playerRef={playerRef}

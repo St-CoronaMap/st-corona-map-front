@@ -11,7 +11,6 @@ export const getPlaylistApi = async ({ id, dispatch }) => {
       }
       return res.data.response;
    } catch (err) {
-      console.log(err.response.data);
       throw err.response.data;
    }
 };
@@ -20,7 +19,6 @@ export const deletePlaylist = async (id) => {
    try {
       await axios.delete(`${Address}/api/playlist/delete/${id}`);
    } catch (err) {
-      console.log(err.response.data);
       throw err.response.data;
    }
 };
