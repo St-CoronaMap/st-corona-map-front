@@ -18,9 +18,7 @@ import Loading from "./src/components/elements/Loading";
 import Snackbar from "rn-animated-snackbar";
 import { clearSnackbar } from "./src/modules/snackbar";
 import axios from "axios";
-import createAuthRefreshInterceptor from "axios-auth-refresh";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setUnloading } from "./src/modules/loading";
 
 const Stack = createStackNavigator();
 

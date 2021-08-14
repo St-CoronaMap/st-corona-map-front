@@ -57,6 +57,7 @@ export const reissue = async (tokens) => {
       const newTokens = await setTokens(res.data.response);
       return newTokens;
    } catch (err) {
+      console.log(err.response.data);
       throw err.response.data;
    }
 };

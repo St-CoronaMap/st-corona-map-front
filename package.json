@@ -21,7 +21,6 @@
       "@react-navigation/stack": "^5.14.5",
       "@sharcoux/slider": "5.3.0",
       "axios": "^0.21.1",
-      "axios-auth-refresh": "^3.1.0",
       "expo": "~42.0.1",
       "expo-app-loading": "^1.1.2",
       "expo-application": "~3.2.0",
