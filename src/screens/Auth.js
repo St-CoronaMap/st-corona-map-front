@@ -6,7 +6,7 @@ import ProfileContainer from "../components/profile/container/ProfileContainer";
 function Auth({ navigation }) {
    const { signined } = useSelector(({ auth }) => auth);
    return signined ? (
-      <ProfileContainer />
+      <ProfileContainer navigation={navigation} />
    ) : (
       <LoginContainer navigation={navigation} />
    );

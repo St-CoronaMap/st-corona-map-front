@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Profile from "../view/Profile";
 import * as ImagePicker from "expo-image-picker";
 import PwUpdateContainer from "./PwUpdateContainer";
 import ReauthenticateModalContainer from "./ReauthenticateModalContainer";
 import RemoveUserModalContainer from "./RemoveUserModalContainer";
+import { setLoading, setUnloading } from "../../../modules/loading";
+import { logout } from "../../../lib/api/auth";
+import { signout } from "../../../modules/auth";
+import { getPlaylist } from "../../../modules/playlist";
+import { afterGetPlaylist } from "../../../lib/utils/afterGetPlaylist";
 
 function ProfileContainer({ navigation }) {
    const { user } = useSelector(({ auth }) => auth);
-   const [loading, setLoading] = useState({ photo: false, name: false });
+   const [loading, setThisLoading] = useState({ photo: false, name: false });
    const [onEdit, setOnEdit] = useState({});
    const [editUserInfo, setEditUserInfo] = useState({});
    const [modalVisible, setModalVisible] = useState(false);
@@ -16,6 +21,8 @@ function ProfileContainer({ navigation }) {
    const [reauthenticated, setReauthenticated] = useState(false);
    const [reauthVisible, setReauthVisible] = useState(false);
    const [errMsg, setErrMsg] = useState({ name: "" });
+
+   const dispatch = useDispatch();
 
    const changeAvatar = async () => {
       try {
@@ -32,18 +39,18 @@ function ProfileContainer({ navigation }) {
             aspect: [4, 4],
             quality: 1,
          });
-         setLoading((prev) => ({ ...prev, photo: true }));
+         setThisLoading((prev) => ({ ...prev, photo: true }));
          if (!result.cancelled) {
             // 프로필 사진 수정
          }
       } catch (err) {
          console.log(err);
       }
-      setLoading((prev) => ({ ...prev, photo: false }));
+      setThisLoading((prev) => ({ ...prev, photo: false }));
    };
 
    const changeDisplayName = async () => {
-      setLoading((prev) => ({ ...prev, name: true }));
+      setThisLoading((prev) => ({ ...prev, name: true }));
       if (user.displayName !== editUserInfo.name) {
          try {
             // 닉네임 수정
@@ -57,7 +64,7 @@ function ProfileContainer({ navigation }) {
       } else {
          setOnEdit({});
       }
-      setLoading((prev) => ({ ...prev, name: false }));
+      setThisLoading((prev) => ({ ...prev, name: false }));
    };
 
    const onPressOnEdit = (name, value) => {
@@ -80,6 +87,12 @@ function ProfileContainer({ navigation }) {
       setRemoveUserVisible(true);
       setReauthVisible(true);
    };
+   const onPressLogout = async () => {
+      dispatch(setLoading());
+      await logout();
+      dispatch(signout());
+      dispatch(getPlaylist(() => afterGetPlaylist(navigation, dispatch)));
+   };
    return (
       <>
          <Profile
@@ -94,6 +107,7 @@ function ProfileContainer({ navigation }) {
             showChangePassword={showChangePassword}
             showRemoveUser={showRemoveUser}
             errMsg={errMsg}
+            onPressLogout={onPressLogout}
          />
          {(modalVisible || removeUserVisible) && !reauthenticated ? (
             <ReauthenticateModalContainer

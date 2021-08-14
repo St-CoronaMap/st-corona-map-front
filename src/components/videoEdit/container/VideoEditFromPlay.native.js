@@ -25,7 +25,7 @@ function VideoEditFromPlay({
    useEffect(() => {
       const handleLapse = async () => {
          const time = await playerRef.current?.getCurrentTime();
-         if (selectedLapsed[1] <= time) {
+         if (time <= selectedLapsed[1] && selectedLapsed[1] <= time + 0.5) {
             playerRef.current?.seekTo(selectedLapsed[0], true);
          }
       };

@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { getPlaylistApi } from "../lib/api/playlist";
-import axios from "axios";
+
 //액션 타입
 const ADD_ITEM = "ADD_ITEM";
 const ADD_PLAYLIST = "ADD_PLAYLIST";
@@ -16,9 +16,9 @@ export const addItem = (id, item) => ({
    payload: { id: id, item: item },
 });
 export const addPlaylist = (name) => ({ type: ADD_PLAYLIST, payload: name });
-export const getPlaylist = (id, dispatch) => ({
+export const getPlaylist = (callback) => ({
    type: GET_PLAYLIST,
-   payload: { id: id, dispatch: dispatch },
+   payload: callback,
 });
 export const clearThumbnail = (id) => ({ type: CLEAR_THUMBNAIL, payload: id });
 export const setThumbnail = (id, thumbnail) => ({

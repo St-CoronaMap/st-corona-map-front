@@ -40,7 +40,7 @@ function AddPlaylistModalContainer({ visible, cancel }) {
             isPublic: false,
             category: "OTHER",
          });
-         dispatch(getPlaylist(null, dispatch));
+         dispatch(getPlaylist(() => dispatch(setUnloading())));
          cancel();
       } catch (err) {
          if (err.message === "비회원 playlist 제한을 초과하였습니다.") {

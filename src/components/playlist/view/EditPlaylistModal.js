@@ -45,7 +45,7 @@ function EditPlaylistModal({
                   activeOpacity={0.5}
                   containerStyle={styles.listItem}>
                   <ListItem.Content style={{ alignItems: "center" }}>
-                     <ListItem.Title style={{ color: "#03a9f4" }}>
+                     <ListItem.Title style={{ color: palette.blackBerry }}>
                         이름 변경
                      </ListItem.Title>
                   </ListItem.Content>

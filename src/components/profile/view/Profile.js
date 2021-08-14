@@ -40,6 +40,7 @@ function Profile({
    showChangePassword,
    showRemoveUser,
    errMsg,
+   onPressLogout,
 }) {
    return (
       <View style={styles.container}>
@@ -68,17 +69,23 @@ function Profile({
          </View>
          <View style={styles.bottomBar}>
             <Button
+               title="회원탈퇴"
+               type="clear"
+               color="red"
+               titleStyle={{ color: palette.redRose }}
+               onPress={showRemoveUser}
+            />
+            <Button
                title="비밀번호 변경"
                type="clear"
                titleStyle={{ color: palette.blackBerry }}
                onPress={showChangePassword}
             />
             <Button
-               title="회원탈퇴"
+               title="로그아웃"
                type="clear"
-               color="red"
-               titleStyle={{ color: palette.redRose }}
-               onPress={showRemoveUser}
+               titleStyle={{ color: palette.blackBerry }}
+               onPress={onPressLogout}
             />
          </View>
       </View>

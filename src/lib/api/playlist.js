@@ -3,11 +3,11 @@ import axios from "axios";
 import { setUnloading } from "../../modules/loading";
 import { Address } from "./constants";
 
-export const getPlaylistApi = async ({ id, dispatch }) => {
+export const getPlaylistApi = async (callback) => {
    try {
       const res = await axios.get(`${Address}/api/playlist`);
-      if (dispatch) {
-         dispatch(setUnloading());
+      if (typeof callback === "function") {
+         callback();
       }
       return res.data.response;
    } catch (err) {
@@ -28,6 +28,7 @@ export const addPlaylist = async (obj) => {
       await axios.post(`${Address}/api/playlist/create`, obj);
    } catch (err) {
       console.log(err.response.data);
+      e;
       throw err.response.data;
    }
 };

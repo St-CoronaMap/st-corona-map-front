@@ -46,7 +46,7 @@ export const login = async (id, pw) => {
 export const reissue = async (tokens) => {
    try {
       const res = await axios.post(
-         `http://3.37.114.161:8080/api/member/reissue`,
+         `${Address}/api/member/reissue`,
          {
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
@@ -141,7 +141,17 @@ export const SignUp = async (id, pw) => {
 export const removeUser = async () => {
    try {
       await axios.delete(`${Address}/api/member/delete`);
+      await logout();
    } catch (err) {
       throw err.response.data;
+   }
+};
+
+export const logout = async () => {
+   try {
+      await AsyncStorage.setItem("@tokens", JSON.stringify({}));
+      await nonMemberLogin();
+   } catch (err) {
+      throw err;
    }
 };

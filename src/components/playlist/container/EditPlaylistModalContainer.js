@@ -17,7 +17,7 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
       dispatch(setLoading());
       try {
          await deletePlaylist(edittingPlaylist.id);
-         dispatch(getPlaylist(uniqueId.id, dispatch));
+         dispatch(getPlaylist(() => dispatch(setUnloading())));
          cancel();
       } catch (err) {
          dispatch(
@@ -53,7 +53,7 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
                id: edittingPlaylist.id,
                title: name,
             });
-            dispatch(getPlaylist(uniqueId.id, dispatch));
+            dispatch(getPlaylist(() => dispatch(setUnloading())));
             cancelCallback();
          } catch (err) {
             dispatch(

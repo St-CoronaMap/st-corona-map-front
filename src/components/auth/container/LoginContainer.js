@@ -9,6 +9,7 @@ import { setUniqueId } from "../../../modules/uniqueId";
 import handleError, { checkLoginInfo } from "../../../lib/utils/handleAuthErr";
 import { signin } from "../../../modules/auth";
 import { getPlaylist } from "../../../modules/playlist";
+import { afterGetPlaylist } from "../../../lib/utils/afterGetPlaylist";
 
 function LoginContainer({ navigation }) {
    const [isLogin, setIsLogIn] = useState(true);
@@ -46,7 +47,6 @@ function LoginContainer({ navigation }) {
       if (isLogin) {
          try {
             res = await login(userInfo.id, userInfo.password);
-            console.log(res);
          } catch (err) {
             // 비밀번호, 아이디 처리
             if (err.message === "비밀번호가 일치하지 않습니다.") {
@@ -77,10 +77,8 @@ function LoginContainer({ navigation }) {
       }
 
       dispatch(signin(userInfo.id));
-      dispatch(getPlaylist());
       dispatch(setUniqueId({ tokens: res, first: false }));
-      navigation.navigate("Playlist");
-      dispatch(setUnloading());
+      dispatch(getPlaylist(() => afterGetPlaylist(navigation, dispatch)));
    };
 
    const passwordReset = () => {

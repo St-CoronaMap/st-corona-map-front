@@ -33,7 +33,7 @@ function VideoEditContainer({
    useEffect(() => {
       const handleLapse = async () => {
          const time = await playerRef.current?.getCurrentTime();
-         if (selectedLapsed[1] <= time) {
+         if (time <= selectedLapsed[1] && selectedLapsed[1] <= time + 0.5) {
             playerRef.current?.seekTo(selectedLapsed[0], true);
          }
       };
@@ -51,7 +51,7 @@ function VideoEditContainer({
    let count = 0,
       saveLow = 0;
    const handleValueChange = useCallback((low, high) => {
-      if (count >= 4) {
+      if (count > 1) {
          if (low <= high) {
             setLapse([low, high]);
             if (low != saveLow) playerRef.current?.seekTo(low, true);

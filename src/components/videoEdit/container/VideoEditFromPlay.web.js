@@ -44,7 +44,10 @@ function VideoEditFromPlay({
 
    const handleOnProgress = useCallback(
       (playedSeconds, cur) => {
-         if (playedSeconds > selectedLapsed[1]) {
+         if (
+            playedSeconds <= selectedLapsed[1] &&
+            selectedLapsed[1] <= playedSeconds + 1
+         ) {
             playerRef.current?.seekTo(selectedLapsed[0], "seconds");
          }
       },
