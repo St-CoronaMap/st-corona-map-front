@@ -34,7 +34,6 @@ function ReauthenticateModalContainer({
          dispatch(setLoading());
          // 아이디 받아온 걸로 재 로그인
       } catch (err) {
-         //여기 에러처리
          if (err.message === "비밀번호가 일치하지 않습니다.") {
             handleError("auth/wrong-password", setErrMsg);
          }

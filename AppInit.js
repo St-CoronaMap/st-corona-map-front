@@ -19,6 +19,7 @@ import Snackbar from "rn-animated-snackbar";
 import { clearSnackbar } from "./src/modules/snackbar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { navigationRef } from "./RootNavigation";
 
 const Stack = createStackNavigator();
 
@@ -69,7 +70,9 @@ function AppInit() {
 
    return (
       <>
-         <NavigationContainer documentTitle={{ enabled: false }}>
+         <NavigationContainer
+            ref={navigationRef}
+            documentTitle={{ enabled: false }}>
             <View
                style={
                   Platform.OS === "web"

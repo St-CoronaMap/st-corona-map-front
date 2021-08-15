@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { setUnloading } from "../../modules/loading";
 import { Address } from "./constants";
 
 export const getPlaylistApi = async (callback) => {
@@ -27,8 +26,6 @@ export const addPlaylist = async (obj) => {
    try {
       await axios.post(`${Address}/api/playlist/create`, obj);
    } catch (err) {
-      console.log(err.response.data);
-      e;
       throw err.response.data;
    }
 };
@@ -37,7 +34,6 @@ export const editPlaylist = async (obj) => {
    try {
       await axios.put(`${Address}/api/playlist/edit`, obj);
    } catch (err) {
-      console.log(err.response.data);
       throw err.response.data;
    }
 };
