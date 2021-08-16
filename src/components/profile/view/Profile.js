@@ -7,63 +7,67 @@ import Header from "./Header";
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      padding: 10,
       paddingBottom: 0,
       paddingTop: 30,
       backgroundColor: palette.ivory,
    },
    avatar: {
-      flex: 2,
+      height: 200,
       alignItems: "center",
       justifyContent: "center",
    },
    content: {
-      flex: 4,
+      padding: 10,
       backgroundColor: palette.ivory,
    },
+   lineHeader: {
+      opacity: 0.8,
+   },
    bottomBar: {
-      flex: 1,
+      position: "absolute",
+      width: "100%",
+      bottom: 0,
+      height: 80,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-around",
+   },
+   buttonContainer: {
+      width: "33%",
+      alignItems: "center",
+   },
+   buttonStyle: {
+      width: "100%",
    },
 });
 function Profile({
    user,
    changeAvatar,
    loading,
-   changeDisplayName,
-   onPressOnEdit,
-   onEdit,
-   onChange,
-   editUserInfo,
    showChangePassword,
    showRemoveUser,
-   errMsg,
    onPressLogout,
 }) {
    return (
       <View style={styles.container}>
          <View style={styles.avatar}>
-            <Header
-               user={user}
-               changeAvatar={changeAvatar}
-               loading={loading}
-               changeDisplayName={changeDisplayName}
-               onPressOnEdit={onPressOnEdit}
-               onEdit={onEdit}
-               onChange={onChange}
-               editUserInfo={editUserInfo}
-               errMsg={errMsg}
-            />
+            <Header user={user} changeAvatar={changeAvatar} loading={loading} />
          </View>
          <View style={styles.content}>
             <ListItem
                bottomDivider
                containerStyle={{ backgroundColor: palette.ivory }}>
-               <Text>아이디</Text>
+               <Text style={styles.lineHeader}>아이디</Text>
                <ListItem.Content>
                   <ListItem.Title>{user?.id}</ListItem.Title>
+               </ListItem.Content>
+            </ListItem>
+            <ListItem
+               bottomDivider
+               containerStyle={{ backgroundColor: palette.ivory }}>
+               <Text style={styles.lineHeader}>이메일</Text>
+               <ListItem.Content>
+                  <ListItem.Title>{user?.email}</ListItem.Title>
                </ListItem.Content>
             </ListItem>
          </View>
@@ -72,19 +76,25 @@ function Profile({
                title="회원탈퇴"
                type="clear"
                color="red"
-               titleStyle={{ color: palette.redRose }}
+               containerStyle={styles.buttonContainer}
+               buttonStyle={styles.buttonStyle}
+               titleStyle={{ color: palette.redRose, fontWeight: "600" }}
                onPress={showRemoveUser}
             />
             <Button
                title="비밀번호 변경"
                type="clear"
-               titleStyle={{ color: palette.blackBerry }}
+               containerStyle={styles.buttonContainer}
+               buttonStyle={styles.buttonStyle}
+               titleStyle={{ color: palette.blackBerry, fontWeight: "600" }}
                onPress={showChangePassword}
             />
             <Button
                title="로그아웃"
                type="clear"
-               titleStyle={{ color: palette.blackBerry }}
+               containerStyle={styles.buttonContainer}
+               buttonStyle={styles.buttonStyle}
+               titleStyle={{ color: palette.blackBerry, fontWeight: "600" }}
                onPress={onPressLogout}
             />
          </View>

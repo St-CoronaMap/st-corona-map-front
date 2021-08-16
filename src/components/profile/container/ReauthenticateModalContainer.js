@@ -9,7 +9,6 @@ function ReauthenticateModalContainer({
    reauthVisible,
    setReauthVisible,
 }) {
-   const [reauthPw, setReauthPw] = useState(false);
    const [password, setPassword] = useState("");
    const [errMsg, setErrMsg] = useState({ password: "" });
    const dispatch = useDispatch();
@@ -23,9 +22,6 @@ function ReauthenticateModalContainer({
       }
    };
 
-   const reauthenticate = async () => {
-      setReauthPw(true);
-   };
    const reauthWithPw = async () => {
       try {
          if (!checkPassword(password, setErrMsg)) {
@@ -59,9 +55,7 @@ function ReauthenticateModalContainer({
    return (
       <ReauthenticateModal
          visible={reauthVisible}
-         reauthenticate={reauthenticate}
          onClose={onClose}
-         reauthPw={reauthPw}
          reauthWithPw={reauthWithPw}
          onChange={onChange}
          errMsg={errMsg}

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Input } from "react-native-elements";
-import { ModalButton, ModalFooter, ModalTitle } from "react-native-modals";
+import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
+import CustomModalFooter from "../../elements/CustomModalFooter";
 
 function PwUpdate({
    visible,
@@ -13,37 +14,43 @@ function PwUpdate({
    errMsg,
    success,
 }) {
-   const title = <ModalTitle title="비밀번호 변경" hasTitleBar />;
-   const footer = (
-      <ModalFooter>
-         <ModalButton
-            text={"변경"}
-            onPress={() => onPasswordUpdate(password)}
-         />
-         <ModalButton text={success ? "확인" : "취소"} onPress={clear} />
-      </ModalFooter>
-   );
-   const footerSuccess = (
-      <ModalFooter>
-         <ModalButton text="확인" onPress={clear} />
-      </ModalFooter>
-   );
+   const footerProps = [
+      {
+         key: "cancel",
+         text: "취소",
+         onPress: clear,
+         textStyle: { color: palette.redRose, fontWeight: "600" },
+      },
+      {
+         key: "update",
+         text: "변경",
+         onPress: () => onPasswordUpdate(password),
+         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+      },
+   ];
+   const footerOnSuccess = [
+      {
+         key: "success",
+         text: "확인",
+         onPress: clear,
+         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+      },
+   ];
 
    return (
       <CustomModal
          visible={visible}
-         title={title}
-         footer={success ? footerSuccess : footer}>
+         footer={
+            <CustomModalFooter
+               buttons={success ? footerOnSuccess : footerProps}
+            />
+         }>
          <View style={styles.container}>
             {success ? (
-               <Text style={{ fontSize: 20 }}>
-                  비밀번호 변경에 성공하셨습니다.
-               </Text>
+               <Text>비밀번호 변경에 성공하셨습니다.</Text>
             ) : (
                <>
-                  <Text style={{ fontSize: 20 }}>
-                     새로운 비밀번호를 입력해주세요.
-                  </Text>
+                  <Text>새로운 비밀번호를 입력해주세요.</Text>
                   <Input
                      style={{ width: "80%" }}
                      secureTextEntry={true}
@@ -60,8 +67,10 @@ function PwUpdate({
 
 const styles = StyleSheet.create({
    container: {
-      padding: 30,
-      backgroundColor: "#fff",
+      width: 300,
+      padding: 10,
+      paddingBottom: 0,
+      backgroundColor: palette.ivory,
       alignItems: "center",
       justifyContent: "center",
    },

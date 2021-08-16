@@ -17,11 +17,13 @@ function LoginContainer({ navigation }) {
       password: "",
       passwordCheck: "",
       id: "",
+      email: "",
    });
    const [errMsg, setErrMsg] = useState({
       id: "",
       password: "",
       passwordCheck: "",
+      email: "",
    });
    const [wrongPW, setWrongPW] = useState(false);
    const [modalVisible, setModalVisible] = useState(false);
@@ -30,24 +32,21 @@ function LoginContainer({ navigation }) {
    const dispatch = useDispatch();
 
    const onChange = (name, value) => {
-      if (name === "id" && errMsg.id) {
-         setErrMsg((prev) => ({ ...prev, id: "" }));
-      } else if (name === "password" && errMsg.password) {
-         setErrMsg((prev) => ({ ...prev, password: "" }));
-      } else if (name === "passwordCheck" && errMsg.passwordCheck) {
-         setErrMsg((prev) => ({ ...prev, passwordCheck: "" }));
+      if (errMsg[`${name}`]) {
+         setErrMsg((prev) => ({ ...prev, [name]: "" }));
       }
       setUserInfo((prev) => ({ ...prev, [name]: value }));
    };
 
    const onPressLogin = async () => {
-      if (!checkLoginInfo(userInfo, setErrMsg)) return;
+      if (!checkLoginInfo(userInfo, setErrMsg, isLogin)) return;
       dispatch(setLoading());
       let res;
       if (isLogin) {
          try {
             res = await login(userInfo.id, userInfo.password);
          } catch (err) {
+            console.log(err);
             // 비밀번호, 아이디 처리
             if (err.message === "비밀번호가 일치하지 않습니다.") {
                handleError("auth/wrong-password", setErrMsg);
@@ -58,15 +57,9 @@ function LoginContainer({ navigation }) {
             return;
          }
       } else {
-         if (userInfo.password !== userInfo.passwordCheck) {
-            handleError("not_match_password_and_check", setErrMsg);
-            dispatch(setUnloading());
-            return;
-         }
          try {
             res = await SignUp(userInfo.id, userInfo.password);
          } catch (err) {
-            console.log(err);
             // 중복 아이디 처리
             if (err.message === "ID가 중복된 회원입니다.") {
                handleError("auth/id-already-in-use", setErrMsg);

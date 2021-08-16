@@ -10,7 +10,7 @@ import { Platform } from "react-native";
 function HeaderName() {
    return (
       <View style={styles.container}>
-         {Platform.OS === "ios" ? (
+         {Platform.OS === "ios" && (
             <Button
                onPress={() => RootNavigation.goBack()}
                icon={{
@@ -21,8 +21,6 @@ function HeaderName() {
                containerStyle={styles.goBackContainer}
                buttonStyle={styles.goBackButton}
             />
-         ) : (
-            <></>
          )}
          <Text style={styles.text}>Your List</Text>
       </View>

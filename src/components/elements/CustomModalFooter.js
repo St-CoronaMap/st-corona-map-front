@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { ModalFooter, ModalButton } from "react-native-modals";
 import palette from "../../lib/styles/palette";
 

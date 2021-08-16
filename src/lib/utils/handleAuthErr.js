@@ -1,4 +1,4 @@
-import testPassword from "./testPassword";
+import { testEmail, testPassword } from "./testRegs";
 
 export default function handleError(code, setErrMsg) {
    switch (code) {
@@ -45,12 +45,18 @@ export default function handleError(code, setErrMsg) {
                "비밀번호는 알파벳, 숫자, 특수문자 조합으로 8~20자여야 합니다.",
          }));
          return true;
+      case "wrong_email":
+         setErrMsg((prev) => ({
+            ...prev,
+            email: "이메일 형식을 지켜주세요.",
+         }));
+         return true;
       default:
          return false;
    }
 }
 
-export const checkLoginInfo = (info, setErrMsg) => {
+export const checkLoginInfo = (info, setErrMsg, isLogin) => {
    if (!info.id) {
       handleError("blank_id", setErrMsg);
       return false;
@@ -60,6 +66,15 @@ export const checkLoginInfo = (info, setErrMsg) => {
    } else if (!testPassword(info.password)) {
       handleError("password_not_formmatted", setErrMsg);
       return false;
+   }
+   if (!isLogin) {
+      if (!testEmail(info.email)) {
+         handleError("wrong_email", setErrMsg);
+         return false;
+      } else if (info.password !== info.passwordCheck) {
+         handleError("not_match_password_and_check", setErrMsg);
+         return false;
+      }
    }
    return true;
 };

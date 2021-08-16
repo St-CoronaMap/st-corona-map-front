@@ -21,7 +21,7 @@ import { sentryDsn } from "./env";
 
 Sentry.init({
    dsn: sentryDsn,
-   enableInExpoDevelopment: true,
+   enableInExpoDevelopment: false,
 });
 
 /* app loading */

@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { ModalButton, ModalFooter, ModalTitle } from "react-native-modals";
+import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
+import CustomModalFooter from "../../elements/CustomModalFooter";
 
 function RemoveUserModal({
    visible,
@@ -10,32 +11,42 @@ function RemoveUserModal({
    removeUserFunc,
    success,
 }) {
-   const title = <ModalTitle title="주의" hasTitleBar />;
-   const footer = (
-      <ModalFooter>
-         <ModalButton
-            text="탈퇴"
-            textStyle={{ color: "red" }}
-            onPress={removeUserFunc}
-         />
-         <ModalButton text="취소" onPress={() => setVisible(false)} />
-      </ModalFooter>
-   );
-   const footerOnSuccess = (
-      <ModalFooter>
-         <ModalButton text="확인" onPress={afterRemove} />
-      </ModalFooter>
-   );
+   const footerProps = [
+      {
+         key: "cancel",
+         text: "취소",
+         onPress: () => setVisible(false),
+         textStyle: { color: palette.redRose, fontWeight: "600" },
+      },
+      {
+         key: "rmove",
+         text: "탈퇴",
+         onPress: removeUserFunc,
+         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+      },
+   ];
+   const footerOnSuccess = [
+      {
+         key: "success",
+         text: "확인",
+         onPress: afterRemove,
+         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+      },
+   ];
+
    return (
       <CustomModal
          visible={visible}
-         title={title}
-         footer={success ? footerOnSuccess : footer}>
+         footer={
+            <CustomModalFooter
+               buttons={success ? footerOnSuccess : footerProps}
+            />
+         }>
          <View style={styles.container}>
-            <Text style={{ fontSize: 20 }}>
+            <Text>
                {success
                   ? "이용해주셔서 감사합니다."
-                  : "회원님과 관련된 모든 정보가 삭제됩니다.\n\n정말로 탈퇴하시겠습니까?"}
+                  : "회원님의 모든 정보가 삭제됩니다.\n\n정말로 탈퇴하시겠습니까?"}
             </Text>
          </View>
       </CustomModal>
@@ -44,8 +55,10 @@ function RemoveUserModal({
 
 const styles = StyleSheet.create({
    container: {
-      padding: 30,
-      backgroundColor: "#fff",
+      width: 300,
+      padding: 10,
+      paddingBottom: 0,
+      backgroundColor: palette.ivory,
       alignItems: "center",
       justifyContent: "center",
    },

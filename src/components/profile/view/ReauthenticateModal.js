@@ -1,58 +1,50 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Input } from "react-native-elements";
-import { ModalButton, ModalFooter, ModalTitle } from "react-native-modals";
+import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
+import CustomModalFooter from "../../elements/CustomModalFooter";
+import CustomModalHeader from "../../elements/CustomModalHeader";
 
 function ReauthenticateModal({
-   reauthenticate,
    onClose,
    visible,
-   reauthPw,
    reauthWithPw,
    onChange,
    errMsg,
    password,
 }) {
-   const title = <ModalTitle title="재인증" hasTitleBar />;
-   const footer = (
-      <ModalFooter>
-         <ModalButton text="취소" onPress={onClose} />
-         <ModalButton text="재로그인" onPress={reauthenticate} />
-      </ModalFooter>
-   );
-   const footerPw = (
-      <ModalFooter>
-         <ModalButton text="확인" onPress={reauthWithPw} />
-      </ModalFooter>
-   );
+   const titleProps = {
+      title: "재로그인",
+      hasTitleBar: true,
+   };
+   const footerProps = [
+      {
+         key: "cancel",
+         text: "취소",
+         onPress: onClose,
+         textStyle: { color: palette.redRose, fontWeight: "600" },
+      },
+      {
+         key: "login",
+         text: "로그인",
+         onPress: reauthWithPw,
+         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+      },
+   ];
    return (
       <CustomModal
          visible={visible}
-         title={title}
-         footer={reauthPw ? footerPw : footer}>
+         title={<CustomModalHeader props={titleProps} />}
+         footer={<CustomModalFooter buttons={footerProps} />}>
          <View style={styles.container}>
-            {reauthPw ? (
-               <>
-                  <Text style={{ fontSize: 20 }}>
-                     현재 비밀번호를 입력해주세요.
-                  </Text>
-                  <Input
-                     secureTextEntry={true}
-                     value={password}
-                     errorMessage={errMsg.password}
-                     onChangeText={onChange}
-                  />
-               </>
-            ) : (
-               <Text
-                  style={{
-                     fontSize: 20,
-                     alignItems: "center",
-                  }}>
-                  비밀번호 변경/회원탈퇴를 위해선 재로그인이 필요합니다.
-               </Text>
-            )}
+            <Text>현재 비밀번호를 입력해주세요.</Text>
+            <Input
+               secureTextEntry={true}
+               value={password}
+               errorMessage={errMsg.password}
+               onChangeText={onChange}
+            />
          </View>
       </CustomModal>
    );
@@ -60,9 +52,11 @@ function ReauthenticateModal({
 
 const styles = StyleSheet.create({
    container: {
-      padding: 30,
+      width: 300,
+      padding: 10,
+      paddingTop: 20,
       paddingBottom: 0,
-      backgroundColor: "#fff",
+      backgroundColor: palette.ivory,
       alignItems: "center",
       justifyContent: "center",
    },
