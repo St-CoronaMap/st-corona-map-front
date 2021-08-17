@@ -5,7 +5,6 @@ import { View } from "react-native";
 
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { login, SignUp } from "../../../lib/api/auth";
-import { setUniqueId } from "../../../modules/uniqueId";
 import handleError, { checkLoginInfo } from "../../../lib/utils/handleAuthErr";
 import { signin } from "../../../modules/auth";
 import { getPlaylist } from "../../../modules/playlist";
@@ -41,12 +40,10 @@ function LoginContainer({ navigation }) {
    const onPressLogin = async () => {
       if (!checkLoginInfo(userInfo, setErrMsg, isLogin)) return;
       dispatch(setLoading());
-      let res;
       if (isLogin) {
          try {
-            res = await login(userInfo.id, userInfo.password);
+            await login(userInfo.id, userInfo.password);
          } catch (err) {
-            console.log(err);
             // 비밀번호, 아이디 처리
             if (err.message === "비밀번호가 일치하지 않습니다.") {
                handleError("auth/wrong-password", setErrMsg);
@@ -58,7 +55,7 @@ function LoginContainer({ navigation }) {
          }
       } else {
          try {
-            res = await SignUp(userInfo.id, userInfo.password);
+            await SignUp(userInfo.id, userInfo.password);
          } catch (err) {
             // 중복 아이디 처리
             if (err.message === "ID가 중복된 회원입니다.") {
@@ -70,7 +67,6 @@ function LoginContainer({ navigation }) {
       }
 
       dispatch(signin(userInfo.id));
-      dispatch(setUniqueId({ tokens: res, first: false }));
       dispatch(getPlaylist(() => afterGetPlaylist(navigation, dispatch)));
    };
 

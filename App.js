@@ -13,7 +13,6 @@ import rootReducer, { rootSaga } from "./src/modules";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import palette from "./src/lib/styles/palette";
-import HeaderName from "./src/components/headerName/HeaderName";
 
 /* Sentry */
 import * as Sentry from "sentry-expo";

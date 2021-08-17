@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import { deletePlaylist, editPlaylist } from "../../../lib/api/playlist";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { getPlaylist } from "../../../modules/playlist";
@@ -11,7 +11,6 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
    const [name, setName] = useState("");
    const [errMsg, setErrMsg] = useState("");
    const dispatch = useDispatch();
-   const uniqueId = useSelector(({ uniqueId }) => uniqueId);
 
    const onDelete = useCallback(async () => {
       dispatch(setLoading());

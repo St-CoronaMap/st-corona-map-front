@@ -24,13 +24,13 @@ function Playlist({
    onPressVisible,
    onPressVisibleEdit,
    start,
-   firstTime,
+   isFirst,
 }) {
    useEffect(() => {
-      if (firstTime && playlist.length >= 1) {
+      if (isFirst && playlist.length >= 1) {
          setTimeout(start, 250);
       }
-   }, [firstTime, playlist]);
+   }, [isFirst, playlist]);
    return (
       <View style={styles.topView}>
          <ScrollView>

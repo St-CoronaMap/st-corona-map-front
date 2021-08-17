@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { copilot } from "react-native-copilot";
 import { useDispatch, useSelector } from "react-redux";
-import { setUniqueId } from "../../../modules/uniqueId";
+import { clearIsFirst } from "../../../modules/isFirst";
 import CustomStepNumber from "../../elements/CustomStepNumber";
 import CustomTootip from "../../elements/CustomTootip";
 import VideoEdit from "../view/VideoEdit";
@@ -27,7 +27,7 @@ function VideoEditContainer({
    vol,
    onReady,
 }) {
-   const uniqueId = useSelector(({ uniqueId }) => uniqueId);
+   const isFirst = useSelector(({ isFirst }) => isFirst);
    const dispatch = useDispatch();
 
    useEffect(() => {
@@ -42,11 +42,11 @@ function VideoEditContainer({
    }, [selectedLapsed]);
 
    useEffect(() => {
-      if (uniqueId.first && loaded) {
+      if (isFirst && loaded) {
          setTimeout(start, 250);
-         dispatch(setUniqueId({ tokens: uniqueId.tokens, first: false }));
+         dispatch(clearIsFirst());
       }
-   }, [uniqueId, loaded]);
+   }, [isFirst, loaded]);
 
    let count = 0,
       saveLow = 0;

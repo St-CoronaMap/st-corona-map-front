@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
-import { Platform } from "react-native";
 import CheckItemModal from "../view/CheckItemModal";
 import SelectPlaylist from "../view/SelectPlaylist";
 import VideoEditContainer from "./VideoEditContainer";

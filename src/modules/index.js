@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { all } from "redux-saga/effects";
 import auth from "./auth";
 import playlist, { playlistSaga } from "./playlist";
-import uniqueId from "./uniqueId";
+import isFirst from "./isFirst";
 import loading from "./loading";
 import isPlay from "./isPlay";
 import snackbar from "./snackbar";
@@ -11,7 +11,7 @@ import snackbar from "./snackbar";
 const rootReducer = combineReducers({
    auth,
    playlist,
-   uniqueId,
+   isFirst,
    loading,
    isPlay,
    snackbar,

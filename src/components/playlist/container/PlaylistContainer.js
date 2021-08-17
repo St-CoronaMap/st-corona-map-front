@@ -6,13 +6,14 @@ import EditPlaylistModalContainer from "./EditPlaylistModalContainer";
 import { getVideoList } from "../../../lib/api/videos";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
+import { clearIsFirst } from "../../../modules/isFirst";
 
 function PlaylistContainer({ navigation }) {
    const [visibleAddPlaylist, setVisibleAddPlaylist] = useState(false);
    const [visibleEditPlaylist, setVisibleEditPlaylist] = useState(false);
    const [edittingPlaylist, setEdittingPlaylist] = useState({});
    const playlist = useSelector(({ playlist }) => playlist);
-   const firstTime = useSelector(({ uniqueId }) => uniqueId.first);
+   const isFirst = useSelector(({ isFirst }) => isFirst);
    const dispatch = useDispatch();
 
    const enterPlaylist = async (list) => {
@@ -50,6 +51,9 @@ function PlaylistContainer({ navigation }) {
    const cancelEditPlaylist = useCallback(() => {
       setVisibleEditPlaylist(false);
    }, []);
+   const closeTootip = useCallback(() => {
+      dispatch(clearIsFirst());
+   }, []);
 
    return (
       <>
@@ -58,7 +62,8 @@ function PlaylistContainer({ navigation }) {
             listPressCallback={enterPlaylist}
             onPressVisible={onPressVisible}
             onPressVisibleEdit={onPressVisibleEdit}
-            firstTime={firstTime}
+            isFirst={isFirst}
+            closeTootip={closeTootip}
          />
          <AddPlaylistModalContainer
             visible={visibleAddPlaylist}

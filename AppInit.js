@@ -10,7 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import TopTabContainer from "./src/components/topTab/container/TopTabContainer";
 import PlayScreen from "./src/screens/Play";
 import { useDispatch, useSelector } from "react-redux";
-import { setUniqueId } from "./src/modules/uniqueId";
+import { setIsFirst } from "./src/modules/isFirst";
 
 import { Platform, StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
@@ -52,7 +52,7 @@ function AppInit() {
 
    const preload = async () => {
       const res = await getToken();
-      dispatch(setUniqueId(res));
+      dispatch(setIsFirst(res));
       dispatch(getPlaylist());
    };
 

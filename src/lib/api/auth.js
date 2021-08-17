@@ -26,7 +26,6 @@ const setTokens = async (tokens) => {
       "Authorization"
    ] = `Bearer ${tokensObj.accessToken}`;
    await AsyncStorage.setItem("@tokens", JSON.stringify(tokensObj));
-   return tokensObj;
 };
 
 export const login = async (id, pw) => {
@@ -36,8 +35,7 @@ export const login = async (id, pw) => {
          password: pw,
          isPC: Platform.OS === "web",
       });
-      const tokens = await setTokens(res.data.response);
-      return tokens;
+      await setTokens(res.data.response);
    } catch (err) {
       throw err.response.data;
    }
@@ -57,7 +55,6 @@ export const reissue = async (tokens) => {
       const newTokens = await setTokens(res.data.response);
       return newTokens;
    } catch (err) {
-      console.log(err.response.data);
       throw err.response.data;
    }
 };
@@ -76,9 +73,8 @@ export const nonMemberLogin = async () => {
          first = true;
       }
       //로그인
-      const res = await login(id, "");
-      const tokens = await setTokens(res);
-      return { tokens: tokens, first: first };
+      await login(id, "");
+      return first;
    } catch (err) {
       console.log(err.response.data);
    }
@@ -87,24 +83,21 @@ export const nonMemberLogin = async () => {
 export const getToken = async () => {
    try {
       const tokensJson = await AsyncStorage.getItem("@tokens");
-      let rtObj = { tokens: JSON.parse(tokensJson), first: false };
-
-      if (rtObj.tokens) {
+      let tokensJsonParse = JSON.parse(tokensJson);
+      let first = false;
+      if (tokensJsonParse) {
          //reissue
          try {
-            const res = await reissue(rtObj.tokens);
-            rtObj.tokens = res;
+            await reissue(tokensJsonParse);
          } catch (err) {
             // 리프레시 토큰 만료시 비회원 재로그인
             // 회원은 기존에 비회원으로 있던 기록이 나오고, 로그인은 자신이 해야함
-            const res = await nonMemberLogin();
-            rtObj = res;
+            first = await nonMemberLogin();
          }
       } else {
-         const res = await nonMemberLogin();
-         rtObj = res;
+         first = await nonMemberLogin();
       }
-      return rtObj;
+      return first;
    } catch (err) {
       console.log(err.response.data);
    }
@@ -118,7 +111,6 @@ export const nonSignUp = async (newId) => {
       });
       return res.data.response;
    } catch (err) {
-      console.log(err);
       console.log(err.response.data);
    }
 };
@@ -130,10 +122,8 @@ export const SignUp = async (id, pw) => {
          password: pw,
          isPC: Platform.OS === "web",
       });
-      const tokens = await login(id, pw);
-      return tokens;
+      await login(id, pw);
    } catch (err) {
-      console.log(err.response.data);
       // 중복 아이디 처리
       throw err.response.data;
    }
@@ -150,7 +140,7 @@ export const removeUser = async () => {
 
 export const logout = async () => {
    try {
-      await AsyncStorage.setItem("@tokens", JSON.stringify({}));
+      await AsyncStorage.removeItem("@tokens");
       await nonMemberLogin();
    } catch (err) {
       throw err;
