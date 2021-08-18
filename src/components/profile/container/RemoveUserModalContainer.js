@@ -3,8 +3,15 @@ import RemoveUserModal from "../view/RemoveUserModal";
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { removeUser } from "../../../lib/api/auth";
+import { setSnackbar } from "../../../modules/snackbar";
+import { SERVER_ERROR } from "../../../lib/strings";
 
-function RemoveUserModalContainer({ visible, setVisible, navigation }) {
+function RemoveUserModalContainer({
+   visible,
+   setVisible,
+   navigation,
+   onPressLogout,
+}) {
    const [success, setSuccess] = useState(false);
    const dispatch = useDispatch();
 
@@ -13,9 +20,10 @@ function RemoveUserModalContainer({ visible, setVisible, navigation }) {
       try {
          await removeUser();
          // 뭔가 회원 정보 다 날리는 작업
+         onPressLogout();
          setSuccess(true);
       } catch (err) {
-         console.log(err);
+         dispatch(setSnackbar(SERVER_ERROR));
       }
       dispatch(setUnloading());
    };

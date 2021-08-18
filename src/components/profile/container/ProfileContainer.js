@@ -71,6 +71,7 @@ function ProfileContainer({ navigation }) {
          />
          {(modalVisible || removeUserVisible) && !reauthenticated ? (
             <ReauthenticateModalContainer
+               user={user}
                reauthVisible={reauthVisible}
                setReauthVisible={setReauthVisible}
                setReauthenticated={setReauthenticated}
@@ -85,6 +86,7 @@ function ProfileContainer({ navigation }) {
                   visible={removeUserVisible}
                   setVisible={setRemoveUserVisible}
                   navigation={navigation}
+                  onPressLogout={onPressLogout}
                />
             </>
          )}

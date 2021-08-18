@@ -3,35 +3,37 @@ import ReauthenticateModal from "../view/ReauthenticateModal";
 import handleError, { checkPassword } from "../../../lib/utils/handleAuthErr";
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
+import { setSnackbar } from "../../../modules/snackbar";
+import { SERVER_ERROR } from "../../../lib/strings";
+import { login } from "../../../lib/api/auth";
+import { MY_ID } from "../../../../env";
 
 function ReauthenticateModalContainer({
+   user,
    setReauthenticated,
    reauthVisible,
    setReauthVisible,
 }) {
    const [password, setPassword] = useState("");
    const [errMsg, setErrMsg] = useState({ password: "" });
+
    const dispatch = useDispatch();
 
-   const catchError = (code, setErrMsg, lastSection) => {
-      if (!handleError(code, setErrMsg)) {
-         setErrMsg((prev) => ({
-            ...prev,
-            [lastSection]: "알수없는 오류가 발생했습니다. 다시 시도해주세요.",
-         }));
-      }
-   };
-
    const reauthWithPw = async () => {
+      dispatch(setLoading());
       try {
          if (!checkPassword(password, setErrMsg)) {
             return;
          }
-         dispatch(setLoading());
+         await login(MY_ID, password);
+         setReauthenticated(true);
          // 아이디 받아온 걸로 재 로그인
       } catch (err) {
+         console.log(err);
          if (err.message === "비밀번호가 일치하지 않습니다.") {
             handleError("auth/wrong-password", setErrMsg);
+         } else {
+            dispatch(setSnackbar(SERVER_ERROR));
          }
       }
       dispatch(setUnloading());
