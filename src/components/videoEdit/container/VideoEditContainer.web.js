@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect } from "react";
-import { copilot } from "react-native-copilot";
 import { useDispatch, useSelector } from "react-redux";
 import { clearIsFirst } from "../../../modules/isFirst";
-import CustomStepNumber from "../../elements/CustomStepNumber";
-import CustomTootip from "../../elements/CustomTootip";
 import VideoEdit from "../view/VideoEdit";
-
+import {
+   TourGuideProvider, // Main provider
+} from "rn-tourguide";
+import CustomTootip from "../../elements/CustomTootip";
 function VideoEditContainer({
    navigation,
-   start,
    item,
    playing,
    playingByPlayer,
@@ -34,13 +33,6 @@ function VideoEditContainer({
    useEffect(() => {
       setPlaying(false);
    }, [isPlay]);
-
-   useEffect(() => {
-      if (isFirst && loaded) {
-         setTimeout(start, 250);
-         dispatch(clearIsFirst());
-      }
-   }, [isFirst, loaded]);
 
    const onStart = useCallback(() => {
       playerRef.current?.seekTo(selectedLapsed[0], "seconds");
@@ -88,34 +80,43 @@ function VideoEditContainer({
    }, [lapse]);
 
    return (
-      <VideoEdit
-         item={item}
-         playing={playing}
-         playingByPlayer={playingByPlayer}
-         setPlayingByPlayer={setPlayingByPlayer}
-         playerRef={playerRef}
-         navigation={navigation}
-         lapse={lapse}
-         handleValueChange={handleValueChange}
-         endTime={endTime}
-         selectedLapsed={selectedLapsed}
-         loaded={loaded}
-         setPlaying={setPlaying}
-         onSelectLapse={onSelectLapse}
-         checkItem={checkItem}
-         lapseLowCounter={lapseLowCounter}
-         lapseHighCounter={lapseHighCounter}
-         handleOnProgress={handleOnProgress}
-         onStart={onStart}
-         togglePlaying={togglePlaying}
-         volumneChange={volumneChange}
-         vol={vol}
-         onReady={onReady}
-      />
+      <TourGuideProvider
+         tooltipComponent={(props) => (
+            <CustomTootip
+               {...props}
+               text={[
+                  "슬라이더와 버튼을 통해 원하시는 범위를 조절하시고, \n 적용버튼을 눌러서 확인하세요.",
+                  "마음에 드신다면, 이 버튼을 눌러 재생목록에 추가하세요!",
+               ]}
+            />
+         )}>
+         <VideoEdit
+            item={item}
+            playing={playing}
+            playingByPlayer={playingByPlayer}
+            setPlayingByPlayer={setPlayingByPlayer}
+            playerRef={playerRef}
+            navigation={navigation}
+            lapse={lapse}
+            handleValueChange={handleValueChange}
+            endTime={endTime}
+            selectedLapsed={selectedLapsed}
+            loaded={loaded}
+            setPlaying={setPlaying}
+            onSelectLapse={onSelectLapse}
+            checkItem={checkItem}
+            lapseLowCounter={lapseLowCounter}
+            lapseHighCounter={lapseHighCounter}
+            handleOnProgress={handleOnProgress}
+            onStart={onStart}
+            togglePlaying={togglePlaying}
+            volumneChange={volumneChange}
+            vol={vol}
+            onReady={onReady}
+            isFirst={isFirst}
+         />
+      </TourGuideProvider>
    );
 }
 
-export default copilot({
-   tooltipComponent: CustomTootip,
-   stepNumberComponent: CustomStepNumber,
-})(VideoEditContainer);
+export default VideoEditContainer;

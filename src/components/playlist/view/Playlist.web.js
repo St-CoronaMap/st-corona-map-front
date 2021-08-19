@@ -11,34 +11,32 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { FAB, Icon, Card } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
-import { walkthroughable, CopilotStep, copilot } from "react-native-copilot";
-import CustomTootip from "../../elements/CustomTootip";
-import CustomStepNumber from "../../elements/CustomStepNumber";
 import { removeAll } from "../../../lib/api/playlist";
-
-const CopilotView = walkthroughable(View);
+import { TourGuideProvider } from "rn-tourguide";
+import TourContainer from "../elements/TourContainer";
+import CustomTootip from "../../elements/CustomTootip";
 
 function Playlist({
    playlist,
    listPressCallback,
    onPressVisible,
    onPressVisibleEdit,
-   start,
    isFirst,
 }) {
-   useEffect(() => {
-      if (isFirst && playlist.length >= 1) {
-         setTimeout(start, 250);
-      }
-   }, [isFirst, playlist]);
    return (
       <View style={styles.topView}>
-         <ScrollView>
-            <CopilotStep
-               text="상단의 검색을 통해 음악을 추가하고, 재생목록을 완성시키세요!"
-               order={1}
-               name="playlist">
-               <CopilotView style={styles.container}>
+         <TourGuideProvider
+            tooltipComponent={(props) => (
+               <CustomTootip
+                  {...props}
+                  text={[
+                     "상단의 검색을 통해 음악을 추가하고, 재생목록을 완성시키세요!",
+                  ]}
+               />
+            )}>
+            <TourContainer length={playlist.length} isFirst={isFirst} />
+            <ScrollView>
+               <View style={styles.container}>
                   {playlist?.map((item, idx) => {
                      return (
                         <Card
@@ -89,9 +87,9 @@ function Playlist({
                         </Card>
                      );
                   })}
-               </CopilotView>
-            </CopilotStep>
-         </ScrollView>
+               </View>
+            </ScrollView>
+         </TourGuideProvider>
          <FAB
             placement="right"
             visible
@@ -106,10 +104,7 @@ function Playlist({
    );
 }
 
-export default copilot({
-   tooltipComponent: CustomTootip,
-   stepNumberComponent: CustomStepNumber,
-})(Playlist);
+export default Playlist;
 
 const styles = StyleSheet.create({
    topView: {

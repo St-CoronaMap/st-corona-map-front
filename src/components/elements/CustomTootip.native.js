@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import palette from "../../lib/styles/palette";
 
@@ -33,7 +33,6 @@ const CustomTootip = ({
    handlePrev,
    handleStop,
    currentStep,
-   labels,
 }) => (
    <View>
       <View style={styles.tooltipContainer}>
@@ -45,7 +44,7 @@ const CustomTootip = ({
                buttonStyle={styles.button}
                titleStyle={styles.buttonText}
                type="clear"
-               title={labels.skip || "건너뛰기"}
+               title={"건너뛰기"}
                onPress={handleStop}
             />
          ) : null}
@@ -54,7 +53,7 @@ const CustomTootip = ({
                buttonStyle={styles.button}
                titleStyle={styles.buttonText}
                type="clear"
-               title={labels.previous || "이전"}
+               title={"이전"}
                onPress={handlePrev}
             />
          ) : null}
@@ -63,7 +62,7 @@ const CustomTootip = ({
                buttonStyle={styles.button}
                titleStyle={styles.buttonText}
                type="clear"
-               title={labels.next || "다음"}
+               title={"다음"}
                onPress={handleNext}
             />
          ) : (
@@ -71,7 +70,7 @@ const CustomTootip = ({
                buttonStyle={styles.button}
                titleStyle={styles.buttonText}
                type="clear"
-               title={labels.finish || "끝"}
+               title={"끝"}
                onPress={handleStop}
             />
          )}
