@@ -5,11 +5,13 @@ import Auth from "../../../screens/Auth";
 import SearchScreen from "../../../screens/Search";
 import { Platform, StyleSheet } from "react-native";
 import palette from "../../../lib/styles/palette";
+import { TAP_HEIGHT } from "../../../lib/styles/variables";
 
 const Tab = createMaterialTopTabNavigator();
 
 const styles = StyleSheet.create({
    barStyle: {
+      height: TAP_HEIGHT,
       backgroundColor: palette.redRose,
       shadowColor: "#000",
       shadowOffset: {

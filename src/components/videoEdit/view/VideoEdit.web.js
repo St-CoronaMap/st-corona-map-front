@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { ScrollView } from "react-native-gesture-handler";
@@ -10,7 +10,7 @@ import ReactPlayer from "react-player";
 import {
    useTourGuideController, // hook to start, etc.
 } from "rn-tourguide";
-import TourGuide from "../elements/TourGuide";
+import { TourGuide_Seconds } from "../elements/TourGuide.web";
 
 const PLAYER_HEIGHT = 300;
 
@@ -37,6 +37,7 @@ function VideoEdit({
    vol,
    onReady,
    isFirst,
+   clearIsFirstV,
 }) {
    const onEnded = useCallback(() => {
       playerRef.current?.seekTo(selectedLapsed[0], "seconds");
@@ -48,10 +49,11 @@ function VideoEdit({
    } = useTourGuideController();
 
    useEffect(() => {
-      if (canStart && loaded) {
+      if (isFirst && canStart && loaded) {
          start();
+         clearIsFirstV();
       }
-   }, [canStart, loaded]);
+   }, [canStart, loaded, isFirst, lapse[1]]);
 
    return (
       <View style={styles.container}>
@@ -80,7 +82,7 @@ function VideoEdit({
             />
          </View>
          <ScrollView>
-            <TourGuide />
+            {TourGuide_Seconds()}
             <Summary item={item} />
             {loaded && lapse[1] ? (
                <SecondController

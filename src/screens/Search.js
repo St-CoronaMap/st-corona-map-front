@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Platform } from "react-native";
 import palette from "../lib/styles/palette";
 import VideoEditRootContainer from "../components/videoEdit/container/VideoEditRootContainer";
+import { TAP_HEIGHT } from "../lib/styles/variables";
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,7 @@ export default function SearchScreen({ navigation }) {
                headerMode: "float",
                headerStyle: {
                   backgroundColor: palette.ivory,
-                  height: 50,
+                  height: TAP_HEIGHT,
                },
                headerTitleStyle: {
                   fontWeight: "800",

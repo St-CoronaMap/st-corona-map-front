@@ -25,10 +25,12 @@ function Playlist({
    onPressVisibleEdit,
    start,
    isFirst,
+   clearIsFirstP,
 }) {
    useEffect(() => {
       if (isFirst && playlist.length >= 1) {
          setTimeout(start, 250);
+         clearIsFirstP();
       }
    }, [isFirst, playlist]);
    return (

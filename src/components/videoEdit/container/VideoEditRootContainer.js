@@ -6,6 +6,8 @@ import React, {
    useState,
 } from "react";
 import { useDispatch } from "react-redux";
+import { V_FIRST } from "../../../lib/api/isFirstStorage";
+import { clearIsFirst } from "../../../modules/isFirst";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import CheckItemModal from "../view/CheckItemModal";
 import SelectPlaylist from "../view/SelectPlaylist";
@@ -81,6 +83,10 @@ function VideoEditRootContainer({ route, navigation }) {
 
    const volumneChange = useCallback((v) => setVol(v), []);
 
+   const clearIsFirstV = useCallback(() => {
+      dispatch(clearIsFirst(V_FIRST));
+   }, []);
+
    return (
       <>
          <VideoEditContainer
@@ -103,6 +109,7 @@ function VideoEditRootContainer({ route, navigation }) {
             volumneChange={volumneChange}
             vol={vol}
             onReady={onReady}
+            clearIsFirstV={clearIsFirstV}
          />
          {!isBanned && (
             <>

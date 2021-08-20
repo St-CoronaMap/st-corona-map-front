@@ -7,13 +7,14 @@ import { getVideoList } from "../../../lib/api/videos";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
 import { clearIsFirst } from "../../../modules/isFirst";
+import { FIRST, P_FIRST } from "../../../lib/api/isFirstStorage";
 
 function PlaylistContainer({ navigation }) {
    const [visibleAddPlaylist, setVisibleAddPlaylist] = useState(false);
    const [visibleEditPlaylist, setVisibleEditPlaylist] = useState(false);
    const [edittingPlaylist, setEdittingPlaylist] = useState({});
    const playlist = useSelector(({ playlist }) => playlist);
-   const isFirst = useSelector(({ isFirst }) => isFirst);
+   const isFirst = useSelector(({ isFirst }) => isFirst[P_FIRST] === FIRST);
    const dispatch = useDispatch();
 
    const enterPlaylist = async (list) => {
@@ -55,6 +56,10 @@ function PlaylistContainer({ navigation }) {
       dispatch(clearIsFirst());
    }, []);
 
+   const clearIsFirstP = useCallback(() => {
+      dispatch(clearIsFirst(P_FIRST));
+   }, []);
+
    return (
       <>
          <Playlist
@@ -64,6 +69,7 @@ function PlaylistContainer({ navigation }) {
             onPressVisibleEdit={onPressVisibleEdit}
             isFirst={isFirst}
             closeTootip={closeTootip}
+            clearIsFirstP={clearIsFirstP}
          />
          <AddPlaylistModalContainer
             visible={visibleAddPlaylist}

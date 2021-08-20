@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { copilot } from "react-native-copilot";
-import { useDispatch, useSelector } from "react-redux";
-import { clearIsFirst } from "../../../modules/isFirst";
+import { useSelector } from "react-redux";
+import { FIRST, V_FIRST } from "../../../lib/api/isFirstStorage";
 import CustomStepNumber from "../../elements/CustomStepNumber";
 import CustomTootip from "../../elements/CustomTootip";
 import VideoEdit from "../view/VideoEdit";
@@ -26,9 +26,9 @@ function VideoEditContainer({
    volumneChange,
    vol,
    onReady,
+   clearIsFirstV,
 }) {
-   const isFirst = useSelector(({ isFirst }) => isFirst);
-   const dispatch = useDispatch();
+   const isFirst = useSelector(({ isFirst }) => isFirst[V_FIRST] === FIRST);
 
    useEffect(() => {
       const handleLapse = async () => {
@@ -44,7 +44,7 @@ function VideoEditContainer({
    useEffect(() => {
       if (isFirst && loaded) {
          setTimeout(start, 250);
-         dispatch(clearIsFirst());
+         clearIsFirstV();
       }
    }, [isFirst, loaded]);
 

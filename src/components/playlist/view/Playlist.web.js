@@ -22,6 +22,7 @@ function Playlist({
    onPressVisible,
    onPressVisibleEdit,
    isFirst,
+   clearIsFirstP,
 }) {
    return (
       <View style={styles.topView}>
@@ -34,7 +35,11 @@ function Playlist({
                   ]}
                />
             )}>
-            <TourContainer length={playlist.length} isFirst={isFirst} />
+            <TourContainer
+               length={playlist.length}
+               isFirst={isFirst}
+               clearIsFirstP={clearIsFirstP}
+            />
             <ScrollView>
                <View style={styles.container}>
                   {playlist?.map((item, idx) => {

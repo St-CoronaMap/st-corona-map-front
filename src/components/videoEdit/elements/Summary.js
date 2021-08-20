@@ -24,9 +24,7 @@ function Summary({ item }) {
 }
 
 const styles = StyleSheet.create({
-   summaryContainer: {
-      flex: 3,
-   },
+   summaryContainer: {},
    summaryBorder: {
       paddingBottom: 10,
       borderBottomWidth: 0.5,

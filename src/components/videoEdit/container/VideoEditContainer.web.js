@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearIsFirst } from "../../../modules/isFirst";
+import { useSelector } from "react-redux";
 import VideoEdit from "../view/VideoEdit";
 import {
    TourGuideProvider, // Main provider
 } from "rn-tourguide";
 import CustomTootip from "../../elements/CustomTootip";
+import { FIRST, V_FIRST } from "../../../lib/api/isFirstStorage";
 function VideoEditContainer({
    navigation,
    item,
@@ -25,10 +25,10 @@ function VideoEditContainer({
    volumneChange,
    vol,
    onReady,
+   clearIsFirstV,
 }) {
    const isPlay = useSelector(({ isPlay }) => isPlay);
-   const isFirst = useSelector(({ isFirst }) => isFirst);
-   const dispatch = useDispatch();
+   const isFirst = useSelector(({ isFirst }) => isFirst[V_FIRST] === FIRST);
 
    useEffect(() => {
       setPlaying(false);
@@ -114,6 +114,7 @@ function VideoEditContainer({
             vol={vol}
             onReady={onReady}
             isFirst={isFirst}
+            clearIsFirstV={clearIsFirstV}
          />
       </TourGuideProvider>
    );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppLoading from "expo-app-loading";
 import { ModalPortal } from "react-native-modals";
 
-import { getToken, reissue } from "./src/lib/api/auth";
+import { appInit, reissue } from "./src/lib/api/auth";
 import { getPlaylist } from "./src/modules/playlist";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -51,7 +51,7 @@ function AppInit() {
    }, []);
 
    const preload = async () => {
-      const res = await getToken();
+      const res = await appInit();
       dispatch(setIsFirst(res));
       dispatch(getPlaylist());
    };

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Platform } from "react-native";
 import uuid from "react-native-uuid";
 import { Address } from "./constants";
+import { FIRST, P_FIRST, V_FIRST } from "./isFirstStorage";
 
 /*
    모든 api는 token으로 이루어짐.
@@ -61,7 +62,6 @@ export const reissue = async (tokens) => {
 
 export const nonMemberLogin = async () => {
    try {
-      let first = false;
       // 비회원 아이디 받아오기
       let id = await AsyncStorage.getItem("@nomMemberId");
       if (!id) {
@@ -70,21 +70,18 @@ export const nonMemberLogin = async () => {
          const res = await nonSignUp(newId);
          await AsyncStorage.setItem("@nomMemberId", res.loginId);
          id = res.loginId;
-         first = true;
       }
       //로그인
       await login(id, "");
-      return first;
    } catch (err) {
       console.log(err.response.data);
    }
 };
 
-export const getToken = async () => {
+export const appInit = async () => {
    try {
       const tokensJson = await AsyncStorage.getItem("@tokens");
       let tokensJsonParse = JSON.parse(tokensJson);
-      let first = false;
       if (tokensJsonParse) {
          //reissue
          try {
@@ -92,12 +89,19 @@ export const getToken = async () => {
          } catch (err) {
             // 리프레시 토큰 만료시 비회원 재로그인
             // 회원은 기존에 비회원으로 있던 기록이 나오고, 로그인은 자신이 해야함
-            first = await nonMemberLogin();
+            await nonMemberLogin();
          }
       } else {
-         first = await nonMemberLogin();
+         await nonMemberLogin();
       }
-      return first;
+
+      const p_first = await AsyncStorage.getItem(`@${P_FIRST}`);
+      const v_first = await AsyncStorage.getItem(`@${V_FIRST}`);
+
+      return {
+         [P_FIRST]: p_first === null ? FIRST : p_first,
+         [V_FIRST]: v_first === null ? FIRST : v_first,
+      };
    } catch (err) {
       console.log(err.response.data);
    }

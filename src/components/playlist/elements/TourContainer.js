@@ -1,27 +1,30 @@
 import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
-import { StyleSheet, View, Text } from "react-native";
-
+import { StyleSheet } from "react-native";
 import {
    TourGuideZoneByPosition, // Component to use mask on overlay (ie, position absolute)
    useTourGuideController, // hook to start, etc.
 } from "rn-tourguide";
+import { WEB_COPILOT_BOTTOM } from "../../../lib/styles/variables";
 
-function TourContainer({ length, isFirst }) {
+function TourContainer({ length, isFirst, clearIsFirstP }) {
    const {
       start, // a function to start the tourguide
       canStart,
    } = useTourGuideController();
 
    useEffect(() => {
-      if (isFirst && canStart && length >= 1) start();
+      if (isFirst && canStart && length >= 1) {
+         start();
+         clearIsFirstP();
+      }
    }, [canStart, length, isFirst]);
 
    return (
       <TourGuideZoneByPosition
          zone={1}
          isTourGuide
-         bottom={120}
+         bottom={WEB_COPILOT_BOTTOM}
          right={(Dimensions.get("window").width - 600) / 2}
          width={Dimensions.get("window").width}
          height={240}

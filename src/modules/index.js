@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { all } from "redux-saga/effects";
 import auth from "./auth";
 import playlist, { playlistSaga } from "./playlist";
-import isFirst from "./isFirst";
+import isFirst, { isFirstSage } from "./isFirst";
 import loading from "./loading";
 import isPlay from "./isPlay";
 import snackbar from "./snackbar";
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 
 // react saga 연결
 export function* rootSaga() {
-   yield all([playlistSaga()]);
+   yield all([playlistSaga(), isFirstSage()]);
 }
 
 export default rootReducer;

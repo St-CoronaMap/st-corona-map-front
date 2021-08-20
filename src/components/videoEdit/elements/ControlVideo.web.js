@@ -1,11 +1,9 @@
 import Slider from "@react-native-community/slider";
-import React, { useCallback } from "react";
-import { Dimensions } from "react-native";
-import { StyleSheet, View, Text } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-elements";
-import { TourGuideZoneByPosition } from "rn-tourguide";
 import palette from "../../../lib/styles/palette";
-import TourGuide from "./TourGuide";
+import { TourGuide_ControllBar } from "./TourGuide";
 
 function ControlVideo({
    vol,
@@ -17,14 +15,7 @@ function ControlVideo({
 }) {
    return (
       <View style={styles.control}>
-         <TourGuideZoneByPosition
-            zone={2}
-            isTourGuide
-            right={(Dimensions.get("window").width - 600) / 2 - 440}
-            bottom={168}
-            width={120}
-            height={80}
-         />
+         {TourGuide_ControllBar()}
          <View style={styles.buttonContainer}>
             <Slider
                style={{ width: 120 }}

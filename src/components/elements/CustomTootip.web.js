@@ -52,7 +52,7 @@ const CustomTootip = ({
                   buttonStyle={styles.button}
                   titleStyle={styles.buttonText}
                   type="clear"
-                  title={"건너뛰기"}
+                  title={"끝"}
                   onPress={handleStop}
                />
             ) : null}
