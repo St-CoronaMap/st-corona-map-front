@@ -23,9 +23,9 @@ function Header({ user, changeAvatar, loading }) {
          activeOpacity={0.7}
          containerStyle={{ backgroundColor: "purple" }}
          {...(() => {
-            return user?.photoURL
-               ? { source: { uri: user?.photoURL } }
-               : { title: user?.displayName.slice(0, 2) };
+            return user?.profileImg
+               ? { source: { uri: user?.profileImg } }
+               : { title: user?.loginId.slice(0, 2) };
          })()}>
          {loading.photo ? (
             <ActivityIndicator style={styles.loading} size={30} color="white" />

@@ -59,7 +59,7 @@ function Profile({
                containerStyle={{ backgroundColor: palette.ivory }}>
                <Text style={styles.lineHeader}>아이디</Text>
                <ListItem.Content>
-                  <ListItem.Title>{user?.id}</ListItem.Title>
+                  <ListItem.Title>{user?.loginId}</ListItem.Title>
                </ListItem.Content>
             </ListItem>
             <ListItem

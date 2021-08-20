@@ -51,6 +51,12 @@ export default function handleError(code, setErrMsg) {
             email: "이메일 형식을 지켜주세요.",
          }));
          return true;
+      case "기존 비밀번호와 같은 비밀번호 입니다.":
+         setErrMsg((prev) => ({
+            ...prev,
+            password: "기존 비밀번호와 같은 비밀번호 입니다.",
+         }));
+         return true;
       default:
          return false;
    }

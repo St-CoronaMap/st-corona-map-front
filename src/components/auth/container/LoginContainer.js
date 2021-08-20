@@ -44,7 +44,8 @@ function LoginContainer({ navigation }) {
       dispatch(setLoading());
       if (isLogin) {
          try {
-            await login(userInfo.id, userInfo.password);
+            const res = await login(userInfo.id, userInfo.password);
+            dispatch(signin(res));
          } catch (err) {
             // 비밀번호, 아이디 처리
             if (err.message === "비밀번호가 일치하지 않습니다.") {
@@ -59,7 +60,8 @@ function LoginContainer({ navigation }) {
          }
       } else {
          try {
-            await SignUp(userInfo.id, userInfo.password);
+            const res = await SignUp(userInfo.id, userInfo.password);
+            dispatch(signin(res));
          } catch (err) {
             // 중복 아이디 처리
             if (err.message === "ID가 중복된 회원입니다.") {
@@ -72,7 +74,6 @@ function LoginContainer({ navigation }) {
          }
       }
 
-      dispatch(signin(userInfo.id));
       dispatch(getPlaylist(() => afterGetPlaylist(navigation, dispatch)));
    };
 

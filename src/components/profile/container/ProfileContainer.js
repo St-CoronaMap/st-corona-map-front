@@ -6,18 +6,22 @@ import PwUpdateContainer from "./PwUpdateContainer";
 import ReauthenticateModalContainer from "./ReauthenticateModalContainer";
 import RemoveUserModalContainer from "./RemoveUserModalContainer";
 import { setLoading, setUnloading } from "../../../modules/loading";
-import { logout } from "../../../lib/api/auth";
-import { signout } from "../../../modules/auth";
+import { logout, updateProfileAvatar } from "../../../lib/api/auth";
+import { signin, signout } from "../../../modules/auth";
 import { getPlaylist } from "../../../modules/playlist";
 import { afterGetPlaylist } from "../../../lib/utils/afterGetPlaylist";
+import base64 from "react-native-base64";
+import { setSnackbar } from "../../../modules/snackbar";
+import { SERVER_ERROR } from "../../../lib/strings";
 
 function ProfileContainer({ navigation }) {
-   const { user } = useSelector(({ auth }) => auth);
+   const user = useSelector(({ auth }) => auth);
    const [loading, setThisLoading] = useState({ photo: false, name: false });
    const [modalVisible, setModalVisible] = useState(false);
    const [removeUserVisible, setRemoveUserVisible] = useState(false);
    const [reauthenticated, setReauthenticated] = useState(false);
    const [reauthVisible, setReauthVisible] = useState(false);
+   const [pw, setPW] = useState("");
    const dispatch = useDispatch();
 
    const changeAvatar = async () => {
@@ -35,12 +39,14 @@ function ProfileContainer({ navigation }) {
             aspect: [4, 4],
             quality: 1,
          });
-         setThisLoading((prev) => ({ ...prev, photo: true }));
          if (!result.cancelled) {
             // 프로필 사진 수정
+            setThisLoading((prev) => ({ ...prev, photo: true }));
+            const res = await updateProfileAvatar(result.uri, user.loginId);
+            dispatch(signin(res));
          }
       } catch (err) {
-         console.log(err);
+         dispatch(setSnackbar(SERVER_ERROR));
       }
       setThisLoading((prev) => ({ ...prev, photo: false }));
    };
@@ -75,12 +81,15 @@ function ProfileContainer({ navigation }) {
                reauthVisible={reauthVisible}
                setReauthVisible={setReauthVisible}
                setReauthenticated={setReauthenticated}
+               password={pw}
+               setPassword={setPW}
             />
          ) : (
             <>
                <PwUpdateContainer
                   visible={modalVisible}
                   setVisible={setModalVisible}
+                  oldPassword={pw}
                />
                <RemoveUserModalContainer
                   visible={removeUserVisible}

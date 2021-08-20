@@ -4,9 +4,9 @@ const SIGNIN = "SIGNIN";
 const SIGNOUT = "SIGNOUT";
 
 //액션 생성 함수
-export const signin = (id) => ({
+export const signin = (userInfo) => ({
    type: SIGNIN,
-   payload: { id: id },
+   payload: userInfo,
 });
 export const signout = () => ({ type: SIGNOUT });
 
@@ -19,8 +19,8 @@ export default function auth(state = initialState, action) {
    switch (action.type) {
       case SIGNIN:
          return {
-            signined: true,
-            id: action.payload.id,
+            signined: action.payload.member,
+            ...action.payload,
          };
       case SIGNOUT:
          return {

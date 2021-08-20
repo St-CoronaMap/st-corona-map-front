@@ -6,17 +6,16 @@ import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
 import { SERVER_ERROR } from "../../../lib/strings";
 import { login } from "../../../lib/api/auth";
-import { MY_ID } from "../../../../env";
 
 function ReauthenticateModalContainer({
    user,
    setReauthenticated,
    reauthVisible,
    setReauthVisible,
+   password,
+   setPassword,
 }) {
-   const [password, setPassword] = useState("");
    const [errMsg, setErrMsg] = useState({ password: "" });
-
    const dispatch = useDispatch();
 
    const reauthWithPw = async () => {
@@ -25,11 +24,11 @@ function ReauthenticateModalContainer({
          if (!checkPassword(password, setErrMsg)) {
             return;
          }
-         await login(MY_ID, password);
+
+         await login(user.loginId, password);
          setReauthenticated(true);
          // 아이디 받아온 걸로 재 로그인
       } catch (err) {
-         console.log(err);
          if (err.message === "비밀번호가 일치하지 않습니다.") {
             handleError("auth/wrong-password", setErrMsg);
          } else {

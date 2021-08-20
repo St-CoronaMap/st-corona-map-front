@@ -37,6 +37,8 @@ export const login = async (id, pw) => {
          isPC: Platform.OS === "web",
       });
       await setTokens(res.data.response);
+      const userInfo = await getUserInfo();
+      return userInfo.data.response;
    } catch (err) {
       throw err.response.data;
    }
@@ -72,7 +74,7 @@ export const nonMemberLogin = async () => {
          id = res.loginId;
       }
       //로그인
-      await login(id, "");
+      return await login(id, "");
    } catch (err) {
       console.log(err.response.data);
    }
@@ -82,28 +84,43 @@ export const appInit = async () => {
    try {
       const tokensJson = await AsyncStorage.getItem("@tokens");
       let tokensJsonParse = JSON.parse(tokensJson);
+      let userInfo = {};
       if (tokensJsonParse) {
          //reissue
          try {
             await reissue(tokensJsonParse);
+            const res = await getUserInfo();
+            userInfo = res.data.response;
          } catch (err) {
             // 리프레시 토큰 만료시 비회원 재로그인
             // 회원은 기존에 비회원으로 있던 기록이 나오고, 로그인은 자신이 해야함
-            await nonMemberLogin();
+            userInfo = await nonMemberLogin();
          }
       } else {
-         await nonMemberLogin();
+         userInfo = await nonMemberLogin();
       }
 
       const p_first = await AsyncStorage.getItem(`@${P_FIRST}`);
       const v_first = await AsyncStorage.getItem(`@${V_FIRST}`);
 
       return {
-         [P_FIRST]: p_first === null ? FIRST : p_first,
-         [V_FIRST]: v_first === null ? FIRST : v_first,
+         userInfo: userInfo,
+         first: {
+            [P_FIRST]: p_first === null ? FIRST : p_first,
+            [V_FIRST]: v_first === null ? FIRST : v_first,
+         },
       };
    } catch (err) {
       console.log(err.response.data);
+   }
+};
+
+export const getUserInfo = async () => {
+   try {
+      const res = await axios.get(`${Address}/api/member`);
+      return res;
+   } catch (err) {
+      throw err.response.data;
    }
 };
 
@@ -119,14 +136,22 @@ export const nonSignUp = async (newId) => {
    }
 };
 
-export const SignUp = async (id, pw) => {
+export const changeToMember = async (id, pw) => {
    try {
-      await axios.post(`${Address}/api/member/signup/real`, {
+      await axios.put(`${Address}/api/member/change`, {
          loginId: id,
          password: pw,
-         isPC: Platform.OS === "web",
       });
-      await login(id, pw);
+      await AsyncStorage.removeItem("@nomMemberId");
+   } catch (err) {
+      throw err.response.data;
+   }
+};
+
+export const SignUp = async (id, pw) => {
+   try {
+      await changeToMember(id, pw);
+      return await login(id, pw);
    } catch (err) {
       // 중복 아이디 처리
       throw err.response.data;
@@ -148,5 +173,35 @@ export const logout = async () => {
       await nonMemberLogin();
    } catch (err) {
       throw err;
+   }
+};
+
+export const pwUpdate = async (pw, newPw) => {
+   try {
+      await axios.post(`${Address}/api/member/changePassword`, {
+         oldPassword: pw,
+         newPassword: newPw,
+      });
+   } catch (err) {
+      throw err.response.data;
+   }
+};
+
+export const updateProfileAvatar = async (uri, loginId) => {
+   try {
+      let formData = new FormData();
+      formData.append("img", {
+         uri: uri,
+         name: `${loginId}.png`,
+         type: `image/png`,
+      });
+
+      const res = await axios.post(`${Address}/api/member/upload`, formData, {
+         headers: { "Content-Type": "multipart/form-data;" },
+      });
+      return res.data.response;
+   } catch (err) {
+      console.log(err);
+      throw err.response.data;
    }
 };

@@ -6,8 +6,9 @@ import handleError, {
 } from "../../../lib/utils/handleAuthErr";
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
+import { pwUpdate } from "../../../lib/api/auth";
 
-function PwUpdateContainer({ visible, setVisible }) {
+function PwUpdateContainer({ visible, setVisible, oldPassword }) {
    const [password, setPassword] = useState("");
    const [success, setSuccess] = useState(false);
    const [errMsg, setErrMsg] = useState({ password: "" });
@@ -22,9 +23,10 @@ function PwUpdateContainer({ visible, setVisible }) {
       try {
          dispatch(setLoading());
          // 비밀번호 변경
+         await pwUpdate(oldPassword, pw);
          setSuccess(true);
       } catch (err) {
-         catchError(err.code, setErrMsg, "password");
+         catchError(err.message, setErrMsg, "password");
       }
       dispatch(setUnloading());
    };

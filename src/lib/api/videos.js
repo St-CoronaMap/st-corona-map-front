@@ -6,6 +6,7 @@ export const getVideoList = async (id) => {
       const res = await axios.get(`${Address}/api/play/list/${id}`);
       return res.data.response;
    } catch (err) {
+      console.log(err);
       throw err;
    }
 };

@@ -16,10 +16,11 @@ import { Platform, StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
 import Loading from "./src/components/elements/Loading";
 import Snackbar from "rn-animated-snackbar";
-import { clearSnackbar } from "./src/modules/snackbar";
+import { clearSnackbar, setSnackbar } from "./src/modules/snackbar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigationRef } from "./RootNavigation";
+import { signin } from "./src/modules/auth";
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,7 @@ function AppInit() {
          (res) => res,
          async (err) => {
             const originalRequest = err.config;
-            if (err.response.status === 401 && !originalRequest._retry) {
+            if (err?.response?.status === 401 && !originalRequest._retry) {
                originalRequest._retry = true;
                const tokensJson = await AsyncStorage.getItem("@tokens");
                const res = await reissue(JSON.parse(tokensJson));
@@ -44,6 +45,18 @@ function AppInit() {
 
                return axios(originalRequest);
             }
+
+            /*else if (
+               err?.response?.data?.message === "다시 로그인이 필요합니다." ||
+               err?.response?.data?.message ===
+                  "Refresh Token 이 유효하지 않습니다."
+            ) {
+               dispatch(
+                  setSnackbar("리프레시 토큰 만료로, 앱을 재실행 시키겠습니다.")
+               );
+               setTimeout(() => Restart(), 3000);
+               return Promise.reject(err);
+            }*/
             return Promise.reject(err);
          }
       );
@@ -52,7 +65,8 @@ function AppInit() {
 
    const preload = async () => {
       const res = await appInit();
-      dispatch(setIsFirst(res));
+      dispatch(setIsFirst(res.first));
+      dispatch(signin(res.userInfo));
       dispatch(getPlaylist());
    };
 
