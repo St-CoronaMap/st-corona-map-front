@@ -15,36 +15,20 @@ function VideoEdit({
    playerRef,
    playing,
    lapse,
-   selectedLapsed,
    handleValueChange,
    endTime,
    loaded,
-   setPlaying,
-   setSelectedLapsed,
    checkItem,
    lapseLowCounter,
    lapseHighCounter,
    playingByPlayer,
-   setPlayingByPlayer,
    togglePlaying,
    volumneChange,
    vol,
    onReady,
    onSelectLapse,
+   onChangeState,
 }) {
-   const onChangeState = useCallback(
-      (e) => {
-         if (e === "ended") {
-            playerRef.current?.seekTo(selectedLapsed[0], true);
-         } else if (e === "paused") {
-            setPlayingByPlayer(false);
-         } else if (e === "playing") {
-            setPlayingByPlayer(true);
-            setPlaying(true);
-         }
-      },
-      [selectedLapsed]
-   );
    return (
       <View style={styles.container}>
          <View>

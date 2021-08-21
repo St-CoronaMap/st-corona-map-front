@@ -6,7 +6,6 @@ import {
 } from "rn-tourguide";
 import {
    CONTROLBAR_HEIGHT,
-   TAP_HEIGHT,
    WEB_COPILOT_BOTTOM,
 } from "../../../lib/styles/variables";
 
@@ -16,7 +15,7 @@ export function TourGuide_Seconds() {
          zone={1}
          isTourGuide
          right={(Dimensions.get("window").width - 600) / 2}
-         bottom={WEB_COPILOT_BOTTOM + TAP_HEIGHT - 103}
+         bottom={WEB_COPILOT_BOTTOM - 103}
          width={Dimensions.get("window").width}
          height={"100%"}
       />
@@ -29,7 +28,7 @@ export function TourGuide_ControllBar() {
          zone={2}
          isTourGuide
          right={(Dimensions.get("window").width - 600) / 2 - 440}
-         bottom={WEB_COPILOT_BOTTOM + TAP_HEIGHT - 3}
+         bottom={WEB_COPILOT_BOTTOM - 3}
          width={120}
          height={CONTROLBAR_HEIGHT}
       />

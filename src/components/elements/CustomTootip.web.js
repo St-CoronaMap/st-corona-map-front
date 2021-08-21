@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
       backgroundColor: "white",
       padding: 20,
       paddingBottom: 0,
+      borderRadius: 20,
    },
    tooltipContainer: {
       flex: 1,

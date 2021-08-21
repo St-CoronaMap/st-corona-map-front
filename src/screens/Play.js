@@ -1,45 +1,29 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { Platform } from "react-native";
 import PlayRootContainer from "../components/play/container/PlayRootContainer";
 import VideoEditFromPlayRootContainer from "../components/videoEdit/container/VideoEditFromPlayRootContainer";
-import palette from "../lib/styles/palette";
+
+import { PLAY_SCREEN, VIDEOEDIT_PLAY } from "../lib/styles/variables";
 
 const Stack = createStackNavigator();
 
-export default function PlayScreen({ route, navigation }) {
+export default function PlayScreen({ route }) {
    const playlist = route.params;
    return (
-      <Stack.Navigator initialRouteName="PlayScreen">
+      <Stack.Navigator initialRouteName={PLAY_SCREEN}>
          <Stack.Screen
-            name="PlayScreen"
+            name={PLAY_SCREEN}
             component={PlayRootContainer}
             initialParams={{ playlistInput: playlist }}
             options={{
-               headerShown: Platform.OS === "web" ? true : false,
-               headerStyle: {
-                  backgroundColor: palette.ivory,
-                  height: 50,
-               },
-               headerTitleStyle: {
-                  fontWeight: "800",
-               },
-               title: "뒤로가기",
+               headerShown: false,
             }}
          />
          <Stack.Screen
-            name="videoEdit_play"
+            name={VIDEOEDIT_PLAY}
             component={VideoEditFromPlayRootContainer}
             options={{
-               headerShown: Platform.OS === "web" ? true : false,
-               headerStyle: {
-                  backgroundColor: palette.ivory,
-                  height: 50,
-               },
-               headerTitleStyle: {
-                  fontWeight: "800",
-               },
-               title: "뒤로가기",
+               headerShown: false,
             }}
          />
       </Stack.Navigator>

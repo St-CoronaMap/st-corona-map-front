@@ -38,9 +38,9 @@ export const login = async (id, pw) => {
       });
       await setTokens(res.data.response);
       const userInfo = await getUserInfo();
-      return userInfo.data.response;
+      return userInfo;
    } catch (err) {
-      throw err.response.data;
+      throw err.response.data || err;
    }
 };
 
@@ -49,8 +49,7 @@ export const reissue = async (tokens) => {
       const res = await axios.post(
          `${Address}/api/member/reissue`,
          {
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken,
+            ...tokens,
             isPC: Platform.OS === "web",
          },
          { skipAuthRefresh: true }
@@ -76,21 +75,23 @@ export const nonMemberLogin = async () => {
       //로그인
       return await login(id, "");
    } catch (err) {
-      console.log(err.response.data);
+      throw err.response.data || err;
    }
 };
 
 export const appInit = async () => {
    try {
       const tokensJson = await AsyncStorage.getItem("@tokens");
+
       let tokensJsonParse = JSON.parse(tokensJson);
       let userInfo = {};
+
       if (tokensJsonParse) {
          //reissue
          try {
             await reissue(tokensJsonParse);
             const res = await getUserInfo();
-            userInfo = res.data.response;
+            userInfo = res;
          } catch (err) {
             // 리프레시 토큰 만료시 비회원 재로그인
             // 회원은 기존에 비회원으로 있던 기록이 나오고, 로그인은 자신이 해야함
@@ -111,14 +112,15 @@ export const appInit = async () => {
          },
       };
    } catch (err) {
-      console.log(err.response.data);
+      // 아예 초기화가 실패했을떄
+      throw err.response.data || err;
    }
 };
 
 export const getUserInfo = async () => {
    try {
       const res = await axios.get(`${Address}/api/member`);
-      return res;
+      return res.data.response;
    } catch (err) {
       throw err.response.data;
    }
@@ -132,7 +134,7 @@ export const nonSignUp = async (newId) => {
       });
       return res.data.response;
    } catch (err) {
-      console.log(err.response.data);
+      throw err;
    }
 };
 
@@ -161,7 +163,6 @@ export const SignUp = async (id, pw) => {
 export const removeUser = async () => {
    try {
       await axios.delete(`${Address}/api/member/delete`);
-      await logout();
    } catch (err) {
       throw err.response.data;
    }
@@ -186,15 +187,21 @@ export const pwUpdate = async (pw, newPw) => {
       throw err.response.data;
    }
 };
-
 export const updateProfileAvatar = async (uri, loginId) => {
    try {
-      let formData = new FormData();
-      formData.append("img", {
+      const formData = new FormData();
+      let file = {
          uri: uri,
          name: `${loginId}.png`,
          type: `image/png`,
-      });
+      };
+      if (Platform.OS === "web") {
+         const respond = await fetch(uri);
+         const blob = await respond.blob();
+         file = new File([blob], `${loginId}.png`);
+      }
+
+      formData.append("img", file);
 
       const res = await axios.post(`${Address}/api/member/upload`, formData, {
          headers: { "Content-Type": "multipart/form-data;" },

@@ -3,7 +3,6 @@ import VideoEdit from "../view/VideoEdit";
 import { copilot } from "react-native-copilot";
 
 function VideoEditFromPlay({
-   navigation,
    item,
    playing,
    playingByPlayer,
@@ -14,27 +13,26 @@ function VideoEditFromPlay({
    selectedLapsed,
    loaded,
    setPlaying,
-   setSelectedLapsed,
    checkItem,
    setLapse,
    togglePlaying,
    volumneChange,
    vol,
    onReady,
+   lapseLowCounter,
+   lapseHighCounter,
+   onSelectLapse,
 }) {
-   let count = 0,
-      saveLow = 0;
    const handleValueChange = useCallback(([low, high]) => {
-      if (count >= 1) {
-         if (low < high) {
-            setLapse([low, high]);
-
-            if (low != saveLow) playerRef.current?.seekTo(low, "seconds");
-            else playerRef.current?.seekTo(high, "seconds");
-            saveLow = low;
-         }
-      } else if (count < 3) {
-         count++;
+      if (low < high) {
+         setLapse((prev) => {
+            if (low != prev[0]) {
+               playerRef.current?.seekTo(low, "seconds");
+            } else if (high != prev[1]) {
+               playerRef.current?.seekTo(high, "seconds");
+            }
+            return [low, high];
+         });
       }
    }, []);
 
@@ -54,20 +52,6 @@ function VideoEditFromPlay({
       [selectedLapsed]
    );
 
-   const lapseLowCounter = useCallback((v) => {
-      playerRef.current?.seekTo(v, "seconds");
-      setLapse((prev) => [v, prev[1]]);
-   }, []);
-   const lapseHighCounter = useCallback((v) => {
-      playerRef.current?.seekTo(v, "seconds");
-      setLapse((prev) => [prev[0], v]);
-   }, []);
-
-   const onSelectLapse = useCallback(() => {
-      setSelectedLapsed(lapse);
-      playerRef.current?.seekTo(lapse[0], "seconds");
-   }, [lapse]);
-
    return (
       <VideoEdit
          item={item}
@@ -75,7 +59,6 @@ function VideoEditFromPlay({
          playingByPlayer={playingByPlayer}
          setPlayingByPlayer={setPlayingByPlayer}
          playerRef={playerRef}
-         navigation={navigation}
          lapse={lapse}
          handleValueChange={handleValueChange}
          endTime={endTime}

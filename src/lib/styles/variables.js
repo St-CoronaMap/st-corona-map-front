@@ -11,3 +11,8 @@ export const TAP_HEIGHT = 48;
 
 export const WEB_COPILOT_BOTTOM =
    height * 0.025 + HEADERNAME_HEIGHT + TAP_HEIGHT;
+
+export const PLAY_SCREEN = "PlayScreen";
+export const VIDEOEDIT_PLAY = "videoEdit_play";
+export const VIDEOEDIT_SEARCH = "videoEdit_search";
+export const SEARCH = "Search";

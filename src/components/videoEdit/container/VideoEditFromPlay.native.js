@@ -3,7 +3,6 @@ import { copilot } from "react-native-copilot";
 import VideoEdit from "../view/VideoEdit";
 
 function VideoEditFromPlay({
-   navigation,
    item,
    playing,
    playingByPlayer,
@@ -14,13 +13,15 @@ function VideoEditFromPlay({
    selectedLapsed,
    loaded,
    setPlaying,
-   setSelectedLapsed,
    checkItem,
    setLapse,
    togglePlaying,
    volumneChange,
    vol,
    onReady,
+   lapseLowCounter,
+   lapseHighCounter,
+   onSelectLapse,
 }) {
    useEffect(() => {
       const handleLapse = async () => {
@@ -33,49 +34,46 @@ function VideoEditFromPlay({
       return () => clearInterval(intervalId);
    }, [selectedLapsed]);
 
-   let count = 0,
-      saveLow = 0;
-   const handleValueChange = useCallback((low, high) => {
-      if (count >= 3) {
+   const handleValueChange = useCallback(
+      (low, high) => {
          if (low < high) {
-            setLapse([low, high]);
-
-            if (low != saveLow) playerRef.current?.seekTo(low, true);
-            else playerRef.current?.seekTo(high, true);
-            saveLow = low;
+            setLapse((prev) => {
+               if (low != prev[0]) {
+                  playerRef.current?.seekTo(low, true);
+               } else if (high != prev[1]) {
+                  playerRef.current?.seekTo(high, true);
+               }
+               return [low, high];
+            });
          }
-      } else if (count < 3) {
-         count++;
-      }
-   }, []);
+      },
+      [playerRef]
+   );
 
-   const lapseLowCounter = useCallback((v) => {
-      setLapse((prev) => [v, prev[1]]);
-   }, []);
-   const lapseHighCounter = useCallback((v) => {
-      setLapse((prev) => [prev[0], v]);
-   }, []);
-
-   const onSelectLapse = useCallback(() => {
-      playerRef.current?.seekTo(lapse[0], true);
-      setSelectedLapsed(lapse);
-   }, [lapse]);
+   const onChangeState = useCallback(
+      (e) => {
+         if (e === "ended") {
+            playerRef.current?.seekTo(selectedLapsed[0], true);
+         } else if (e === "paused") {
+            setPlayingByPlayer(false);
+         } else if (e === "playing") {
+            setPlayingByPlayer(true);
+            setPlaying(true);
+         }
+      },
+      [selectedLapsed]
+   );
 
    return (
       <VideoEdit
          item={item}
+         playerRef={playerRef}
          playing={playing}
          playingByPlayer={playingByPlayer}
-         setPlayingByPlayer={setPlayingByPlayer}
-         playerRef={playerRef}
-         navigation={navigation}
          lapse={lapse}
          handleValueChange={handleValueChange}
          endTime={endTime}
-         selectedLapsed={selectedLapsed}
          loaded={loaded}
-         setPlaying={setPlaying}
-         setSelectedLapsed={setSelectedLapsed}
          checkItem={checkItem}
          lapseLowCounter={lapseLowCounter}
          lapseHighCounter={lapseHighCounter}
@@ -84,6 +82,7 @@ function VideoEditFromPlay({
          vol={vol}
          onReady={onReady}
          onSelectLapse={onSelectLapse}
+         onChangeState={onChangeState}
       />
    );
 }

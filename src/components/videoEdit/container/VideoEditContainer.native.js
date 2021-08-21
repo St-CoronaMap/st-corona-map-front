@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import { copilot } from "react-native-copilot";
-import { useSelector } from "react-redux";
-import { FIRST, V_FIRST } from "../../../lib/api/isFirstStorage";
 import CustomStepNumber from "../../elements/CustomStepNumber";
 import CustomTootip from "../../elements/CustomTootip";
 import VideoEdit from "../view/VideoEdit";
 
 function VideoEditContainer({
-   navigation,
    start,
    item,
    playing,
@@ -19,7 +16,6 @@ function VideoEditContainer({
    selectedLapsed,
    loaded,
    setPlaying,
-   setSelectedLapsed,
    checkItem,
    setLapse,
    togglePlaying,
@@ -27,9 +23,11 @@ function VideoEditContainer({
    vol,
    onReady,
    clearIsFirstV,
+   isFirst,
+   lapseLowCounter,
+   lapseHighCounter,
+   onSelectLapse,
 }) {
-   const isFirst = useSelector(({ isFirst }) => isFirst[V_FIRST] === FIRST);
-
    useEffect(() => {
       const handleLapse = async () => {
          const time = await playerRef.current?.getCurrentTime();
@@ -48,48 +46,46 @@ function VideoEditContainer({
       }
    }, [isFirst, loaded]);
 
-   let count = 0,
-      saveLow = 0;
-   const handleValueChange = useCallback((low, high) => {
-      if (count > 1) {
-         if (low <= high) {
-            setLapse([low, high]);
-            if (low != saveLow) playerRef.current?.seekTo(low, true);
-            else playerRef.current?.seekTo(high, true);
-            saveLow = low;
+   const handleValueChange = useCallback(
+      (low, high) => {
+         if (low < high) {
+            setLapse((prev) => {
+               if (low != prev[0]) {
+                  playerRef.current?.seekTo(low, true);
+               } else if (high != prev[1]) {
+                  playerRef.current?.seekTo(high, true);
+               }
+               return [low, high];
+            });
          }
-      } else {
-         count++;
-      }
-   }, []);
+      },
+      [playerRef]
+   );
 
-   const lapseLowCounter = useCallback((v) => {
-      setLapse((prev) => [v, prev[1]]);
-   }, []);
-   const lapseHighCounter = useCallback((v) => {
-      setLapse((prev) => [prev[0], v]);
-   }, []);
-
-   const onSelectLapse = useCallback(() => {
-      playerRef.current?.seekTo(lapse[0], true);
-      setSelectedLapsed(lapse);
-   }, [lapse]);
+   const onChangeState = useCallback(
+      (e) => {
+         if (e === "ended") {
+            playerRef.current?.seekTo(selectedLapsed[0], true);
+         } else if (e === "paused") {
+            setPlayingByPlayer(false);
+         } else if (e === "playing") {
+            setPlayingByPlayer(true);
+            setPlaying(true);
+         }
+      },
+      [selectedLapsed]
+   );
 
    return (
       <VideoEdit
          item={item}
+         playerRef={playerRef}
          playing={playing}
          playingByPlayer={playingByPlayer}
-         setPlayingByPlayer={setPlayingByPlayer}
-         playerRef={playerRef}
-         navigation={navigation}
          lapse={lapse}
          handleValueChange={handleValueChange}
          endTime={endTime}
-         selectedLapsed={selectedLapsed}
          loaded={loaded}
-         setPlaying={setPlaying}
-         setSelectedLapsed={setSelectedLapsed}
          checkItem={checkItem}
          lapseLowCounter={lapseLowCounter}
          lapseHighCounter={lapseHighCounter}
@@ -98,6 +94,7 @@ function VideoEditContainer({
          vol={vol}
          onReady={onReady}
          onSelectLapse={onSelectLapse}
+         onChangeState={onChangeState}
       />
    );
 }

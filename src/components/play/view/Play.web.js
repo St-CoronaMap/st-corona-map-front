@@ -4,6 +4,7 @@ import palette from "../../../lib/styles/palette";
 import {
    CONTROLBAR_HEIGHT,
    HEADERNAME_HEIGHT,
+   TAP_HEIGHT,
    WINDOW_HEIGHT,
 } from "../../../lib/styles/variables";
 import ControlBar from "../elements/ControlBar";
@@ -43,32 +44,29 @@ function Play({
    playingByPlayer,
    setPlayingByPlayer,
 }) {
-   const youtubePlayerWrap = (cur) => {
-      return (
-         <ReactPlayer
-            ref={playerRef}
-            url={`https://www.youtube.com/watch?v=${playlist.items[cur]?.videoId}`}
-            width={534}
-            height={PLAYER_HEIGHT}
-            playing={playing}
-            volume={vol / 100}
-            controls={true}
-            onStart={onStart}
-            onPause={() => {
-               setPlayingByPlayer(false);
-            }}
-            onPlay={() => {
-               setPlayingByPlayer(true);
-               setPlaying(true);
-            }}
-            onProgress={({ playedSeconds }) => onProgress(playedSeconds)}
-            onEnded={onEnded}
-         />
-      );
-   };
    return (
       <View style={styles.container}>
-         <View style={styles.playerContainer}>{youtubePlayerWrap(cur)}</View>
+         <View style={styles.playerContainer}>
+            <ReactPlayer
+               ref={playerRef}
+               url={`https://www.youtube.com/watch?v=${playlist.items[cur]?.videoId}`}
+               width={534}
+               height={PLAYER_HEIGHT}
+               playing={playing}
+               volume={vol / 100}
+               controls={true}
+               onStart={onStart}
+               onPause={() => {
+                  setPlayingByPlayer(false);
+               }}
+               onPlay={() => {
+                  setPlayingByPlayer(true);
+                  setPlaying(true);
+               }}
+               onProgress={({ playedSeconds }) => onProgress(playedSeconds)}
+               onEnded={onEnded}
+            />
+         </View>
          <View
             style={{
                height:
@@ -76,7 +74,6 @@ function Play({
                   PLAYER_HEIGHT -
                   CONTROLBAR_HEIGHT -
                   HEADERNAME_HEIGHT -
-                  50 -
                   Math.random(),
             }}>
             <ScrollView>

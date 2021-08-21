@@ -174,7 +174,7 @@ const styles = (isCur) =>
          shadowOpacity: 0.25,
          shadowOffset: {
             width: 0,
-            height: 3,
+            height: 2,
          },
          shadowRadius: 3.84,
 

@@ -137,9 +137,11 @@ const styles = StyleSheet.create({
 
       shadowColor: "#000",
       shadowOpacity: 0.25,
+      shadowOffset: {
+         width: 0,
+         height: 2,
+      },
       shadowRadius: 3.84,
-
-      elevation: 3,
    },
    cardImageContainer: {
       flex: 6,

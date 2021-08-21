@@ -8,26 +8,24 @@ function ButtonsForItem({ onPressDelete, onPressEdit, index, id }) {
    return (
       <>
          <Button
-            title="수정"
             type="clear"
             containerStyle={styles(0).buttonContainer}
             buttonStyle={stylesObj.buttonStyle}
             onPress={() => onPressEdit(index)}
-            titleStyle={{
-               fontSize: 16,
+            icon={{
+               name: "edit",
                color: palette.blackBerry,
             }}
          />
          <Button
-            title="삭제"
             type="clear"
             containerStyle={styles(1).buttonContainer}
             buttonStyle={stylesObj.buttonStyle}
-            titleStyle={{
-               color: palette.redRose,
-               fontSize: 16,
-            }}
             onPress={() => onPressDelete(index, id)}
+            icon={{
+               name: "delete-outline",
+               color: palette.redRose,
+            }}
          />
       </>
    );

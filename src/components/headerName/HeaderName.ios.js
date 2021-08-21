@@ -4,24 +4,21 @@ import { Button } from "react-native-elements";
 import palette from "../../lib/styles/palette";
 import { HEADERNAME_HEIGHT } from "../../lib/styles/variables";
 import * as RootNavigation from "../../../RootNavigation";
-import { Platform } from "react-native";
 
 /* 상단 네비게이션 위 이름 나오는 부분 */
 function HeaderName() {
    return (
       <View style={styles.container}>
-         {Platform.OS === "ios" && (
-            <Button
-               onPress={() => RootNavigation.goBack()}
-               icon={{
-                  name: "angle-left",
-                  type: "font-awesome",
-                  color: "white",
-               }}
-               containerStyle={styles.goBackContainer}
-               buttonStyle={styles.goBackButton}
-            />
-         )}
+         <Button
+            onPress={() => RootNavigation.goBack()}
+            icon={{
+               name: "angle-left",
+               type: "font-awesome",
+               color: "white",
+            }}
+            containerStyle={styles.goBackContainer}
+            buttonStyle={styles.goBackButton}
+         />
          <Text style={styles.text}>Your List</Text>
       </View>
    );

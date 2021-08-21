@@ -40,7 +40,6 @@
       "react": "16.13.1",
       "react-dom": "16.13.1",
       "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
-      "react-native-base64": "^0.2.1",
       "react-native-copilot": "^2.5.1",
       "react-native-draggable-flatlist": "2.6.1",
       "react-native-elements": "^3.4.2",

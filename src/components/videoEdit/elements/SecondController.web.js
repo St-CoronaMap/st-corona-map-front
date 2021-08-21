@@ -74,7 +74,6 @@ function SecondController({
                titleStyle={styles.applyButtonTitle}
                type="outline"
                onPress={onSelectLapse}
-               raised
             />
          </View>
       </View>
@@ -101,9 +100,22 @@ const styles = StyleSheet.create({
    applyButtonContainer: {
       width: 100,
       marginTop: 10,
+      backgroundColor: "white",
+      borderWidth: 0,
+      borderRadius: 5,
+      shadowColor: "#000",
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      shadowOffset: {
+         width: 0,
+         height: 1,
+      },
    },
    applyButton: {
-      backgroundColor: palette.redRose,
+      backgroundColor: "white",
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: palette.blackBerry,
    },
    applyButtonTitle: {
       color: palette.blackBerry,

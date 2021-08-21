@@ -8,7 +8,12 @@ import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { pwUpdate } from "../../../lib/api/auth";
 
-function PwUpdateContainer({ visible, setVisible, oldPassword }) {
+function PwUpdateContainer({
+   visible,
+   setVisible,
+   oldPassword,
+   afterPwChange,
+}) {
    const [password, setPassword] = useState("");
    const [success, setSuccess] = useState(false);
    const [errMsg, setErrMsg] = useState({ password: "" });
@@ -47,6 +52,7 @@ function PwUpdateContainer({ visible, setVisible, oldPassword }) {
       setErrMsg({ password: "" });
       setSuccess(false);
       setVisible(false);
+      afterPwChange();
    };
    return (
       <PwUpdate

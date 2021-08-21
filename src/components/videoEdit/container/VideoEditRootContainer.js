@@ -5,15 +5,18 @@ import React, {
    useRef,
    useState,
 } from "react";
-import { useDispatch } from "react-redux";
-import { V_FIRST } from "../../../lib/api/isFirstStorage";
+import { Platform } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { FIRST, V_FIRST } from "../../../lib/api/isFirstStorage";
 import { clearIsFirst } from "../../../modules/isFirst";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import CheckItemModal from "../view/CheckItemModal";
 import SelectPlaylist from "../view/SelectPlaylist";
 import VideoEditContainer from "./VideoEditContainer";
 
-function VideoEditRootContainer({ route, navigation }) {
+const SEET_TO_OPTION = Platform.OS === "web" ? "seconds" : true;
+
+function VideoEditRootContainer({ route }) {
    const item = route.params.item;
    const [playing, setPlaying] = useState(false);
    const [playingByPlayer, setPlayingByPlayer] = useState(true);
@@ -27,6 +30,7 @@ function VideoEditRootContainer({ route, navigation }) {
    const [isBanned, setIsBanned] = useState(false);
    const [vol, setVol] = useState(50);
 
+   const isFirst = useSelector(({ isFirst }) => isFirst[V_FIRST] === FIRST);
    const dispatch = useDispatch();
 
    useEffect(() => {
@@ -34,9 +38,10 @@ function VideoEditRootContainer({ route, navigation }) {
       const getEndTime = async () => {
          const res = await playerRef.current?.getDuration();
          if (res === 0) setIsBanned(true);
-         setLapse([0, res === 0 ? 1 : res]);
-         setSelectedLapsed([0, res === 0 ? 1 : res]);
-         setEndTime(res === 0 ? 1 : res);
+         const high = res === 0 ? 1 : res;
+         setLapse([0, high]);
+         setSelectedLapsed([0, high]);
+         setEndTime(high);
       };
       if (loaded) {
          dispatch(setUnloading());
@@ -87,6 +92,20 @@ function VideoEditRootContainer({ route, navigation }) {
       dispatch(clearIsFirst(V_FIRST));
    }, []);
 
+   const lapseLowCounter = useCallback((v) => {
+      playerRef.current?.seekTo(v, SEET_TO_OPTION);
+      setLapse((prev) => [v, prev[1]]);
+   }, []);
+   const lapseHighCounter = useCallback((v) => {
+      playerRef.current?.seekTo(v, SEET_TO_OPTION);
+      setLapse((prev) => [prev[0], v]);
+   }, []);
+
+   const onSelectLapse = useCallback(() => {
+      playerRef.current?.seekTo(lapse[0], SEET_TO_OPTION);
+      setSelectedLapsed(lapse);
+   }, [lapse]);
+
    return (
       <>
          <VideoEditContainer
@@ -95,21 +114,22 @@ function VideoEditRootContainer({ route, navigation }) {
             playingByPlayer={playingByPlayer}
             setPlayingByPlayer={setPlayingByPlayer}
             playerRef={playerRef}
-            navigation={navigation}
             lapse={lapse}
             endTime={endTime}
             selectedLapsed={selectedLapsed}
             loaded={loaded}
             setLapse={setLapse}
-            setLoaded={setLoaded}
             setPlaying={setPlaying}
-            setSelectedLapsed={setSelectedLapsed}
             checkItem={checkItem}
             togglePlaying={togglePlaying}
             volumneChange={volumneChange}
             vol={vol}
             onReady={onReady}
             clearIsFirstV={clearIsFirstV}
+            isFirst={isFirst}
+            lapseLowCounter={lapseLowCounter}
+            lapseHighCounter={lapseHighCounter}
+            onSelectLapse={onSelectLapse}
          />
          {!isBanned && (
             <>

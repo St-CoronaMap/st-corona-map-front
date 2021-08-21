@@ -24,11 +24,11 @@ function Summary({ item }) {
 }
 
 const styles = StyleSheet.create({
-   summaryContainer: {},
    summaryBorder: {
       paddingBottom: 10,
       borderBottomWidth: 0.5,
-      borderColor: palette.blackBerry,
+      borderColor:
+         Platform.OS === "web" ? palette.deepCoolGray : palette.blackBerry,
       borderRadius: Platform.OS === "web" ? 0 : 20,
    },
    text: {

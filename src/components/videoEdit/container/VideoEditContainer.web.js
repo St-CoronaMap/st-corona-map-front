@@ -5,9 +5,8 @@ import {
    TourGuideProvider, // Main provider
 } from "rn-tourguide";
 import CustomTootip from "../../elements/CustomTootip";
-import { FIRST, V_FIRST } from "../../../lib/api/isFirstStorage";
+
 function VideoEditContainer({
-   navigation,
    item,
    playing,
    playingByPlayer,
@@ -18,7 +17,6 @@ function VideoEditContainer({
    selectedLapsed,
    loaded,
    setPlaying,
-   setSelectedLapsed,
    checkItem,
    setLapse,
    togglePlaying,
@@ -26,9 +24,12 @@ function VideoEditContainer({
    vol,
    onReady,
    clearIsFirstV,
+   isFirst,
+   lapseLowCounter,
+   lapseHighCounter,
+   onSelectLapse,
 }) {
    const isPlay = useSelector(({ isPlay }) => isPlay);
-   const isFirst = useSelector(({ isFirst }) => isFirst[V_FIRST] === FIRST);
 
    useEffect(() => {
       setPlaying(false);
@@ -50,34 +51,18 @@ function VideoEditContainer({
       [selectedLapsed]
    );
 
-   let count = 0,
-      saveLow = 0;
    const handleValueChange = useCallback(([low, high]) => {
-      if (count >= 1) {
-         if (low < high) {
-            setLapse([low, high]);
-
-            if (low != saveLow) playerRef.current?.seekTo(low, "seconds");
-            else playerRef.current?.seekTo(high, "seconds");
-            saveLow = low;
-         }
-      } else if (count < 3) {
-         count++;
+      if (low < high) {
+         setLapse((prev) => {
+            if (low != prev[0]) {
+               playerRef.current?.seekTo(low, "seconds");
+            } else if (high != prev[1]) {
+               playerRef.current?.seekTo(high, "seconds");
+            }
+            return [low, high];
+         });
       }
    }, []);
-   const lapseLowCounter = useCallback((v) => {
-      playerRef.current?.seekTo(v, "seconds");
-      setLapse((prev) => [v, prev[1]]);
-   }, []);
-   const lapseHighCounter = useCallback((v) => {
-      playerRef.current?.seekTo(v, "seconds");
-      setLapse((prev) => [prev[0], v]);
-   }, []);
-
-   const onSelectLapse = useCallback(() => {
-      setSelectedLapsed(lapse);
-      playerRef.current?.seekTo(lapse[0], "seconds");
-   }, [lapse]);
 
    return (
       <TourGuideProvider
@@ -96,7 +81,6 @@ function VideoEditContainer({
             playingByPlayer={playingByPlayer}
             setPlayingByPlayer={setPlayingByPlayer}
             playerRef={playerRef}
-            navigation={navigation}
             lapse={lapse}
             handleValueChange={handleValueChange}
             endTime={endTime}

@@ -21,8 +21,16 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigationRef } from "./RootNavigation";
 import { signin } from "./src/modules/auth";
+import palette from "./src/lib/styles/palette";
+import { Restart } from "fiction-expo-restart";
 
 const Stack = createStackNavigator();
+
+/*
+리프레시 토큰 만료
+err.response?.data?.message === "다시 로그인이 필요합니다." ||
+err.response?.data?.message === "Refresh Token 이 유효하지 않습니다."
+*/
 
 function AppInit() {
    const [preLoading, setPreLoading] = useState(true);
@@ -35,7 +43,7 @@ function AppInit() {
          (res) => res,
          async (err) => {
             const originalRequest = err.config;
-            if (err?.response?.status === 401 && !originalRequest._retry) {
+            if (err.response?.status === 401 && !originalRequest._retry) {
                originalRequest._retry = true;
                const tokensJson = await AsyncStorage.getItem("@tokens");
                const res = await reissue(JSON.parse(tokensJson));
@@ -45,18 +53,6 @@ function AppInit() {
 
                return axios(originalRequest);
             }
-
-            /*else if (
-               err?.response?.data?.message === "다시 로그인이 필요합니다." ||
-               err?.response?.data?.message ===
-                  "Refresh Token 이 유효하지 않습니다."
-            ) {
-               dispatch(
-                  setSnackbar("리프레시 토큰 만료로, 앱을 재실행 시키겠습니다.")
-               );
-               setTimeout(() => Restart(), 3000);
-               return Promise.reject(err);
-            }*/
             return Promise.reject(err);
          }
       );
@@ -64,10 +60,14 @@ function AppInit() {
    }, []);
 
    const preload = async () => {
-      const res = await appInit();
-      dispatch(setIsFirst(res.first));
-      dispatch(signin(res.userInfo));
-      dispatch(getPlaylist());
+      try {
+         const res = await appInit();
+         dispatch(setIsFirst(res.first));
+         dispatch(signin(res.userInfo));
+         dispatch(getPlaylist());
+      } catch (err) {
+         Restart();
+      }
    };
 
    const onFinish = () => setPreLoading(false);
@@ -113,15 +113,9 @@ function AppInit() {
                   visible={snackbar}
                   onDismiss={() => dispatch(clearSnackbar())}
                   text={snackbar}
-                  duration={1000}
-                  textStyle={{ fontSize: 16 }}
-                  containerStyle={{
-                     position: "absolute",
-                     bottom: 10,
-                     left: 10,
-                     width: "70%",
-                     borderRadius: 20,
-                  }}
+                  duration={3000}
+                  textStyle={{ fontSize: 16, color: palette.blackBerry }}
+                  containerStyle={styles.snackbarContainer}
                />
             </View>
          </NavigationContainer>
@@ -149,6 +143,16 @@ const styles = StyleSheet.create({
    containerNative: {
       width: "100%",
       height: "100%",
+   },
+   snackbarContainer: {
+      position: "absolute",
+      bottom: 10,
+      left: 10,
+      width: "70%",
+      backgroundColor: palette.ivory,
+      borderRadius: 20,
+      borderColor: palette.redRose,
+      borderWidth: 3,
    },
 });
 

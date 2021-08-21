@@ -10,9 +10,9 @@ import { logout, updateProfileAvatar } from "../../../lib/api/auth";
 import { signin, signout } from "../../../modules/auth";
 import { getPlaylist } from "../../../modules/playlist";
 import { afterGetPlaylist } from "../../../lib/utils/afterGetPlaylist";
-import base64 from "react-native-base64";
 import { setSnackbar } from "../../../modules/snackbar";
-import { SERVER_ERROR } from "../../../lib/strings";
+import { RESTART_ERROR, SERVER_ERROR } from "../../../lib/strings";
+import { Restart } from "fiction-expo-restart";
 
 function ProfileContainer({ navigation }) {
    const user = useSelector(({ auth }) => auth);
@@ -61,9 +61,21 @@ function ProfileContainer({ navigation }) {
    };
    const onPressLogout = async () => {
       dispatch(setLoading());
-      await logout();
+      try {
+         await logout();
+      } catch (err) {
+         // 재시작
+         dispatch(setSnackbar(RESTART_ERROR));
+         dispatch(setUnloading());
+         setTimeout(() => Restart(), 2000);
+         return;
+      }
       dispatch(signout());
       dispatch(getPlaylist(() => afterGetPlaylist(navigation, dispatch)));
+   };
+   const afterPwChange = () => {
+      setReauthenticated(false);
+      setPW("");
    };
    return (
       <>
@@ -90,6 +102,7 @@ function ProfileContainer({ navigation }) {
                   visible={modalVisible}
                   setVisible={setModalVisible}
                   oldPassword={pw}
+                  afterPwChange={afterPwChange}
                />
                <RemoveUserModalContainer
                   visible={removeUserVisible}

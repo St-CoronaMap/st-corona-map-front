@@ -12,6 +12,9 @@ import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
 import VideoEditFromPlay from "./VideoEditFromPlay";
 import { Platform } from "react-native";
+import { SERVER_ERROR } from "../../../lib/strings";
+
+const SEET_TO_OPTION = Platform.OS === "web" ? "seconds" : true;
 
 function VideoEditRootContainer({ route, navigation }) {
    const item = route.params.item;
@@ -61,11 +64,7 @@ function VideoEditRootContainer({ route, navigation }) {
                from: route.params.from,
             });
          } catch (err) {
-            dispatch(
-               setSnackbar(
-                  "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
-               )
-            );
+            dispatch(setSnackbar(SERVER_ERROR));
             dispatch(setUnloading());
          }
       }
@@ -102,6 +101,20 @@ function VideoEditRootContainer({ route, navigation }) {
       setPlaying(true);
    }, []);
 
+   const lapseLowCounter = useCallback((v) => {
+      playerRef.current?.seekTo(v, SEET_TO_OPTION);
+      setLapse((prev) => [v, prev[1]]);
+   }, []);
+   const lapseHighCounter = useCallback((v) => {
+      playerRef.current?.seekTo(v, SEET_TO_OPTION);
+      setLapse((prev) => [prev[0], v]);
+   }, []);
+
+   const onSelectLapse = useCallback(() => {
+      playerRef.current?.seekTo(lapse[0], SEET_TO_OPTION);
+      setSelectedLapsed(lapse);
+   }, [lapse]);
+
    return (
       <>
          <VideoEditFromPlay
@@ -110,20 +123,20 @@ function VideoEditRootContainer({ route, navigation }) {
             playingByPlayer={playingByPlayer}
             setPlayingByPlayer={setPlayingByPlayer}
             playerRef={playerRef}
-            navigation={navigation}
             lapse={lapse}
             endTime={endTime}
             selectedLapsed={selectedLapsed}
             loaded={loaded}
-            setLapse={setLapse}
-            setLoaded={setLoaded}
             setPlaying={setPlaying}
-            setSelectedLapsed={setSelectedLapsed}
             checkItem={checkItem}
+            setLapse={setLapse}
             togglePlaying={togglePlaying}
             volumneChange={volumneChange}
             vol={vol}
             onReady={onReady}
+            lapseLowCounter={lapseLowCounter}
+            lapseHighCounter={lapseHighCounter}
+            onSelectLapse={onSelectLapse}
          />
          <CheckItemModal
             visible={visibleCheckModal}

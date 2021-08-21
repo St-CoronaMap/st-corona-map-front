@@ -36,26 +36,23 @@ function Play({
    pressBackward,
    pressForwardward,
 }) {
-   const youtubePlayerWrap = (cur) => {
-      return (
-         <YoutubePlayer
-            ref={playerRef}
-            play={playing}
-            volume={vol}
-            height={YOUTUBE_HEIGHT}
-            onReady={onReady}
-            webViewStyle={{
-               backgroundColor: "black",
-               opacity: 0.99,
-            }}
-            videoId={playlist?.items[cur]?.videoId}
-            onChangeState={handleStateChange}
-         />
-      );
-   };
    return (
       <View style={styles.container}>
-         <View>{youtubePlayerWrap(cur)}</View>
+         <View>
+            <YoutubePlayer
+               ref={playerRef}
+               play={playing}
+               volume={vol}
+               height={YOUTUBE_HEIGHT}
+               onReady={onReady}
+               webViewStyle={{
+                  backgroundColor: "black",
+                  opacity: 0.99,
+               }}
+               videoId={playlist?.items[cur]?.videoId}
+               onChangeState={handleStateChange}
+            />
+         </View>
          <View
             style={{
                height:
