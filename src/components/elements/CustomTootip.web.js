@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "react-native-elements";
+import { boldFontStyle, fontStyle } from "../../lib/styles/stylesByPlatform.js";
 import palette from "../../lib/styles/palette";
 
 export const STEP_NUMBER_RADIUS = 14;
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
    },
    buttonText: {
       color: palette.coral,
-      fontWeight: "600",
+      ...boldFontStyle,
    },
    bottomBar: {
       marginTop: 10,
@@ -45,7 +46,9 @@ const CustomTootip = ({
    return (
       <View style={styles.container}>
          <View style={styles.tooltipContainer}>
-            <Text testID="stepDescription">{text[currentStep.order - 1]}</Text>
+            <Text testID="stepDescription" style={fontStyle}>
+               {text[currentStep.order - 1]}
+            </Text>
          </View>
          <View style={[styles.bottomBar]}>
             {!isLastStep ? (

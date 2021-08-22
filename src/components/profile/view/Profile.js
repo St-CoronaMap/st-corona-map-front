@@ -2,6 +2,10 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import { Button } from "react-native-elements";
+import {
+   boldFontStyle,
+   fontStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import Header from "./Header";
 const styles = StyleSheet.create({
@@ -22,6 +26,7 @@ const styles = StyleSheet.create({
    },
    lineHeader: {
       opacity: 0.8,
+      ...fontStyle,
    },
    bottomBar: {
       position: "absolute",
@@ -59,7 +64,9 @@ function Profile({
                containerStyle={{ backgroundColor: palette.ivory }}>
                <Text style={styles.lineHeader}>아이디</Text>
                <ListItem.Content>
-                  <ListItem.Title>{user?.loginId}</ListItem.Title>
+                  <ListItem.Title style={fontStyle}>
+                     {user?.loginId}
+                  </ListItem.Title>
                </ListItem.Content>
             </ListItem>
             <ListItem
@@ -67,7 +74,9 @@ function Profile({
                containerStyle={{ backgroundColor: palette.ivory }}>
                <Text style={styles.lineHeader}>이메일</Text>
                <ListItem.Content>
-                  <ListItem.Title>{user?.email}</ListItem.Title>
+                  <ListItem.Title style={fontStyle}>
+                     {user?.email}
+                  </ListItem.Title>
                </ListItem.Content>
             </ListItem>
          </View>
@@ -78,7 +87,7 @@ function Profile({
                color="red"
                containerStyle={styles.buttonContainer}
                buttonStyle={styles.buttonStyle}
-               titleStyle={{ color: palette.redRose, fontWeight: "600" }}
+               titleStyle={[{ color: palette.redRose }, boldFontStyle]}
                onPress={showRemoveUser}
             />
             <Button
@@ -86,7 +95,7 @@ function Profile({
                type="clear"
                containerStyle={styles.buttonContainer}
                buttonStyle={styles.buttonStyle}
-               titleStyle={{ color: palette.blackBerry, fontWeight: "600" }}
+               titleStyle={[{ color: palette.blackBerry }, boldFontStyle]}
                onPress={showChangePassword}
             />
             <Button
@@ -94,7 +103,7 @@ function Profile({
                type="clear"
                containerStyle={styles.buttonContainer}
                buttonStyle={styles.buttonStyle}
-               titleStyle={{ color: palette.blackBerry, fontWeight: "600" }}
+               titleStyle={[{ color: palette.blackBerry }, boldFontStyle]}
                onPress={onPressLogout}
             />
          </View>

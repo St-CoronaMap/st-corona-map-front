@@ -6,6 +6,7 @@ import SearchScreen from "../../../screens/Search";
 import { Platform, StyleSheet } from "react-native";
 import palette from "../../../lib/styles/palette";
 import { TAP_HEIGHT } from "../../../lib/styles/variables";
+import { fontStyle } from "../../../lib/styles/stylesByPlatform.js";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
    indicator: {
       backgroundColor: palette.ivory,
       color: palette.ivory,
+      ...fontStyle,
    },
 });
 
@@ -43,17 +45,23 @@ function TopTab({ swipeEnabled, signined }) {
             <Tab.Screen
                name="Playlist"
                component={PlaylistScreen}
-               options={{ tabBarLabel: "재생목록" }}
+               options={{
+                  tabBarLabel: "재생목록",
+               }}
             />
             <Tab.Screen
                name="Search"
                component={SearchScreen}
-               options={{ tabBarLabel: "검색" }}
+               options={{
+                  tabBarLabel: "검색",
+               }}
             />
             <Tab.Screen
                name="Auth"
                component={Auth}
-               options={{ tabBarLabel: signined ? "프로필" : "로그인" }}
+               options={{
+                  tabBarLabel: signined ? "프로필" : "로그인",
+               }}
             />
          </Tab.Navigator>
       </>

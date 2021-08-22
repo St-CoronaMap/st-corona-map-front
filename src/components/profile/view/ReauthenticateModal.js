@@ -1,6 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Input } from "react-native-elements";
+import {
+   boldFontStyle,
+   fontStyle,
+   inputStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
+
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
@@ -23,13 +29,13 @@ function ReauthenticateModal({
          key: "cancel",
          text: "취소",
          onPress: onClose,
-         textStyle: { color: palette.redRose, fontWeight: "600" },
+         textStyle: [{ color: palette.redRose }, boldFontStyle],
       },
       {
          key: "login",
          text: "로그인",
          onPress: reauthWithPw,
-         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+         textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
    ];
    return (
@@ -38,12 +44,13 @@ function ReauthenticateModal({
          title={<CustomModalHeader props={titleProps} />}
          footer={<CustomModalFooter buttons={footerProps} />}>
          <View style={styles.container}>
-            <Text>현재 비밀번호를 입력해주세요.</Text>
+            <Text style={fontStyle}>현재 비밀번호를 입력해주세요.</Text>
             <Input
                secureTextEntry={true}
                value={password}
                errorMessage={errMsg.password}
                onChangeText={onChange}
+               inputStyle={inputStyle}
             />
          </View>
       </CustomModal>

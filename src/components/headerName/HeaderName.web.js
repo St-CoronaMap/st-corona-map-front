@@ -9,6 +9,7 @@ import {
    VIDEOEDIT_SEARCH,
 } from "../../lib/styles/variables";
 import * as RootNavigation from "../../../RootNavigation";
+import { boldFontStyle } from "../../lib/styles/stylesByPlatform.js";
 
 /* 상단 네비게이션 위 이름 나오는 부분 */
 function HeaderName() {
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
    text: {
       color: "white",
       fontSize: 25,
+      ...boldFontStyle,
    },
    goBackContainer: {
       position: "absolute",

@@ -68,7 +68,8 @@ function Playlist({
                                        style={{
                                           width: "60%",
                                           textAlign: "center",
-                                          fontWeight: "600",
+                                          fontFamily: "notosans",
+                                          fontWeight: "500",
                                        }}>
                                        {item?.title}
                                     </Text>

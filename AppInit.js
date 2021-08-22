@@ -23,6 +23,8 @@ import { navigationRef } from "./RootNavigation";
 import { signin } from "./src/modules/auth";
 import palette from "./src/lib/styles/palette";
 import { Restart } from "fiction-expo-restart";
+import * as Font from "expo-font";
+import { fontStyle } from "./src/lib/styles/stylesByPlatform.js";
 
 const Stack = createStackNavigator();
 
@@ -65,6 +67,12 @@ function AppInit() {
          dispatch(setIsFirst(res.first));
          dispatch(signin(res.userInfo));
          dispatch(getPlaylist());
+
+         if (Platform.OS === "web") {
+            await Font.loadAsync({
+               notosans: require("./assets/NotoSansKR-Regular.web.otf"),
+            });
+         }
       } catch (err) {
          Restart();
       }
@@ -114,7 +122,10 @@ function AppInit() {
                   onDismiss={() => dispatch(clearSnackbar())}
                   text={snackbar}
                   duration={3000}
-                  textStyle={{ fontSize: 16, color: palette.blackBerry }}
+                  textStyle={[
+                     { fontSize: 16, color: palette.blackBerry },
+                     fontStyle,
+                  ]}
                   containerStyle={styles.snackbarContainer}
                />
             </View>

@@ -3,6 +3,11 @@ import { StyleSheet, View, Text } from "react-native";
 import { Icon, Input } from "react-native-elements";
 import { Button } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import {
+   boldFontStyle,
+   fontStyle,
+   inputStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 const styles = StyleSheet.create({
    container: {
@@ -19,8 +24,8 @@ const styles = StyleSheet.create({
    },
    header: {
       fontSize: 32,
-      fontWeight: "700",
       color: palette.blackBerry,
+      ...boldFontStyle,
    },
    inputContainer: {
       width: "100%",
@@ -49,6 +54,7 @@ const styles = StyleSheet.create({
    infoText: {
       color: palette.blackBerry,
       opacity: 0.5,
+      ...fontStyle,
    },
 });
 
@@ -85,7 +91,8 @@ function Login({
                   style={styles.input}
                   errorMessage={errMsg.id}
                   onChangeText={(value) => onChange("id", value)}
-                  errorStyle={{ fontWeight: "600" }}
+                  errorStyle={boldFontStyle}
+                  inputStyle={inputStyle}
                />
                {!isLogin && (
                   <Input
@@ -102,7 +109,8 @@ function Login({
                      value={userInfo.email}
                      errorMessage={errMsg.email}
                      onChangeText={(value) => onChange("email", value)}
-                     errorStyle={{ fontWeight: "600" }}
+                     errorStyle={boldFontStyle}
+                     inputStyle={inputStyle}
                   />
                )}
                <Input
@@ -120,7 +128,8 @@ function Login({
                   value={userInfo.password}
                   onChangeText={(value) => onChange("password", value)}
                   errorMessage={errMsg.password}
-                  errorStyle={{ fontWeight: "600" }}
+                  errorStyle={boldFontStyle}
+                  inputStyle={inputStyle}
                />
                {!isLogin && (
                   <Input
@@ -138,7 +147,8 @@ function Login({
                      value={userInfo.passwordCheck}
                      errorMessage={errMsg.passwordCheck}
                      onChangeText={(value) => onChange("passwordCheck", value)}
-                     errorStyle={{ fontWeight: "600" }}
+                     errorStyle={boldFontStyle}
+                     inputStyle={inputStyle}
                   />
                )}
                <View style={styles.buttonContainer}>
@@ -148,22 +158,30 @@ function Login({
                         type="clear"
                         containerStyle={styles.buttonPwReset}
                         onPress={passwordReset}
+                        titleStyle={[
+                           {
+                              color: palette.blackBerry,
+                           },
+                           boldFontStyle,
+                        ]}
                      />
                   )}
                   <Button
                      title={isLogin ? "회원가입" : "로그인"}
                      type="clear"
                      containerStyle={styles.button}
-                     titleStyle={{
-                        color: palette.blackBerry,
-                        fontWeight: "600",
-                     }}
+                     titleStyle={[
+                        {
+                           color: palette.blackBerry,
+                        },
+                        boldFontStyle,
+                     ]}
                      onPress={() => setIsLogIn((prev) => !prev)}
                   />
                   <Button
                      title={isLogin ? "로그인" : "회원가입"}
                      onPress={onPressLogin}
-                     titleStyle={{ fontWeight: "600" }}
+                     titleStyle={boldFontStyle}
                      containerStyle={styles.button}
                      buttonStyle={{ backgroundColor: palette.redRose }}
                   />

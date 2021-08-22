@@ -7,6 +7,10 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { Animated } from "react-native";
 import ButtonsForItem from "./ButtonsForItem";
+import {
+   boldFontStyle,
+   fontStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 
 function VideoList({
    playlist,
@@ -94,7 +98,7 @@ function VideoList({
                      containerStyle={[styles(cur === index).listItem, shadow]}
                      onPress={() => onPressItem(index)}
                      onLongPress={drag}>
-                     <Text>{index + 1}) </Text>
+                     <Text style={fontStyle}>{index + 1}) </Text>
                      <Image
                         source={{ uri: item.thumbnail }}
                         style={{ width: 100, height: 100 }}
@@ -102,13 +106,15 @@ function VideoList({
                      />
                      <ListItem.Content>
                         <ListItem.Title
-                           style={{
-                              color: palette.blackBerry,
-                              fontWeight: "500",
-                           }}>
+                           style={[
+                              {
+                                 color: palette.blackBerry,
+                              },
+                              boldFontStyle,
+                           ]}>
                            {item.title}
                         </ListItem.Title>
-                        <ListItem.Subtitle>
+                        <ListItem.Subtitle style={fontStyle}>
                            {seperateSecond(item.start)} ~{" "}
                            {seperateSecond(item.end)}
                         </ListItem.Subtitle>

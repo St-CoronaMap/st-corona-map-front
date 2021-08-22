@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Input } from "react-native-elements";
+import { fontStyle, inputStyle } from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
@@ -15,7 +16,7 @@ function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
       {
          text: "취소",
          onPress: cancel,
-         textStyle: { color: palette.redRose },
+         textStyle: [{ color: palette.redRose }, fontStyle],
       },
       {
          text: "추가",
@@ -30,8 +31,14 @@ function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
          footer={<CustomModalFooter buttons={buttons} />}
          rounded>
          <View style={styles.container}>
-            <Text>추가하실 재생목록의 이름을 입력해주세요.</Text>
-            <Input onChangeText={onChange} errorMessage={errMsg} />
+            <Text style={fontStyle}>
+               추가하실 재생목록의 이름을 입력해주세요.
+            </Text>
+            <Input
+               onChangeText={onChange}
+               errorMessage={errMsg}
+               inputStyle={inputStyle}
+            />
          </View>
       </CustomModal>
    );

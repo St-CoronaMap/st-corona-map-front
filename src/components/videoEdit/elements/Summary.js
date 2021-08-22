@@ -1,5 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, Platform } from "react-native";
+import {
+   boldFontStyle,
+   fontStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 
 function Summary({ item }) {
@@ -13,7 +17,7 @@ function Summary({ item }) {
                   style={styles.image}
                   transition
                />
-               <Text>
+               <Text style={fontStyle}>
                   {"\t"}
                   {item?.channelTitle}
                </Text>
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
    text: {
       padding: 10,
       fontSize: 20,
-      fontWeight: "500",
+      ...boldFontStyle,
    },
    channelContainer: {
       flexDirection: "row",

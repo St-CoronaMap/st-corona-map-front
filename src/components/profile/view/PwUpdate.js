@@ -1,6 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Input } from "react-native-elements";
+import {
+   boldFontStyle,
+   fontStyle,
+   inputStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
+
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
@@ -19,13 +25,13 @@ function PwUpdate({
          key: "cancel",
          text: "취소",
          onPress: clear,
-         textStyle: { color: palette.redRose, fontWeight: "600" },
+         textStyle: [{ color: palette.redRose }, boldFontStyle],
       },
       {
          key: "update",
          text: "변경",
          onPress: () => onPasswordUpdate(password),
-         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+         textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
    ];
    const footerOnSuccess = [
@@ -33,7 +39,7 @@ function PwUpdate({
          key: "success",
          text: "확인",
          onPress: clear,
-         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+         textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
    ];
 
@@ -47,16 +53,17 @@ function PwUpdate({
          }>
          <View style={styles.container}>
             {success ? (
-               <Text>비밀번호 변경에 성공하셨습니다.</Text>
+               <Text style={fontStyle}>비밀번호 변경에 성공하셨습니다.</Text>
             ) : (
                <>
-                  <Text>새로운 비밀번호를 입력해주세요.</Text>
+                  <Text style={fontStyle}>새로운 비밀번호를 입력해주세요.</Text>
                   <Input
                      style={{ width: "80%" }}
                      secureTextEntry={true}
                      value={password}
                      errorMessage={errMsg.password}
                      onChangeText={onChange}
+                     inputStyle={inputStyle}
                   />
                </>
             )}

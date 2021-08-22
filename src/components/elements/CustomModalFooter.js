@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { ModalFooter, ModalButton } from "react-native-modals";
+import { fontStyle } from "../../lib/styles/stylesByPlatform.js";
 import palette from "../../lib/styles/palette";
 
 function CustomModalFooter({ buttons }) {
@@ -9,7 +10,7 @@ function CustomModalFooter({ buttons }) {
          {buttons.map((item, key) => (
             <ModalButton
                key={`modal_button_${key}`}
-               textStyle={styles.footerButtonText}
+               textStyle={[styles.footerButtonText, fontStyle]}
                style={styles.footerButton}
                {...item}
             />
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
    },
    footerButtonText: {
       color: palette.blackBerry,
+      fontWeight: "500",
    },
 });
 

@@ -2,6 +2,10 @@ import React, { useCallback } from "react";
 import { Text } from "react-native";
 import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
 import { ListItem, SearchBar, Image } from "react-native-elements";
+import {
+   boldFontStyle,
+   fontStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 
 const styles = StyleSheet.create({
@@ -79,7 +83,7 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
             />
             <ListItem.Content>
                <ListItem.Title
-                  style={{ color: palette.blackBerry, fontWeight: "500" }}>
+                  style={[{ color: palette.blackBerry }, boldFontStyle]}>
                   {item.title}
                </ListItem.Title>
 
@@ -89,7 +93,7 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
                      style={styles.image}
                      transition
                   />
-                  <Text>
+                  <Text style={fontStyle}>
                      {"  "}
                      {item?.channelTitle}
                   </Text>
@@ -110,6 +114,7 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
                   onChangeText={onChange}
                   value={typing}
                   onSubmitEditing={onSearch}
+                  inputStyle={[fontStyle, { outlineWidth: 0 }]}
                />
             </View>
             <View style={styles.result}>

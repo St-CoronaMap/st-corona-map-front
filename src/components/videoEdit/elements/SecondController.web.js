@@ -9,6 +9,10 @@ import {
 import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import { RangeSlider } from "@sharcoux/slider";
+import {
+   boldFontStyle,
+   fontStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 
 function SecondController({
    lapse,
@@ -41,8 +45,8 @@ function SecondController({
                      flexDirection: "row",
                      justifyContent: "space-between",
                   }}>
-                  <Text>{seperateSecond(lapse[0])}</Text>
-                  <Text>{seperateSecond(lapse[1])}</Text>
+                  <Text style={fontStyle}>{seperateSecond(lapse[0])}</Text>
+                  <Text style={fontStyle}>{seperateSecond(lapse[1])}</Text>
                </View>
             </View>
             <View style={styles.counterButtonContainer}>
@@ -119,6 +123,7 @@ const styles = StyleSheet.create({
    },
    applyButtonTitle: {
       color: palette.blackBerry,
+      ...boldFontStyle,
    },
    thumbStyle: {
       width: 12 * 2,

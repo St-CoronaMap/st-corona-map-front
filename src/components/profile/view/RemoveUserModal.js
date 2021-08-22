@@ -1,5 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import {
+   boldFontStyle,
+   fontStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
@@ -16,13 +20,13 @@ function RemoveUserModal({
          key: "cancel",
          text: "취소",
          onPress: () => setVisible(false),
-         textStyle: { color: palette.redRose, fontWeight: "600" },
+         textStyle: [{ color: palette.redRose }, boldFontStyle],
       },
       {
          key: "rmove",
          text: "탈퇴",
          onPress: removeUserFunc,
-         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+         textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
    ];
    const footerOnSuccess = [
@@ -30,7 +34,7 @@ function RemoveUserModal({
          key: "success",
          text: "확인",
          onPress: afterRemove,
-         textStyle: { color: palette.blackBerry, fontWeight: "600" },
+         textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
    ];
 
@@ -43,10 +47,10 @@ function RemoveUserModal({
             />
          }>
          <View style={styles.container}>
-            <Text>
+            <Text style={fontStyle}>
                {success
                   ? "이용해주셔서 감사합니다."
-                  : "회원님의 모든 정보가 삭제됩니다.\n\n정말로 탈퇴하시겠습니까?"}
+                  : "회원님의 모든 정보가 삭제됩니다.\n정말로 탈퇴하시겠습니까?"}
             </Text>
          </View>
       </CustomModal>

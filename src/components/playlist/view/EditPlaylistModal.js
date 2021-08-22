@@ -2,6 +2,7 @@ import React from "react";
 import { Text } from "react-native";
 import { StyleSheet, View } from "react-native";
 import { Input, ListItem } from "react-native-elements";
+import { fontStyle, inputStyle } from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
@@ -21,7 +22,7 @@ function EditPlaylistModal({
       {
          text: "취소",
          onPress: cancel,
-         textStyle: { color: palette.redRose },
+         textStyle: [{ color: palette.redRose }, fontStyle],
       },
       {
          text: "수정",
@@ -45,7 +46,8 @@ function EditPlaylistModal({
                   activeOpacity={0.5}
                   containerStyle={styles.listItem}>
                   <ListItem.Content style={{ alignItems: "center" }}>
-                     <ListItem.Title style={{ color: palette.blackBerry }}>
+                     <ListItem.Title
+                        style={[{ color: palette.blackBerry }, fontStyle]}>
                         이름 변경
                      </ListItem.Title>
                   </ListItem.Content>
@@ -56,7 +58,8 @@ function EditPlaylistModal({
                   activeOpacity={0.5}
                   containerStyle={styles.listItem}>
                   <ListItem.Content style={{ alignItems: "center" }}>
-                     <ListItem.Title style={{ color: palette.redRose }}>
+                     <ListItem.Title
+                        style={[{ color: palette.redRose }, fontStyle]}>
                         삭제
                      </ListItem.Title>
                   </ListItem.Content>
@@ -64,8 +67,14 @@ function EditPlaylistModal({
             </View>
          ) : (
             <View style={styles.containerEdit}>
-               <Text>새로운 재생목록의 이름을 입력해주세요.</Text>
-               <Input onChangeText={onChange} errorMessage={errMsg} />
+               <Text style={fontStyle}>
+                  새로운 재생목록의 이름을 입력해주세요.
+               </Text>
+               <Input
+                  onChangeText={onChange}
+                  errorMessage={errMsg}
+                  inputStyle={inputStyle}
+               />
             </View>
          )}
       </CustomModal>

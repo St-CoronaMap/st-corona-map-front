@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { View, Text } from "react-native";
 import { Button } from "react-native-elements";
+import { fontStyle } from "../../lib/styles/stylesByPlatform.js";
 import palette from "../../lib/styles/palette";
 import seperateSecond from "../../lib/utils/seperateSecond";
 
@@ -73,7 +74,9 @@ export function CustomCounterLeft({ value, onPress, min, max }) {
                width: 70,
                justifyContent: "center",
             }}>
-            <Text style={{ textAlign: "center" }}>{seperateSecond(value)}</Text>
+            <Text style={[{ textAlign: "center" }, fontStyle]}>
+               {seperateSecond(value)}
+            </Text>
          </View>
       </View>
    );
@@ -106,7 +109,9 @@ export function CustomCounterRight({ value, onPress, min, max }) {
                width: 70,
                justifyContent: "center",
             }}>
-            <Text style={{ textAlign: "center" }}>{seperateSecond(value)}</Text>
+            <Text style={[{ textAlign: "center" }, fontStyle]}>
+               {seperateSecond(value)}
+            </Text>
          </View>
          <View
             style={{

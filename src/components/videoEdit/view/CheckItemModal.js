@@ -8,6 +8,10 @@ import {
    Platform,
 } from "react-native";
 import { ListItem } from "react-native-elements";
+import {
+   boldFontStyle,
+   fontStyle,
+} from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import CustomModal from "../../elements/CustomModal";
@@ -18,7 +22,7 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
       {
          text: "아니요",
          onPress: close,
-         textStyle: { color: palette.redRose },
+         textStyle: [{ color: palette.redRose }, fontStyle],
       },
       {
          text: "예",
@@ -45,11 +49,11 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
                      transition
                   />
                   <ListItem.Content>
-                     <ListItem.Title style={{ fontWeight: "500" }}>
+                     <ListItem.Title style={boldFontStyle}>
                         {item.title.slice(0, 40)}
                         {item.title.length > 40 ? "..." : ""}
                      </ListItem.Title>
-                     <ListItem.Subtitle>
+                     <ListItem.Subtitle style={fontStyle}>
                         {seperateSecond(item.lapse[0])} ~
                         {seperateSecond(item.lapse[1])}
                      </ListItem.Subtitle>
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       paddingTop: 10,
    },
-   header: { fontSize: 18 },
+   header: { fontSize: 18, ...fontStyle },
    item: {
       width: "100%",
    },
