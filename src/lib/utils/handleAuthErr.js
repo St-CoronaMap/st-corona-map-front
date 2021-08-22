@@ -74,10 +74,7 @@ export const checkLoginInfo = (info, setErrMsg, isLogin) => {
       return false;
    }
    if (!isLogin) {
-      if (!testEmail(info.email)) {
-         handleError("wrong_email", setErrMsg);
-         return false;
-      } else if (info.password !== info.passwordCheck) {
+      if (info.password !== info.passwordCheck) {
          handleError("not_match_password_and_check", setErrMsg);
          return false;
       }

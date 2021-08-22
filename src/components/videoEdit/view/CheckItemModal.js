@@ -49,7 +49,7 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
                      transition
                   />
                   <ListItem.Content>
-                     <ListItem.Title style={boldFontStyle}>
+                     <ListItem.Title style={boldFontStyle} numberOfLines={2}>
                         {item.title.slice(0, 40)}
                         {item.title.length > 40 ? "..." : ""}
                      </ListItem.Title>

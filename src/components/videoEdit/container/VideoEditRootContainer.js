@@ -23,7 +23,7 @@ function VideoEditRootContainer({ route }) {
    const playerRef = useRef();
    const [lapse, setLapse] = useState([0, 0]);
    const [selectedLapsed, setSelectedLapsed] = useState([0, 10000]);
-   const [endTime, setEndTime] = useState(1000);
+   const [endTime, setEndTime] = useState(0);
    const [loaded, setLoaded] = useState(false);
    const [visible, setVisible] = useState(false);
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
@@ -37,7 +37,9 @@ function VideoEditRootContainer({ route }) {
       dispatch(setLoading());
       const getEndTime = async () => {
          const res = await playerRef.current?.getDuration();
-         if (res === 0) setIsBanned(true);
+         if (res === 0) {
+            setIsBanned(true);
+         }
          const high = res === 0 ? 1 : res;
          setLapse([0, high]);
          setSelectedLapsed([0, high]);

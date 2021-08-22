@@ -65,8 +65,6 @@ function Login({
    setIsLogIn,
    onPressLogin,
    errMsg,
-   wrongPW,
-   passwordReset,
 }) {
    return (
       <ScrollView style={styles.container} enabled>
@@ -94,25 +92,6 @@ function Login({
                   errorStyle={boldFontStyle}
                   inputStyle={inputStyle}
                />
-               {!isLogin && (
-                  <Input
-                     placeholder="이메일"
-                     leftIcon={
-                        <Icon
-                           name="envelope"
-                           type="font-awesome"
-                           size={20}
-                           color={palette.blackBerry}
-                        />
-                     }
-                     style={styles.input}
-                     value={userInfo.email}
-                     errorMessage={errMsg.email}
-                     onChangeText={(value) => onChange("email", value)}
-                     errorStyle={boldFontStyle}
-                     inputStyle={inputStyle}
-                  />
-               )}
                <Input
                   placeholder="비밀번호"
                   leftIcon={
@@ -152,20 +131,6 @@ function Login({
                   />
                )}
                <View style={styles.buttonContainer}>
-                  {wrongPW && (
-                     <Button
-                        title="비밀번호 찾기"
-                        type="clear"
-                        containerStyle={styles.buttonPwReset}
-                        onPress={passwordReset}
-                        titleStyle={[
-                           {
-                              color: palette.blackBerry,
-                           },
-                           boldFontStyle,
-                        ]}
-                     />
-                  )}
                   <Button
                      title={isLogin ? "회원가입" : "로그인"}
                      type="clear"

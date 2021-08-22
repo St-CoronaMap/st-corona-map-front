@@ -14,7 +14,6 @@ import palette from "../../../lib/styles/palette";
 import { walkthroughable, CopilotStep, copilot } from "react-native-copilot";
 import CustomTootip from "../../elements/CustomTootip";
 import CustomStepNumber from "../../elements/CustomStepNumber";
-import { removeAll } from "../../../lib/api/playlist";
 
 const CopilotView = walkthroughable(View);
 
@@ -103,7 +102,6 @@ function Playlist({
             icon={{ name: "plus", type: "font-awesome" }}
             onPress={onPressVisible}
          />
-         <FAB placement="left" title="R" visible raised onPress={removeAll} />
       </View>
    );
 }

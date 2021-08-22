@@ -27,9 +27,6 @@ function LoginContainer({ navigation }) {
       email: "",
    });
    const [wrongPW, setWrongPW] = useState(false);
-   const [modalVisible, setModalVisible] = useState(false);
-   const [loadingPwReset, setLoadingPwReset] = useState(false);
-   const [PwResetSended, setPwResetSended] = useState(false);
    const dispatch = useDispatch();
 
    const onChange = (name, value) => {
@@ -50,6 +47,7 @@ function LoginContainer({ navigation }) {
             // 비밀번호, 아이디 처리
             if (err.message === "비밀번호가 일치하지 않습니다.") {
                handleError("auth/wrong-password", setErrMsg);
+               setWrongPW(true);
             } else if (err.message === "존재하지 않는 회원입니다.") {
                handleError("auth/user-not-found", setErrMsg);
             } else {
@@ -77,21 +75,6 @@ function LoginContainer({ navigation }) {
       dispatch(getPlaylist(() => afterGetPlaylist(navigation, dispatch)));
    };
 
-   const passwordReset = () => {
-      setModalVisible(true);
-   };
-   const sendPwResetEmail = async () => {
-      setLoadingPwReset(true);
-      try {
-         await fbAuth.sendPasswordResetEmail(userInfo.email);
-         setPwResetSended(true);
-         setUserInfo((prev) => ({ ...prev, password: "" }));
-      } catch (err) {
-         console.log(err);
-      }
-      setLoadingPwReset(false);
-   };
-
    return (
       <View style={{ flex: 1 }}>
          <Login
@@ -102,8 +85,6 @@ function LoginContainer({ navigation }) {
             setIsLogIn={setIsLogIn}
             onPressLogin={onPressLogin}
             errMsg={errMsg}
-            wrongPW={wrongPW}
-            passwordReset={passwordReset}
          />
       </View>
    );

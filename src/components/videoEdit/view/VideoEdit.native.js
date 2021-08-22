@@ -45,7 +45,7 @@ function VideoEdit({
          </View>
          <ScrollView>
             <Summary item={item} />
-            {loaded && lapse[1] ? (
+            {loaded && endTime ? (
                <SecondController
                   lapse={lapse}
                   lapseLowCounter={lapseLowCounter}

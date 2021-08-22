@@ -72,10 +72,10 @@ function Profile({
             <ListItem
                bottomDivider
                containerStyle={{ backgroundColor: palette.ivory }}>
-               <Text style={styles.lineHeader}>이메일</Text>
+               <Text style={styles.lineHeader}>가입일</Text>
                <ListItem.Content>
                   <ListItem.Title style={fontStyle}>
-                     {user?.email}
+                     {user?.createdAt.slice(0, 10)}
                   </ListItem.Title>
                </ListItem.Content>
             </ListItem>

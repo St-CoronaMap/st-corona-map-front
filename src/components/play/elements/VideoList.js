@@ -111,7 +111,8 @@ function VideoList({
                                  color: palette.blackBerry,
                               },
                               boldFontStyle,
-                           ]}>
+                           ]}
+                           numberOfLines={2}>
                            {item.title}
                         </ListItem.Title>
                         <ListItem.Subtitle style={fontStyle}>

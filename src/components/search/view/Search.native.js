@@ -83,7 +83,8 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
             />
             <ListItem.Content>
                <ListItem.Title
-                  style={{ color: palette.blackBerry, fontWeight: "500" }}>
+                  style={{ color: palette.blackBerry, fontWeight: "500" }}
+                  numberOfLines={2}>
                   {item.title}
                </ListItem.Title>
                <View style={styles.channelContainer}>
@@ -92,7 +93,7 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
                      style={styles.image}
                      transition
                   />
-                  <Text>
+                  <Text numberOfLines={1}>
                      {"  "}
                      {item?.channelTitle}
                   </Text>

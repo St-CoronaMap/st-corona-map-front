@@ -11,7 +11,6 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { FAB, Icon, Card } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
-import { removeAll } from "../../../lib/api/playlist";
 import { TourGuideProvider } from "rn-tourguide";
 import TourContainer from "../elements/TourContainer";
 import CustomTootip from "../../elements/CustomTootip";
@@ -105,7 +104,6 @@ function Playlist({
             icon={{ name: "plus", type: "font-awesome" }}
             onPress={onPressVisible}
          />
-         <FAB placement="left" title="R" visible raised onPress={removeAll} />
       </View>
    );
 }

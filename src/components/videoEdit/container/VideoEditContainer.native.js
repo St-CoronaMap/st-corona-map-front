@@ -40,11 +40,11 @@ function VideoEditContainer({
    }, [selectedLapsed]);
 
    useEffect(() => {
-      if (isFirst && loaded) {
-         setTimeout(start, 250);
+      if (isFirst && loaded && endTime) {
+         setTimeout(start, 100);
          clearIsFirstV();
       }
-   }, [isFirst, loaded]);
+   }, [isFirst, loaded, endTime]);
 
    const handleValueChange = useCallback(
       (low, high) => {
