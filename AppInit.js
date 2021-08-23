@@ -26,6 +26,10 @@ import { Restart } from "fiction-expo-restart";
 import * as Font from "expo-font";
 import { fontStyle } from "./src/lib/styles/stylesByPlatform.js";
 
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
+import { i18nTranslation } from "./src/lib/i18nTranslation";
+
 const Stack = createStackNavigator();
 
 /*
@@ -67,6 +71,19 @@ function AppInit() {
          dispatch(setIsFirst(res.first));
          dispatch(signin(res.userInfo));
          dispatch(getPlaylist());
+         switch (Localization.locale) {
+            case "en-US":
+            case "en":
+               i18n.locale = "en-US";
+               break;
+            case "ko-KR":
+            case "ko":
+               i18n.locale = "ko-KR";
+               break;
+            default:
+               i18n.locale = "en-US";
+         }
+         i18n.translations = i18nTranslation;
 
          if (Platform.OS === "web") {
             await Font.loadAsync({

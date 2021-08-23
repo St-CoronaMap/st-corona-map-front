@@ -7,6 +7,7 @@ import handleError, {
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { pwUpdate } from "../../../lib/api/auth";
+import I18n, { reset } from "i18n-js";
 
 function PwUpdateContainer({
    visible,
@@ -41,18 +42,20 @@ function PwUpdateContainer({
       }
       if (v && !/[0-9a-zA-Z.;\-]/.test(v)) {
          setErrMsg({
-            password: "영어, 숫자, 특수문자만 가능합니다.",
+            password: I18n.t("password_format"),
          });
          return;
       }
       setPassword(v);
    };
-   const clear = () => {
+   const clear = (resetReauth) => {
       setPassword("");
       setErrMsg({ password: "" });
       setSuccess(false);
       setVisible(false);
-      afterPwChange();
+      if (resetReauth) {
+         afterPwChange();
+      }
    };
    return (
       <PwUpdate

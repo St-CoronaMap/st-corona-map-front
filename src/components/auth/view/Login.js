@@ -9,6 +9,7 @@ import {
    inputStyle,
 } from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
+import I18n from "i18n-js";
 const styles = StyleSheet.create({
    container: {
       flex: 1,
@@ -71,12 +72,12 @@ function Login({
          <View style={styles.insideContainer}>
             <View style={styles.headerContainer}>
                <Text style={styles.header}>
-                  {isLogin ? "로그인" : "회원가입"}
+                  {isLogin ? I18n.t("signin") : I18n.t("signup")}
                </Text>
             </View>
             <View style={styles.inputContainer}>
                <Input
-                  placeholder="아이디"
+                  placeholder={I18n.t("id")}
                   leftIcon={
                      <Icon
                         name="user"
@@ -93,7 +94,7 @@ function Login({
                   inputStyle={inputStyle}
                />
                <Input
-                  placeholder="비밀번호"
+                  placeholder={I18n.t("password")}
                   leftIcon={
                      <Icon
                         name="lock"
@@ -112,7 +113,7 @@ function Login({
                />
                {!isLogin && (
                   <Input
-                     placeholder="비밀번호 확인"
+                     placeholder={I18n.t("passwordCheck")}
                      leftIcon={
                         <Icon
                            name="lock"
@@ -132,7 +133,7 @@ function Login({
                )}
                <View style={styles.buttonContainer}>
                   <Button
-                     title={isLogin ? "회원가입" : "로그인"}
+                     title={isLogin ? I18n.t("signup") : I18n.t("signin")}
                      type="clear"
                      containerStyle={styles.button}
                      titleStyle={[
@@ -144,7 +145,7 @@ function Login({
                      onPress={() => setIsLogIn((prev) => !prev)}
                   />
                   <Button
-                     title={isLogin ? "로그인" : "회원가입"}
+                     title={isLogin ? I18n.t("signin") : I18n.t("signup")}
                      onPress={onPressLogin}
                      titleStyle={boldFontStyle}
                      containerStyle={styles.button}
@@ -154,9 +155,7 @@ function Login({
             </View>
             {!isLogin && (
                <View style={styles.info}>
-                  <Text style={styles.infoText}>
-                     * 가입 시, 기존 재생목록은 자동으로 동기화 됩니다.
-                  </Text>
+                  <Text style={styles.infoText}>{I18n.t("signup_info")}</Text>
                </View>
             )}
          </View>

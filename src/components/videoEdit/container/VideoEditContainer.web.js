@@ -5,6 +5,7 @@ import {
    TourGuideProvider, // Main provider
 } from "rn-tourguide";
 import CustomTootip from "../../elements/CustomTootip";
+import I18n from "i18n-js";
 
 function VideoEditContainer({
    item,
@@ -70,8 +71,8 @@ function VideoEditContainer({
             <CustomTootip
                {...props}
                text={[
-                  "슬라이더와 버튼을 통해 원하시는 범위를 조절하시고, \n 적용버튼을 눌러서 확인하세요.",
-                  "마음에 드신다면, 이 버튼을 눌러 재생목록에 추가하세요!",
+                  I18n.t("videoEdit_web_step_1"),
+                  I18n.t("videoEdit_web_step_2"),
                ]}
             />
          )}>

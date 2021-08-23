@@ -1,3 +1,4 @@
+import I18n from "i18n-js";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addVideo } from "../../../lib/api/videos";
@@ -21,11 +22,7 @@ function AddItemContainer({ item, afterAdd }) {
          }
          afterAdd();
       } catch (err) {
-         dispatch(
-            setSnackbar(
-               "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
-            )
-         );
+         dispatch(setSnackbar(I18n.t("server_error")));
       }
       dispatch(setUnloading());
    };

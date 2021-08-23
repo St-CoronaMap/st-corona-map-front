@@ -7,6 +7,7 @@ import { Platform, StyleSheet } from "react-native";
 import palette from "../../../lib/styles/palette";
 import { TAP_HEIGHT } from "../../../lib/styles/variables";
 import { fontStyle } from "../../../lib/styles/stylesByPlatform.js";
+import i18n from "i18n-js";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -46,21 +47,21 @@ function TopTab({ swipeEnabled, signined }) {
                name="Playlist"
                component={PlaylistScreen}
                options={{
-                  tabBarLabel: "재생목록",
+                  tabBarLabel: i18n.t("playlist"),
                }}
             />
             <Tab.Screen
                name="Search"
                component={SearchScreen}
                options={{
-                  tabBarLabel: "검색",
+                  tabBarLabel: i18n.t("search"),
                }}
             />
             <Tab.Screen
                name="Auth"
                component={Auth}
                options={{
-                  tabBarLabel: signined ? "프로필" : "로그인",
+                  tabBarLabel: signined ? i18n.t("profile") : i18n.t("signIn"),
                }}
             />
          </Tab.Navigator>

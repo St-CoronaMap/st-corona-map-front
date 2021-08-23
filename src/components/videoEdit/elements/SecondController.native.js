@@ -16,6 +16,7 @@ import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 
 import { walkthroughable, CopilotStep } from "react-native-copilot";
+import I18n from "i18n-js";
 
 const CopilotView = walkthroughable(View);
 
@@ -36,7 +37,7 @@ function SecondController({
    return (
       <View style={styles.lapseContainer}>
          <CopilotStep
-            text="슬라이더와 버튼을 통해 원하시는 범위를 조절하세요."
+            text={I18n.t("videoEdit_step_1")}
             order={1}
             name="lapse_controll">
             <CopilotView>
@@ -82,7 +83,7 @@ function SecondController({
          </CopilotStep>
 
          <CopilotStep
-            text="조절을 하신 후, 이 버튼을 누르셔서 확인하세요."
+            text={I18n.t("videoEdit_step_2")}
             order={2}
             name="apply_button">
             <CopilotView
@@ -93,7 +94,7 @@ function SecondController({
                   paddingBottom: 10,
                }}>
                <Button
-                  title="적용"
+                  title={I18n.t("apply")}
                   containerStyle={styles.applyButtonContainer}
                   buttonStyle={styles.applyButton}
                   titleStyle={styles.applyButtonTitle}

@@ -13,6 +13,7 @@ import {
    boldFontStyle,
    fontStyle,
 } from "../../../lib/styles/stylesByPlatform.js";
+import I18n from "i18n-js";
 
 function SecondController({
    lapse,
@@ -72,7 +73,7 @@ function SecondController({
                paddingBottom: 10,
             }}>
             <Button
-               title="적용"
+               title={I18n.t("apply")}
                containerStyle={styles.applyButtonContainer}
                buttonStyle={styles.applyButton}
                titleStyle={styles.applyButtonTitle}

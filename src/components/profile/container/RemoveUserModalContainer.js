@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { removeUser } from "../../../lib/api/auth";
 import { setSnackbar } from "../../../modules/snackbar";
-import { SERVER_ERROR } from "../../../lib/strings";
 
 function RemoveUserModalContainer({
    visible,
@@ -23,7 +22,7 @@ function RemoveUserModalContainer({
          onPressLogout();
          setSuccess(true);
       } catch (err) {
-         dispatch(setSnackbar(SERVER_ERROR));
+         dispatch(setSnackbar(I18n.t("server_error")));
       }
       dispatch(setUnloading());
    };

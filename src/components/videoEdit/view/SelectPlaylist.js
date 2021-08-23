@@ -8,12 +8,16 @@ import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
 import AddItemContainer from "../../playlist/container/AddItemContainer";
+import I18n from "i18n-js";
 
 function SelectPlaylist({ visible, cancel, item }) {
-   const titleProps = { title: "재생목록 선택", textStyle: boldFontStyle };
+   const titleProps = {
+      title: I18n.t("select_playlist"),
+      textStyle: boldFontStyle,
+   };
    const buttons = [
       {
-         text: "취소",
+         text: I18n.t("cancel"),
          onPress: cancel,
          textStyle: [{ color: palette.redRose }, fontStyle],
       },

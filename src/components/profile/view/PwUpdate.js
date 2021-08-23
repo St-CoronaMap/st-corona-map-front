@@ -10,6 +10,7 @@ import {
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
+import I18n from "i18n-js";
 
 function PwUpdate({
    visible,
@@ -23,13 +24,13 @@ function PwUpdate({
    const footerProps = [
       {
          key: "cancel",
-         text: "취소",
-         onPress: clear,
+         text: I18n.t("cancel"),
+         onPress: () => clear(false),
          textStyle: [{ color: palette.redRose }, boldFontStyle],
       },
       {
          key: "update",
-         text: "변경",
+         text: I18n.t("change"),
          onPress: () => onPasswordUpdate(password),
          textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
@@ -37,8 +38,8 @@ function PwUpdate({
    const footerOnSuccess = [
       {
          key: "success",
-         text: "확인",
-         onPress: clear,
+         text: I18n.t("ok"),
+         onPress: () => clear(true),
          textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
    ];
@@ -53,10 +54,12 @@ function PwUpdate({
          }>
          <View style={styles.container}>
             {success ? (
-               <Text style={fontStyle}>비밀번호 변경에 성공하셨습니다.</Text>
+               <Text style={fontStyle}>
+                  {I18n.t("change_password_success")}
+               </Text>
             ) : (
                <>
-                  <Text style={fontStyle}>새로운 비밀번호를 입력해주세요.</Text>
+                  <Text style={fontStyle}>{I18n.t("input_new_password")}</Text>
                   <Input
                      style={{ width: "80%" }}
                      secureTextEntry={true}

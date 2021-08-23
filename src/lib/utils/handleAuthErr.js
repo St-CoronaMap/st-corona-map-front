@@ -1,3 +1,4 @@
+import I18n from "i18n-js";
 import { testEmail, testPassword } from "./testRegs";
 
 export default function handleError(code, setErrMsg) {
@@ -5,56 +6,55 @@ export default function handleError(code, setErrMsg) {
       case "blank_id":
          setErrMsg((prev) => ({
             ...prev,
-            id: "아이디를 입력해주세요.",
+            id: I18n.t("blank_id"),
          }));
          return true;
       case "blank_password":
          setErrMsg((prev) => ({
             ...prev,
-            password: "비밀번호를 입력해주세요.",
+            password: I18n.t("blank_password"),
          }));
          return true;
       case "auth/wrong-password":
          setErrMsg((prev) => ({
             ...prev,
-            password: "비밀번호가 틀렸습니다.",
+            password: I18n.t("wrong_password"),
          }));
          return true;
       case "auth/user-not-found":
          setErrMsg((prev) => ({
             ...prev,
-            id: "존재하지 않는 회원입니다..",
+            id: I18n.t("user_not_exist"),
          }));
          return true;
       case "auth/id-already-in-use":
          setErrMsg((prev) => ({
             ...prev,
-            id: "이미 사용중인 아이디입니다.",
+            id: I18n.t("id_already_used"),
          }));
          return true;
       case "not_match_password_and_check":
          setErrMsg((prev) => ({
             ...prev,
-            passwordCheck: "비밀번호가 일치하지 않습니다.",
+            passwordCheck: I18n.t("password_not_match"),
          }));
          return true;
       case "password_not_formmatted":
          setErrMsg((prev) => ({
             ...prev,
-            password:
-               "비밀번호는 알파벳, 숫자, 특수문자 조합으로 8~20자여야 합니다.",
+            password: I18n.t("password_format"),
          }));
          return true;
       case "wrong_email":
          setErrMsg((prev) => ({
             ...prev,
-            email: "이메일 형식을 지켜주세요.",
+            email: I18n.t("email_not_formatted"),
          }));
          return true;
       case "기존 비밀번호와 같은 비밀번호 입니다.":
          setErrMsg((prev) => ({
             ...prev,
-            password: "기존 비밀번호와 같은 비밀번호 입니다.",
+            password: I18n.t("same_password"),
          }));
          return true;
       default:
@@ -96,7 +96,7 @@ export const catchError = (code, setErrMsg, lastSection) => {
    if (!handleError(code, setErrMsg)) {
       setErrMsg((prev) => ({
          ...prev,
-         [lastSection]: "알수없는 오류가 발생했습니다. 다시 시도해주세요.",
+         [lastSection]: I18n.t("uncatched_error"),
       }));
    }
 };

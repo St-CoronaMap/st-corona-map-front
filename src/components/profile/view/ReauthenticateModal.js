@@ -11,6 +11,7 @@ import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
+import I18n from "i18n-js";
 
 function ReauthenticateModal({
    onClose,
@@ -21,19 +22,19 @@ function ReauthenticateModal({
    password,
 }) {
    const titleProps = {
-      title: "재로그인",
+      title: I18n.t("reauth"),
       hasTitleBar: true,
    };
    const footerProps = [
       {
          key: "cancel",
-         text: "취소",
+         text: I18n.t("cancel"),
          onPress: onClose,
          textStyle: [{ color: palette.redRose }, boldFontStyle],
       },
       {
          key: "login",
-         text: "로그인",
+         text: I18n.t("signin"),
          onPress: reauthWithPw,
          textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
@@ -44,7 +45,7 @@ function ReauthenticateModal({
          title={<CustomModalHeader props={titleProps} />}
          footer={<CustomModalFooter buttons={footerProps} />}>
          <View style={styles.container}>
-            <Text style={fontStyle}>현재 비밀번호를 입력해주세요.</Text>
+            <Text style={fontStyle}>{I18n.t("input_current_password")}</Text>
             <Input
                secureTextEntry={true}
                value={password}

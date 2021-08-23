@@ -11,8 +11,8 @@ import { signin, signout } from "../../../modules/auth";
 import { getPlaylist } from "../../../modules/playlist";
 import { afterGetPlaylist } from "../../../lib/utils/afterGetPlaylist";
 import { setSnackbar } from "../../../modules/snackbar";
-import { RESTART_ERROR, SERVER_ERROR } from "../../../lib/strings";
 import { Restart } from "fiction-expo-restart";
+import I18n from "i18n-js";
 
 function ProfileContainer({ navigation }) {
    const user = useSelector(({ auth }) => auth);
@@ -46,7 +46,7 @@ function ProfileContainer({ navigation }) {
             dispatch(signin(res));
          }
       } catch (err) {
-         dispatch(setSnackbar(SERVER_ERROR));
+         dispatch(setSnackbar(I18n.t("server_error")));
       }
       setThisLoading((prev) => ({ ...prev, photo: false }));
    };
@@ -65,7 +65,7 @@ function ProfileContainer({ navigation }) {
          await logout();
       } catch (err) {
          // 재시작
-         dispatch(setSnackbar(RESTART_ERROR));
+         dispatch(setSnackbar(I18n.t("restart_error")));
          dispatch(setUnloading());
          setTimeout(() => Restart(), 2000);
          return;

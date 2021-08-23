@@ -6,6 +6,7 @@ import { fontStyle, inputStyle } from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
+import I18n from "i18n-js";
 
 function EditPlaylistModal({
    visible,
@@ -17,15 +18,15 @@ function EditPlaylistModal({
    editPlaylist,
    errMsg,
 }) {
-   const buttons = [{ text: "취소", onPress: cancel }];
+   const buttons = [{ text: I18n.t("cancel"), onPress: cancel }];
    const editTitleButtons = [
       {
-         text: "취소",
+         text: I18n.t("cancel"),
          onPress: cancel,
          textStyle: [{ color: palette.redRose }, fontStyle],
       },
       {
-         text: "수정",
+         text: I18n.t("edit"),
          onPress: editPlaylist,
       },
    ];
@@ -48,7 +49,7 @@ function EditPlaylistModal({
                   <ListItem.Content style={{ alignItems: "center" }}>
                      <ListItem.Title
                         style={[{ color: palette.blackBerry }, fontStyle]}>
-                        이름 변경
+                        {I18n.t("change_playlist_name")}
                      </ListItem.Title>
                   </ListItem.Content>
                </ListItem>
@@ -60,7 +61,7 @@ function EditPlaylistModal({
                   <ListItem.Content style={{ alignItems: "center" }}>
                      <ListItem.Title
                         style={[{ color: palette.redRose }, fontStyle]}>
-                        삭제
+                        {I18n.t("delete_playlist")}
                      </ListItem.Title>
                   </ListItem.Content>
                </ListItem>
@@ -68,7 +69,7 @@ function EditPlaylistModal({
          ) : (
             <View style={styles.containerEdit}>
                <Text style={fontStyle}>
-                  새로운 재생목록의 이름을 입력해주세요.
+                  {I18n.t("enter_new_playlist_name")}
                </Text>
                <Input
                   onChangeText={onChange}

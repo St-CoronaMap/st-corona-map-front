@@ -5,6 +5,7 @@ import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 
 import { walkthroughable, CopilotStep } from "react-native-copilot";
+import I18n from "i18n-js";
 
 const CopilotView = walkthroughable(View);
 
@@ -44,7 +45,7 @@ function ControlVideo({
             />
          </View>
          <CopilotStep
-            text="마음에 드신다면, 이 버튼을 눌러 재생목록에 추가하세요!"
+            text={I18n.t("videoEdit_web_step_2")}
             order={3}
             name="add_button">
             <CopilotView style={styles.buttonContainer}>

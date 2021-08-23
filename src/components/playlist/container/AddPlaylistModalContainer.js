@@ -1,3 +1,4 @@
+import I18n from "i18n-js";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addPlaylist } from "../../../lib/api/playlist";
@@ -18,15 +19,15 @@ function AddPlaylistModalContainer({ visible, cancel }) {
    };
    const addPlaylistCallback = () => {
       if (!name) {
-         setErrMsg("이름을 입력해주세요");
+         setErrMsg(I18n.t("blank_playlist_name"));
          return;
       }
       if (name[0] === " " || name[name.length - 1] === " ") {
-         setErrMsg("처음과 마지막은 띄어쓰기가 될 수 없습니다.");
+         setErrMsg(I18n.t("playlist_name_format"));
          return;
       }
       if (name.length > 20) {
-         setErrMsg("최대 20자까지 가능합니다.");
+         setErrMsg(I18n.t("playlist_name_length"));
          return;
       }
       callAddPlaylist(name);
@@ -44,17 +45,9 @@ function AddPlaylistModalContainer({ visible, cancel }) {
          cancel();
       } catch (err) {
          if (err.message === "비회원 playlist 제한을 초과하였습니다.") {
-            dispatch(
-               setSnackbar(
-                  "비회원은 재생목록을 최대 10개까지 만들 수 있습니다."
-               )
-            );
+            dispatch(setSnackbar(I18n.t("nonmember_playlist_limit")));
          } else {
-            dispatch(
-               setSnackbar(
-                  "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
-               )
-            );
+            dispatch(setSnackbar(I18n.t("server_error")));
          }
          dispatch(setUnloading());
       }

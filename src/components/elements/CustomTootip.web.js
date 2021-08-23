@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Button } from "react-native-elements";
 import { boldFontStyle, fontStyle } from "../../lib/styles/stylesByPlatform.js";
 import palette from "../../lib/styles/palette";
+import I18n from "i18n-js";
 
 export const STEP_NUMBER_RADIUS = 14;
 export const STEP_NUMBER_DIAMETER = STEP_NUMBER_RADIUS * 2;
@@ -56,7 +57,7 @@ const CustomTootip = ({
                   buttonStyle={styles.button}
                   titleStyle={styles.buttonText}
                   type="clear"
-                  title={"끝"}
+                  title={I18n.t("close")}
                   onPress={handleStop}
                />
             ) : null}
@@ -65,7 +66,7 @@ const CustomTootip = ({
                   buttonStyle={styles.button}
                   titleStyle={styles.buttonText}
                   type="clear"
-                  title={"이전"}
+                  title={I18n.t("prev")}
                   onPress={handlePrev}
                />
             ) : null}
@@ -74,7 +75,7 @@ const CustomTootip = ({
                   buttonStyle={styles.button}
                   titleStyle={styles.buttonText}
                   type="clear"
-                  title={"다음"}
+                  title={I18n.t("next")}
                   onPress={handleNext}
                />
             ) : (
@@ -82,7 +83,7 @@ const CustomTootip = ({
                   buttonStyle={styles.button}
                   titleStyle={styles.buttonText}
                   type="clear"
-                  title={"끝"}
+                  title={I18n.t("close")}
                   onPress={handleStop}
                />
             )}

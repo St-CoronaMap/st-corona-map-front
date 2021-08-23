@@ -12,7 +12,7 @@ import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
 import VideoEditFromPlay from "./VideoEditFromPlay";
 import { Platform } from "react-native";
-import { SERVER_ERROR } from "../../../lib/strings";
+import I18n from "i18n-js";
 
 const SEET_TO_OPTION = Platform.OS === "web" ? "seconds" : true;
 
@@ -64,7 +64,7 @@ function VideoEditRootContainer({ route, navigation }) {
                from: route.params.from,
             });
          } catch (err) {
-            dispatch(setSnackbar(SERVER_ERROR));
+            dispatch(setSnackbar(I18n.t("server_error")));
             dispatch(setUnloading());
          }
       }

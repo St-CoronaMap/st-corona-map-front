@@ -14,6 +14,7 @@ import palette from "../../../lib/styles/palette";
 import { TourGuideProvider } from "rn-tourguide";
 import TourContainer from "../elements/TourContainer";
 import CustomTootip from "../../elements/CustomTootip";
+import I18n from "i18n-js";
 
 function Playlist({
    playlist,
@@ -27,12 +28,7 @@ function Playlist({
       <View style={styles.topView}>
          <TourGuideProvider
             tooltipComponent={(props) => (
-               <CustomTootip
-                  {...props}
-                  text={[
-                     "상단의 검색을 통해 음악을 추가하고, 재생목록을 완성시키세요!",
-                  ]}
-               />
+               <CustomTootip {...props} text={[I18n.t("playlist_step_1")]} />
             )}>
             <TourContainer
                length={playlist.length}

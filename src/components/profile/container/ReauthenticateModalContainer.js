@@ -4,8 +4,8 @@ import handleError, { checkPassword } from "../../../lib/utils/handleAuthErr";
 import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
-import { SERVER_ERROR } from "../../../lib/strings";
 import { login } from "../../../lib/api/auth";
+import I18n from "i18n-js";
 
 function ReauthenticateModalContainer({
    user,
@@ -19,12 +19,12 @@ function ReauthenticateModalContainer({
    const dispatch = useDispatch();
 
    const reauthWithPw = async () => {
-      dispatch(setLoading());
       try {
          if (!checkPassword(password, setErrMsg)) {
             return;
          }
 
+         dispatch(setLoading());
          await login(user.loginId, password);
          setReauthenticated(true);
          // 아이디 받아온 걸로 재 로그인
@@ -32,7 +32,7 @@ function ReauthenticateModalContainer({
          if (err.message === "비밀번호가 일치하지 않습니다.") {
             handleError("auth/wrong-password", setErrMsg);
          } else {
-            dispatch(setSnackbar(SERVER_ERROR));
+            dispatch(setSnackbar(I18n.t("server_error")));
          }
       }
       dispatch(setUnloading());
@@ -43,7 +43,7 @@ function ReauthenticateModalContainer({
       }
       if (v && !/[0-9a-zA-Z.;\-]/.test(v)) {
          setErrMsg({
-            password: "영어, 숫자, 특수문자만 가능합니다.",
+            password: I18n.t("password_format"),
          });
          return;
       }

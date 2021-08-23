@@ -1,3 +1,4 @@
+import I18n from "i18n-js";
 import React, { useCallback } from "react";
 import { Text } from "react-native";
 import { Dimensions, FlatList, Platform, StyleSheet, View } from "react-native";
@@ -107,7 +108,7 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
          <View style={styles.container}>
             <View style={styles.search}>
                <SearchBar
-                  placeholder="검색"
+                  placeholder={I18n.t("search")}
                   round
                   platform="android"
                   containerStyle={styles.input}

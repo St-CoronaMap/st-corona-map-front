@@ -19,26 +19,22 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
          dispatch(getPlaylist(() => dispatch(setUnloading())));
          cancel();
       } catch (err) {
-         dispatch(
-            setSnackbar(
-               "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
-            )
-         );
+         dispatch(setSnackbar(I18n.t("server_error")));
          dispatch(setUnloading());
       }
    }, [edittingPlaylist]);
 
    const editPlaylistCallback = () => {
       if (!name) {
-         setErrMsg("이름을 입력해주세요");
+         setErrMsg(I18n.t("blank_playlist_name"));
          return;
       }
       if (name[0] === " " || name[name.length - 1] === " ") {
-         setErrMsg("처음과 마지막은 띄어쓰기가 될 수 없습니다.");
+         setErrMsg(I18n.t("playlist_name_format"));
          return;
       }
       if (name.length > 20) {
-         setErrMsg("최대 20자까지 가능합니다.");
+         setErrMsg(I18n.t("playlist_name_length"));
          return;
       }
       callEditPlaylist(name);
@@ -55,11 +51,7 @@ function EditPlaylistModalContainer({ visible, cancel, edittingPlaylist }) {
             dispatch(getPlaylist(() => dispatch(setUnloading())));
             cancelCallback();
          } catch (err) {
-            dispatch(
-               setSnackbar(
-                  "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
-               )
-            );
+            dispatch(setSnackbar(I18n.t("server_error")));
             dispatch(setUnloading());
          }
       },

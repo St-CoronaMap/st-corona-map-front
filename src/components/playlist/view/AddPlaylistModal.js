@@ -6,20 +6,21 @@ import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
+import I18n from "i18n-js";
 
 function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
    const titleProps = {
-      title: "재생목록 추가",
+      title: I18n.t("add_playlist_modal_title"),
       hasTitleBar: true,
    };
    const buttons = [
       {
-         text: "취소",
+         text: I18n.t("cancel"),
          onPress: cancel,
          textStyle: [{ color: palette.redRose }, fontStyle],
       },
       {
-         text: "추가",
+         text: I18n.t("add"),
          onPress: addPlaylist,
       },
    ];
@@ -31,9 +32,7 @@ function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
          footer={<CustomModalFooter buttons={buttons} />}
          rounded>
          <View style={styles.container}>
-            <Text style={fontStyle}>
-               추가하실 재생목록의 이름을 입력해주세요.
-            </Text>
+            <Text style={fontStyle}>{I18n.t("enter_playlist_name")}</Text>
             <Input
                onChangeText={onChange}
                errorMessage={errMsg}

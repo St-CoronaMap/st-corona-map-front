@@ -14,6 +14,8 @@ import palette from "../../../lib/styles/palette";
 import { walkthroughable, CopilotStep, copilot } from "react-native-copilot";
 import CustomTootip from "../../elements/CustomTootip";
 import CustomStepNumber from "../../elements/CustomStepNumber";
+import I18n from "i18n-js";
+import { removeAll } from "../../../lib/api/playlist";
 
 const CopilotView = walkthroughable(View);
 
@@ -36,7 +38,7 @@ function Playlist({
       <View style={styles.topView}>
          <ScrollView>
             <CopilotStep
-               text="상단의 검색을 통해 음악을 추가하고, 재생목록을 완성시키세요!"
+               text={I18n.t("playlist_step_1")}
                order={1}
                name="playlist">
                <CopilotView style={styles.container}>
@@ -102,6 +104,7 @@ function Playlist({
             icon={{ name: "plus", type: "font-awesome" }}
             onPress={onPressVisible}
          />
+         <FAB placement="left" visible raised onPress={removeAll} />
       </View>
    );
 }

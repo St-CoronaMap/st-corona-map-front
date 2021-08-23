@@ -7,6 +7,7 @@ import {
 import palette from "../../../lib/styles/palette";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
+import I18n from "i18n-js";
 
 function RemoveUserModal({
    visible,
@@ -18,13 +19,13 @@ function RemoveUserModal({
    const footerProps = [
       {
          key: "cancel",
-         text: "취소",
+         text: I18n.t("cancel"),
          onPress: () => setVisible(false),
          textStyle: [{ color: palette.redRose }, boldFontStyle],
       },
       {
          key: "rmove",
-         text: "탈퇴",
+         text: I18n.t("remove"),
          onPress: removeUserFunc,
          textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
@@ -32,7 +33,7 @@ function RemoveUserModal({
    const footerOnSuccess = [
       {
          key: "success",
-         text: "확인",
+         text: I18n.t("ok"),
          onPress: afterRemove,
          textStyle: [{ color: palette.blackBerry }, boldFontStyle],
       },
@@ -48,9 +49,7 @@ function RemoveUserModal({
          }>
          <View style={styles.container}>
             <Text style={fontStyle}>
-               {success
-                  ? "이용해주셔서 감사합니다."
-                  : "회원님의 모든 정보가 삭제됩니다.\n정말로 탈퇴하시겠습니까?"}
+               {success ? I18n.t("thankyou_for_using") : I18n.t("remove_info")}
             </Text>
          </View>
       </CustomModal>

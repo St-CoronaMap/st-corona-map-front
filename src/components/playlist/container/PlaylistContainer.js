@@ -8,6 +8,7 @@ import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
 import { clearIsFirst } from "../../../modules/isFirst";
 import { FIRST, P_FIRST } from "../../../lib/api/isFirstStorage";
+import I18n from "i18n-js";
 
 function PlaylistContainer({ navigation }) {
    const [visibleAddPlaylist, setVisibleAddPlaylist] = useState(false);
@@ -23,7 +24,7 @@ function PlaylistContainer({ navigation }) {
          const res = await getVideoList(list.id);
          dispatch(setUnloading());
          if (res.length === 0) {
-            dispatch(setSnackbar("재생목록이 비어있습니다."));
+            dispatch(setSnackbar(I18n.t("blank_playlist")));
             return;
          }
          navigation.navigate("Play", {
@@ -31,11 +32,7 @@ function PlaylistContainer({ navigation }) {
             items: res.sort((a, b) => a.sequence - b.sequence),
          });
       } catch (err) {
-         dispatch(
-            setSnackbar(
-               "서버 오류로 작업에 실패했습니다. \n다시 시도해 주세요."
-            )
-         );
+         dispatch(setSnackbar(I18n.t("server_error")));
          dispatch(setUnloading());
       }
    };

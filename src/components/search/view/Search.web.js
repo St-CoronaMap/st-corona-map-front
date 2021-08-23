@@ -7,6 +7,7 @@ import {
    fontStyle,
 } from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
+import I18n from "i18n-js";
 
 const styles = StyleSheet.create({
    main: {
@@ -107,7 +108,7 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
          <View style={styles.container}>
             <View style={styles.search}>
                <SearchBar
-                  placeholder="검색"
+                  placeholder={I18n.t("search")}
                   round
                   platform="android"
                   containerStyle={styles.input}

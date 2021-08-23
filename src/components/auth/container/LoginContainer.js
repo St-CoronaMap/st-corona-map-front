@@ -10,7 +10,7 @@ import { signin } from "../../../modules/auth";
 import { getPlaylist } from "../../../modules/playlist";
 import { afterGetPlaylist } from "../../../lib/utils/afterGetPlaylist";
 import { setSnackbar } from "../../../modules/snackbar";
-import { SERVER_ERROR } from "../../../lib/strings";
+import I18n from "i18n-js";
 
 function LoginContainer({ navigation }) {
    const [isLogin, setIsLogIn] = useState(true);
@@ -51,7 +51,7 @@ function LoginContainer({ navigation }) {
             } else if (err.message === "존재하지 않는 회원입니다.") {
                handleError("auth/user-not-found", setErrMsg);
             } else {
-               dispatch(setSnackbar(SERVER_ERROR));
+               dispatch(setSnackbar(I18n.t("server_error")));
             }
             dispatch(setUnloading());
             return;
@@ -65,7 +65,7 @@ function LoginContainer({ navigation }) {
             if (err.message === "ID가 중복된 회원입니다.") {
                handleError("auth/id-already-in-use", setErrMsg);
             } else {
-               dispatch(setSnackbar(SERVER_ERROR));
+               dispatch(setSnackbar(I18n.t("server_error")));
             }
             dispatch(setUnloading());
             return;

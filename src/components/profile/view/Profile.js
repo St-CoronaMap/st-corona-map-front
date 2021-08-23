@@ -8,6 +8,7 @@ import {
 } from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import Header from "./Header";
+import I18n from "i18n-js";
 const styles = StyleSheet.create({
    container: {
       flex: 1,
@@ -62,7 +63,7 @@ function Profile({
             <ListItem
                bottomDivider
                containerStyle={{ backgroundColor: palette.ivory }}>
-               <Text style={styles.lineHeader}>아이디</Text>
+               <Text style={styles.lineHeader}>{I18n.t("id")}</Text>
                <ListItem.Content>
                   <ListItem.Title style={fontStyle}>
                      {user?.loginId}
@@ -72,7 +73,7 @@ function Profile({
             <ListItem
                bottomDivider
                containerStyle={{ backgroundColor: palette.ivory }}>
-               <Text style={styles.lineHeader}>가입일</Text>
+               <Text style={styles.lineHeader}>{I18n.t("createdAt")}</Text>
                <ListItem.Content>
                   <ListItem.Title style={fontStyle}>
                      {user?.createdAt.slice(0, 10)}
@@ -82,7 +83,7 @@ function Profile({
          </View>
          <View style={styles.bottomBar}>
             <Button
-               title="회원탈퇴"
+               title={I18n.t("remove")}
                type="clear"
                color="red"
                containerStyle={styles.buttonContainer}
@@ -91,7 +92,7 @@ function Profile({
                onPress={showRemoveUser}
             />
             <Button
-               title="비밀번호 변경"
+               title={I18n.t("change_password")}
                type="clear"
                containerStyle={styles.buttonContainer}
                buttonStyle={styles.buttonStyle}
@@ -99,7 +100,7 @@ function Profile({
                onPress={showChangePassword}
             />
             <Button
-               title="로그아웃"
+               title={I18n.t("signout")}
                type="clear"
                containerStyle={styles.buttonContainer}
                buttonStyle={styles.buttonStyle}
