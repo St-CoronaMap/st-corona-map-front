@@ -5,7 +5,11 @@ import {
    TourGuideZoneByPosition, // Component to use mask on overlay (ie, position absolute)
    useTourGuideController, // hook to start, etc.
 } from "rn-tourguide";
-import { WEB_COPILOT_BOTTOM } from "../../../lib/styles/variables";
+import {
+   IS_MOBILE_WEB,
+   WEB_COPILOT_BOTTOM,
+   WIDTH,
+} from "../../../lib/styles/variables";
 
 function TourContainer({ length, isFirst, clearIsFirstP }) {
    const {
@@ -25,7 +29,9 @@ function TourContainer({ length, isFirst, clearIsFirstP }) {
          zone={1}
          isTourGuide
          bottom={WEB_COPILOT_BOTTOM}
-         right={(Dimensions.get("window").width - 600) / 2}
+         right={
+            (Dimensions.get("window").width - IS_MOBILE_WEB ? WIDTH : 600) / 2
+         }
          width={Dimensions.get("window").width}
          height={240}
       />

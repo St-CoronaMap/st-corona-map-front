@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       flexWrap: "wrap",
       backgroundColor: palette.ivory,
-      justifyContent: IS_MOBILE_WEB ? "center" : "space-between",
+      justifyContent: SMALL_MOBILE_WEB ? "center" : "space-between",
    },
    cardTouchable: {
       width: "100%",

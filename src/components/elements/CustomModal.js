@@ -2,7 +2,7 @@ import React from "react";
 import { Dimensions, Platform, StyleSheet, View } from "react-native";
 import { Modal, ModalContent, SlideAnimation } from "react-native-modals";
 import palette from "../../lib/styles/palette";
-import { IS_MOBILE_WEB } from "../../lib/styles/variables";
+import { IS_MOBILE_WEB, WIDTH } from "../../lib/styles/variables";
 function CustomModal({
    children,
    visible,
@@ -40,12 +40,7 @@ const styles = StyleSheet.create({
    },
    content: {
       height: Dimensions.get("window").height * 0.7,
-      width:
-         Platform.OS === "web"
-            ? IS_MOBILE_WEB
-               ? "100%"
-               : 600
-            : Dimensions.get("window").width,
+      width: Platform.OS === "web" ? (IS_MOBILE_WEB ? WIDTH : 600) : WIDTH,
    },
 });
 

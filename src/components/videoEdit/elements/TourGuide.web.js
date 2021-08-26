@@ -6,7 +6,10 @@ import {
 } from "rn-tourguide";
 import {
    CONTROLBAR_HEIGHT,
+   IS_MOBILE_WEB,
    WEB_COPILOT_BOTTOM,
+   WEB_COPLIOT_RIGHT_OFFSET,
+   WIDTH,
 } from "../../../lib/styles/variables";
 
 export function TourGuide_Seconds() {
@@ -14,10 +17,10 @@ export function TourGuide_Seconds() {
       <TourGuideZoneByPosition
          zone={1}
          isTourGuide
-         right={(Dimensions.get("window").width - 600) / 2}
+         right={(WIDTH - WEB_COPLIOT_RIGHT_OFFSET) / 2}
          bottom={WEB_COPILOT_BOTTOM - 103}
-         width={Dimensions.get("window").width}
-         height={"100%"}
+         width={WIDTH}
+         height={500}
       />
    );
 }
@@ -27,7 +30,10 @@ export function TourGuide_ControllBar() {
       <TourGuideZoneByPosition
          zone={2}
          isTourGuide
-         right={(Dimensions.get("window").width - 600) / 2 - 440}
+         right={
+            (WIDTH - WEB_COPLIOT_RIGHT_OFFSET) / 2 -
+            (IS_MOBILE_WEB ? WIDTH * 0.7 : 440)
+         }
          bottom={WEB_COPILOT_BOTTOM - 3}
          width={120}
          height={CONTROLBAR_HEIGHT}

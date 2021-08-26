@@ -9,6 +9,9 @@ import CustomModalFooter from "../../elements/CustomModalFooter";
 import CustomModalHeader from "../../elements/CustomModalHeader";
 import AddItemContainer from "../../playlist/container/AddItemContainer";
 import I18n from "i18n-js";
+import { Platform } from "react-native";
+import { HEIGHT, IS_MOBILE_WEB, WIDTH } from "../../../lib/styles/variables.js";
+import { View } from "react-native";
 
 function SelectPlaylist({ visible, cancel, item }) {
    const titleProps = {
@@ -30,7 +33,19 @@ function SelectPlaylist({ visible, cancel, item }) {
          footer={<CustomModalFooter buttons={buttons} />}
          rounded={false}
          isFullScreen>
-         <AddItemContainer item={item} afterAdd={cancel} />
+         <View
+            style={{
+               width:
+                  Platform.OS === "web"
+                     ? IS_MOBILE_WEB
+                        ? WIDTH * 0.95
+                        : 600
+                     : WIDTH,
+               height: HEIGHT * 0.7,
+               backgroundColor: palette.ivory,
+            }}>
+            <AddItemContainer item={item} afterAdd={cancel} />
+         </View>
       </CustomModal>
    );
 }

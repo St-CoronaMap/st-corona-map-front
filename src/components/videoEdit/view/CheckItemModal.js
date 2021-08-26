@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
       width:
          Platform.OS === "web"
             ? IS_MOBILE_WEB
-               ? "98%"
+               ? "95%"
                : 500
             : Dimensions.get("window").width - 100,
       backgroundColor: palette.ivory,
