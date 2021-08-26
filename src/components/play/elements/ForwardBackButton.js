@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
+import { IS_MOBILE_WEB } from "../../../lib/styles/variables";
 
 function ForwardBackButton({ pressBackward, pressForwardward }) {
    return (
@@ -34,7 +35,7 @@ function ForwardBackButton({ pressBackward, pressForwardward }) {
 
 const styles = StyleSheet.create({
    forwardBackContainer: {
-      width: 120,
+      width: IS_MOBILE_WEB ? "30%" : 120,
       flexDirection: "row",
       justifyContent: "space-between",
    },

@@ -15,6 +15,7 @@ import { TourGuideProvider } from "rn-tourguide";
 import TourContainer from "../elements/TourContainer";
 import CustomTootip from "../../elements/CustomTootip";
 import I18n from "i18n-js";
+import { IS_MOBILE_WEB } from "../../../lib/styles/variables";
 
 function Playlist({
    playlist,
@@ -117,16 +118,15 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       flexWrap: "wrap",
       backgroundColor: palette.ivory,
-      justifyContent: "space-between",
+      justifyContent: IS_MOBILE_WEB ? "center" : "space-between",
    },
    cardTouchable: {
       width: "100%",
       height: "100%",
    },
    card: {
-      width: "40%",
-      height:
-         Platform.OS === "web" ? 200 : Dimensions.get("screen").width * 0.35,
+      width: IS_MOBILE_WEB ? 250 : "40%",
+      height: IS_MOBILE_WEB ? 220 : 200,
       padding: 0,
       borderRadius: 30,
 

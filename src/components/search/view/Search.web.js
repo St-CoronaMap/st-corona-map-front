@@ -8,6 +8,7 @@ import {
 } from "../../../lib/styles/stylesByPlatform.js";
 import palette from "../../../lib/styles/palette";
 import I18n from "i18n-js";
+import { IS_MOBILE_WEB } from "../../../lib/styles/variables.js";
 
 const styles = StyleSheet.create({
    main: {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
    listItem: {
       backgroundColor: palette.ivory,
       height: 100,
-      width: Platform.OS === "web" ? 540 : Dimensions.get("window").width * 0.9,
+      width: IS_MOBILE_WEB ? "90%" : 540,
       overflow: "hidden",
       borderColor: palette.ivory,
       borderWidth: 1,

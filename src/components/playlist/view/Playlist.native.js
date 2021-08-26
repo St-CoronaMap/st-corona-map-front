@@ -15,7 +15,6 @@ import { walkthroughable, CopilotStep, copilot } from "react-native-copilot";
 import CustomTootip from "../../elements/CustomTootip";
 import CustomStepNumber from "../../elements/CustomStepNumber";
 import I18n from "i18n-js";
-import { removeAll } from "../../../lib/api/playlist";
 
 const CopilotView = walkthroughable(View);
 
@@ -104,7 +103,6 @@ function Playlist({
             icon={{ name: "plus", type: "font-awesome" }}
             onPress={onPressVisible}
          />
-         <FAB placement="left" visible raised onPress={removeAll} />
       </View>
    );
 }

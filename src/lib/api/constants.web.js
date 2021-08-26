@@ -1,3 +1,3 @@
-export const Address = "http://3.37.114.161:8080";
+export const Address = "https://www.yourlist.kro.kr";
 
-export const CrawlAddress = "http://3.128.36.114:6001/api/crawler/";
+export const CrawlAddress = "https://crawl.yourlist.kro.kr/api/crawler/";

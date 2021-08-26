@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
+import { IS_MOBILE_WEB } from "../../../lib/styles/variables";
 import { TourGuide_ControllBar } from "./TourGuide";
 
 function ControlVideo({
@@ -18,7 +19,7 @@ function ControlVideo({
          {TourGuide_ControllBar()}
          <View style={styles.buttonContainer}>
             <Slider
-               style={{ width: 120 }}
+               style={{ width: "100%" }}
                minimumValue={0}
                maximumValue={100}
                value={vol}
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
       backgroundColor: palette.deepRedRose,
    },
    buttonContainer: {
-      width: 120,
+      width: IS_MOBILE_WEB ? "30%" : 120,
       justifyContent: "flex-end",
       alignItems: "center",
    },

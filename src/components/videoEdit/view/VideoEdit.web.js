@@ -11,6 +11,10 @@ import {
    useTourGuideController, // hook to start, etc.
 } from "rn-tourguide";
 import { TourGuide_Seconds } from "../elements/TourGuide.web";
+import {
+   IS_MOBILE_WEB,
+   MOBILE_WEB_PALYER_HEIGHT,
+} from "../../../lib/styles/variables";
 
 const PLAYER_HEIGHT = 300;
 
@@ -61,8 +65,8 @@ function VideoEdit({
             <ReactPlayer
                ref={playerRef}
                url={`https://www.youtube.com/watch?v=${item?.videoId}`}
-               width={534}
-               height={PLAYER_HEIGHT}
+               width={IS_MOBILE_WEB ? "100%" : 534}
+               height={IS_MOBILE_WEB ? MOBILE_WEB_PALYER_HEIGHT : PLAYER_HEIGHT}
                playing={playing}
                volume={vol / 100}
                controls={true}

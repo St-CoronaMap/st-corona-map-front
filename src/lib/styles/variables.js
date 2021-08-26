@@ -16,3 +16,6 @@ export const PLAY_SCREEN = "PlayScreen";
 export const VIDEOEDIT_PLAY = "videoEdit_play";
 export const VIDEOEDIT_SEARCH = "videoEdit_search";
 export const SEARCH = "Search";
+
+export const IS_MOBILE_WEB = width < 600 ? true : false;
+export const MOBILE_WEB_PALYER_HEIGHT = 9 * ((width * 0.98) / 16);

@@ -29,6 +29,8 @@ import { fontStyle } from "./src/lib/styles/stylesByPlatform.js";
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import { i18nTranslation } from "./src/lib/i18nTranslation";
+import { Dimensions } from "react-native";
+import { IS_MOBILE_WEB } from "./src/lib/styles/variables";
 
 const Stack = createStackNavigator();
 
@@ -67,10 +69,6 @@ function AppInit() {
 
    const preload = async () => {
       try {
-         const res = await appInit();
-         dispatch(setIsFirst(res.first));
-         dispatch(signin(res.userInfo));
-         dispatch(getPlaylist());
          switch (Localization.locale) {
             case "en-US":
             case "en":
@@ -85,13 +83,20 @@ function AppInit() {
          }
          i18n.translations = i18nTranslation;
 
+         const res = await appInit();
+         dispatch(setIsFirst(res.first));
+         dispatch(signin(res.userInfo));
+         dispatch(getPlaylist());
+
          if (Platform.OS === "web") {
             await Font.loadAsync({
                notosans: require("./src/lib/styles/NotoSansKR-Regular.web.otf"),
             });
          }
       } catch (err) {
-         Restart();
+         if (Platform.OS !== "web") {
+            Restart();
+         }
       }
    };
 
@@ -154,8 +159,8 @@ function AppInit() {
 
 const styles = StyleSheet.create({
    containerWeb: {
-      width: 600,
-      height: "95%",
+      width: IS_MOBILE_WEB ? "98%" : 600,
+      height: IS_MOBILE_WEB ? "98%" : "95%",
       borderRadius: 30,
       overflow: "hidden",
       shadowColor: "#000",

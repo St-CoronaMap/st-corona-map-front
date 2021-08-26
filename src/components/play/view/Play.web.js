@@ -4,12 +4,15 @@ import palette from "../../../lib/styles/palette";
 import {
    CONTROLBAR_HEIGHT,
    HEADERNAME_HEIGHT,
+   IS_MOBILE_WEB,
+   MOBILE_WEB_PALYER_HEIGHT,
    TAP_HEIGHT,
    WINDOW_HEIGHT,
 } from "../../../lib/styles/variables";
 import ControlBar from "../elements/ControlBar";
 import VideoList from "../elements/VideoList";
 import ReactPlayer from "react-player";
+
 const PLAYER_HEIGHT = 300;
 
 const styles = StyleSheet.create({
@@ -50,8 +53,8 @@ function Play({
             <ReactPlayer
                ref={playerRef}
                url={`https://www.youtube.com/watch?v=${playlist.items[cur]?.videoId}`}
-               width={534}
-               height={PLAYER_HEIGHT}
+               width={IS_MOBILE_WEB ? "100%" : 534}
+               height={IS_MOBILE_WEB ? MOBILE_WEB_PALYER_HEIGHT : PLAYER_HEIGHT}
                playing={playing}
                volume={vol / 100}
                controls={true}

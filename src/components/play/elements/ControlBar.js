@@ -2,7 +2,10 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import palette from "../../../lib/styles/palette";
 import { Button } from "react-native-elements";
-import { CONTROLBAR_HEIGHT } from "../../../lib/styles/variables";
+import {
+   CONTROLBAR_HEIGHT,
+   IS_MOBILE_WEB,
+} from "../../../lib/styles/variables";
 import ForwardBackButton from "./ForwardBackButton";
 import VolumeSlider from "./VolumeSlider";
 
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
       backgroundColor: palette.redRose,
    },
    pauseButtonCotnainer: {
-      width: 120,
+      width: IS_MOBILE_WEB ? "30%" : 120,
       justifyContent: "flex-end",
       alignItems: "center",
    },
