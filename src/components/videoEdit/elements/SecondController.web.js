@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Animated } from "react-native";
 import seperateSecond from "../../../lib/utils/seperateSecond";
 import {
    CustomCounterLeft,
    CustomCounterRight,
 } from "../../elements/CustomCounter";
 
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 import { RangeSlider } from "@sharcoux/slider";
 import {
@@ -22,6 +22,7 @@ function SecondController({
    handleValueChange,
    endTime,
    onSelectLapse,
+   checkIcon,
 }) {
    return (
       <View style={styles.lapseContainer}>
@@ -80,6 +81,17 @@ function SecondController({
                type="outline"
                onPress={onSelectLapse}
             />
+            <Animated.View
+               style={[
+                  {
+                     position: "relative",
+                     left: 80,
+                     bottom: 35,
+                  },
+                  { opacity: checkIcon },
+               ]}>
+               <Icon name="check" color={palette.redRose} />
+            </Animated.View>
          </View>
       </View>
    );

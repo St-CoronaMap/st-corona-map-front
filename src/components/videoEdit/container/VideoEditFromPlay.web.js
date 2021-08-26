@@ -22,6 +22,7 @@ function VideoEditFromPlay({
    lapseLowCounter,
    lapseHighCounter,
    onSelectLapse,
+   checkIcon,
 }) {
    const handleValueChange = useCallback(([low, high]) => {
       if (low < high) {
@@ -75,6 +76,7 @@ function VideoEditFromPlay({
          volumneChange={volumneChange}
          vol={vol}
          onReady={onReady}
+         checkIcon={checkIcon}
       />
    );
 }

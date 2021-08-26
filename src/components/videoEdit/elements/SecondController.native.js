@@ -12,11 +12,12 @@ import Notch from "../../elements/Notch";
 import Rail from "../../elements/Rail";
 import RailSelected from "../../elements/RailSelected";
 import Thumb from "../../elements/Thumb";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import palette from "../../../lib/styles/palette";
 
 import { walkthroughable, CopilotStep } from "react-native-copilot";
 import I18n from "i18n-js";
+import { Animated } from "react-native";
 
 const CopilotView = walkthroughable(View);
 
@@ -27,6 +28,7 @@ function SecondController({
    handleValueChange,
    endTime,
    onSelectLapse,
+   checkIcon,
 }) {
    const renderThumb = useCallback(() => <Thumb />, []);
    const renderRail = useCallback(() => <Rail />, []);
@@ -101,6 +103,17 @@ function SecondController({
                   type="outline"
                   onPress={onSelectLapse}
                />
+               <Animated.View
+                  style={[
+                     {
+                        position: "relative",
+                        left: 80,
+                        bottom: 35,
+                     },
+                     { opacity: checkIcon },
+                  ]}>
+                  <Icon name="check" color={palette.redRose} />
+               </Animated.View>
             </CopilotView>
          </CopilotStep>
       </View>

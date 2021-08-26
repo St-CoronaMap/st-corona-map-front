@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { setLoading, setUnloading } from "../../../modules/loading";
 import { setSnackbar } from "../../../modules/snackbar";
 import VideoEditFromPlay from "./VideoEditFromPlay";
-import { Platform } from "react-native";
+import { Animated, Easing, Platform } from "react-native";
 import I18n from "i18n-js";
 
 const SEET_TO_OPTION = Platform.OS === "web" ? "seconds" : true;
@@ -28,6 +28,8 @@ function VideoEditRootContainer({ route, navigation }) {
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
    const [vol, setVol] = useState(50);
    const dispatch = useDispatch();
+
+   const checkIcon = useRef(new Animated.Value(0)).current;
 
    useEffect(() => {
       const getEndTime = async () => {
@@ -111,6 +113,19 @@ function VideoEditRootContainer({ route, navigation }) {
    }, []);
 
    const onSelectLapse = useCallback(() => {
+      Animated.timing(checkIcon, {
+         toValue: 1,
+         duration: 1000,
+         useNativeDriver: true,
+         easing: Easing.bezier(0, 0.44, 1, 1),
+      }).start(() =>
+         Animated.timing(checkIcon, {
+            toValue: 0,
+            duration: 500,
+            delay: 300,
+            useNativeDriver: true,
+         }).start()
+      );
       playerRef.current?.seekTo(lapse[0], SEET_TO_OPTION);
       setSelectedLapsed(lapse);
    }, [lapse]);
@@ -137,6 +152,7 @@ function VideoEditRootContainer({ route, navigation }) {
             lapseLowCounter={lapseLowCounter}
             lapseHighCounter={lapseHighCounter}
             onSelectLapse={onSelectLapse}
+            checkIcon={checkIcon}
          />
          <CheckItemModal
             visible={visibleCheckModal}

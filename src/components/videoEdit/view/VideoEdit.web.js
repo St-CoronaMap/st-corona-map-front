@@ -42,6 +42,8 @@ function VideoEdit({
    onReady,
    isFirst,
    clearIsFirstV,
+
+   checkIcon,
 }) {
    const onEnded = useCallback(() => {
       playerRef.current?.seekTo(selectedLapsed[0], "seconds");
@@ -97,6 +99,7 @@ function VideoEdit({
                   endTime={endTime}
                   onSelectLapse={onSelectLapse}
                   setPlaying={setPlaying}
+                  checkIcon={checkIcon}
                />
             ) : (
                <></>

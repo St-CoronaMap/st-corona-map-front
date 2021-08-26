@@ -28,6 +28,7 @@ function VideoEdit({
    onReady,
    onSelectLapse,
    onChangeState,
+   checkIcon,
 }) {
    return (
       <View style={styles.container}>
@@ -53,6 +54,7 @@ function VideoEdit({
                   handleValueChange={handleValueChange}
                   endTime={endTime}
                   onSelectLapse={onSelectLapse}
+                  checkIcon={checkIcon}
                />
             ) : (
                <></>

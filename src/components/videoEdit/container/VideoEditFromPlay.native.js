@@ -22,6 +22,8 @@ function VideoEditFromPlay({
    lapseLowCounter,
    lapseHighCounter,
    onSelectLapse,
+
+   checkIcon,
 }) {
    useEffect(() => {
       const handleLapse = async () => {
@@ -83,6 +85,7 @@ function VideoEditFromPlay({
          onReady={onReady}
          onSelectLapse={onSelectLapse}
          onChangeState={onChangeState}
+         checkIcon={checkIcon}
       />
    );
 }

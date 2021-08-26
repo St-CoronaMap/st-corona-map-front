@@ -29,6 +29,7 @@ function VideoEditContainer({
    lapseLowCounter,
    lapseHighCounter,
    onSelectLapse,
+   checkIcon,
 }) {
    const isPlay = useSelector(({ isPlay }) => isPlay);
 
@@ -100,6 +101,7 @@ function VideoEditContainer({
             onReady={onReady}
             isFirst={isFirst}
             clearIsFirstV={clearIsFirstV}
+            checkIcon={checkIcon}
          />
       </TourGuideProvider>
    );

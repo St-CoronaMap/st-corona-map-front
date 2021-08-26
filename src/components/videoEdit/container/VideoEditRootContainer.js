@@ -5,6 +5,7 @@ import React, {
    useRef,
    useState,
 } from "react";
+import { Easing, Animated } from "react-native";
 import { Platform } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { FIRST, V_FIRST } from "../../../lib/api/isFirstStorage";
@@ -29,6 +30,7 @@ function VideoEditRootContainer({ route }) {
    const [visibleCheckModal, setVisibleCheckModal] = useState(false);
    const [isBanned, setIsBanned] = useState(false);
    const [vol, setVol] = useState(50);
+   const checkIcon = useRef(new Animated.Value(0)).current;
 
    const isFirst = useSelector(({ isFirst }) => isFirst[V_FIRST] === FIRST);
    const dispatch = useDispatch();
@@ -104,6 +106,19 @@ function VideoEditRootContainer({ route }) {
    }, []);
 
    const onSelectLapse = useCallback(() => {
+      Animated.timing(checkIcon, {
+         toValue: 1,
+         duration: 1000,
+         useNativeDriver: true,
+         easing: Easing.bezier(0, 0.44, 1, 1),
+      }).start(() =>
+         Animated.timing(checkIcon, {
+            toValue: 0,
+            duration: 500,
+            delay: 300,
+            useNativeDriver: true,
+         }).start()
+      );
       playerRef.current?.seekTo(lapse[0], SEET_TO_OPTION);
       setSelectedLapsed(lapse);
    }, [lapse]);
@@ -132,6 +147,7 @@ function VideoEditRootContainer({ route }) {
             lapseLowCounter={lapseLowCounter}
             lapseHighCounter={lapseHighCounter}
             onSelectLapse={onSelectLapse}
+            checkIcon={checkIcon}
          />
          {!isBanned && (
             <>

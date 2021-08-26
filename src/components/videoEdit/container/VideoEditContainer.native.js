@@ -27,6 +27,7 @@ function VideoEditContainer({
    lapseLowCounter,
    lapseHighCounter,
    onSelectLapse,
+   checkIcon,
 }) {
    useEffect(() => {
       const handleLapse = async () => {
@@ -95,6 +96,7 @@ function VideoEditContainer({
          onReady={onReady}
          onSelectLapse={onSelectLapse}
          onChangeState={onChangeState}
+         checkIcon={checkIcon}
       />
    );
 }
