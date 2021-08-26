@@ -15,7 +15,11 @@ import { TourGuideProvider } from "rn-tourguide";
 import TourContainer from "../elements/TourContainer";
 import CustomTootip from "../../elements/CustomTootip";
 import I18n from "i18n-js";
-import { IS_MOBILE_WEB } from "../../../lib/styles/variables";
+import {
+   IS_MOBILE_WEB,
+   PLAYLIST_HEIGHT,
+   SMALL_MOBILE_WEB,
+} from "../../../lib/styles/variables";
 
 function Playlist({
    playlist,
@@ -125,8 +129,8 @@ const styles = StyleSheet.create({
       height: "100%",
    },
    card: {
-      width: IS_MOBILE_WEB ? 250 : "40%",
-      height: IS_MOBILE_WEB ? 220 : 200,
+      width: SMALL_MOBILE_WEB ? 250 : "40%",
+      height: SMALL_MOBILE_WEB ? 220 : PLAYLIST_HEIGHT,
       padding: 0,
       borderRadius: 30,
 

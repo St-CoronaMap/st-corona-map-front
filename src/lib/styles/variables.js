@@ -19,3 +19,6 @@ export const SEARCH = "Search";
 
 export const IS_MOBILE_WEB = width < 600 ? true : false;
 export const MOBILE_WEB_PALYER_HEIGHT = 9 * ((width * 0.98) / 16);
+
+export const SMALL_MOBILE_WEB = width < 400 ? true : false;
+export const PLAYLIST_HEIGHT = IS_MOBILE_WEB ? width * 0.4 : 200;

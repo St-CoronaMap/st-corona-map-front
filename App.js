@@ -16,10 +16,10 @@ import palette from "./src/lib/styles/palette";
 
 /* Sentry */
 import * as Sentry from "sentry-expo";
-import { sentryDsn } from "./env";
+import { REACT_APP_SENTRY_DSN } from "@env";
 
 Sentry.init({
-   dsn: sentryDsn,
+   dsn: REACT_APP_SENTRY_DSN,
    enableInExpoDevelopment: false,
 });
 
