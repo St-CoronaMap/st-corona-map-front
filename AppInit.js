@@ -87,7 +87,7 @@ function AppInit() {
 
          if (Platform.OS === "web") {
             await Font.loadAsync({
-               notosans: require("./assets/NotoSansKR-Regular.web.otf"),
+               notosans: require("./src/lib/styles/NotoSansKR-Regular.web.otf"),
             });
          }
       } catch (err) {
