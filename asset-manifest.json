@@ -1,11 +1,11 @@
 {
   "files": {
-    "app.js": "/youtubePlaylist-front/static/js/app.fa39ce61.chunk.js",
-    "app.js.map": "/youtubePlaylist-front/static/js/app.fa39ce61.chunk.js.map",
+    "app.js": "/youtubePlaylist-front/static/js/app.5e5cdf7c.chunk.js",
+    "app.js.map": "/youtubePlaylist-front/static/js/app.5e5cdf7c.chunk.js.map",
     "runtime~app.js": "/youtubePlaylist-front/static/js/runtime~app.e118721c.js",
     "runtime~app.js.map": "/youtubePlaylist-front/static/js/runtime~app.e118721c.js.map",
-    "static/js/2.5b3fd43c.chunk.js": "/youtubePlaylist-front/static/js/2.5b3fd43c.chunk.js",
-    "static/js/2.5b3fd43c.chunk.js.map": "/youtubePlaylist-front/static/js/2.5b3fd43c.chunk.js.map",
+    "static/js/2.0c561212.chunk.js": "/youtubePlaylist-front/static/js/2.0c561212.chunk.js",
+    "static/js/2.0c561212.chunk.js.map": "/youtubePlaylist-front/static/js/2.0c561212.chunk.js.map",
     "fonts/AntDesign.ttf": "/youtubePlaylist-front/./fonts/AntDesign.ttf",
     "fonts/Entypo.ttf": "/youtubePlaylist-front/./fonts/Entypo.ttf",
     "fonts/Feather.ttf": "/youtubePlaylist-front/./fonts/Feather.ttf",
@@ -17,6 +17,7 @@
     "fonts/Ionicons.ttf": "/youtubePlaylist-front/./fonts/Ionicons.ttf",
     "fonts/MaterialCommunityIcons.ttf": "/youtubePlaylist-front/./fonts/MaterialCommunityIcons.ttf",
     "fonts/MaterialIcons.ttf": "/youtubePlaylist-front/./fonts/MaterialIcons.ttf",
+    "fonts/NotoSansKR-Regular.web.otf": "/youtubePlaylist-front/./fonts/NotoSansKR-Regular.web.otf",
     "fonts/SimpleLineIcons.ttf": "/youtubePlaylist-front/./fonts/SimpleLineIcons.ttf",
     "favicon-16.png": "/youtubePlaylist-front/favicon-16.png",
     "favicon-32.png": "/youtubePlaylist-front/favicon-32.png",
@@ -24,7 +25,7 @@
     "index.html": "/youtubePlaylist-front/index.html",
     "manifest.json": "/youtubePlaylist-front/manifest.json",
     "serve.json": "/youtubePlaylist-front/serve.json",
-    "static/js/2.5b3fd43c.chunk.js.LICENSE.txt": "/youtubePlaylist-front/static/js/2.5b3fd43c.chunk.js.LICENSE.txt",
+    "static/js/2.0c561212.chunk.js.LICENSE.txt": "/youtubePlaylist-front/static/js/2.0c561212.chunk.js.LICENSE.txt",
     "static/media/bell.png": "/youtubePlaylist-front/static/media/bell.cf04af27.png",
     "static/media/heart.png": "/youtubePlaylist-front/static/media/heart.23b5c2c0.png",
     "static/media/rocket.png": "/youtubePlaylist-front/static/media/rocket.d2f3bf41.png",
@@ -32,7 +33,7 @@
   },
   "entrypoints": [
     "static/js/runtime~app.e118721c.js",
-    "static/js/2.5b3fd43c.chunk.js",
-    "static/js/app.fa39ce61.chunk.js"
+    "static/js/2.0c561212.chunk.js",
+    "static/js/app.5e5cdf7c.chunk.js"
   ]
 }
