@@ -16,20 +16,18 @@ import { Platform, StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
 import Loading from "./src/components/elements/Loading";
 import Snackbar from "rn-animated-snackbar";
-import { clearSnackbar, setSnackbar } from "./src/modules/snackbar";
+import { clearSnackbar } from "./src/modules/snackbar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { navigationRef } from "./RootNavigation";
 import { signin } from "./src/modules/auth";
 import palette from "./src/lib/styles/palette";
 import { Restart } from "fiction-expo-restart";
-import * as Font from "expo-font";
 import { fontStyle } from "./src/lib/styles/stylesByPlatform.js";
 
 import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import { i18nTranslation } from "./src/lib/i18nTranslation";
-import { Dimensions } from "react-native";
 import { IS_MOBILE_WEB } from "./src/lib/styles/variables";
 
 const Stack = createStackNavigator();
@@ -87,16 +85,8 @@ function AppInit() {
          dispatch(setIsFirst(res.first));
          dispatch(signin(res.userInfo));
          dispatch(getPlaylist());
-
-         if (Platform.OS === "web") {
-            await Font.loadAsync({
-               notosans: require("./assets/NotoSansKR-Regular.web.otf"),
-            });
-         }
       } catch (err) {
-         if (Platform.OS !== "web") {
-            Restart();
-         }
+         Restart();
       }
    };
 
