@@ -7,6 +7,11 @@ import palette from "../../../lib/styles/palette";
 import ControlVideo from "../elements/ControlVideo";
 import SecondController from "../elements/SecondController";
 import Summary from "../elements/Summary";
+import {
+   HEADERNAME_HEIGHT,
+   HEIGHT,
+   TAP_HEIGHT,
+} from "../../../lib/styles/variables";
 
 const PLAYER_HEIGHT = 9 * (Dimensions.get("window").width / 16);
 
@@ -44,7 +49,12 @@ function VideoEdit({
                webViewStyle={{ backgroundColor: "black", opacity: 0.99 }}
             />
          </View>
-         <ScrollView>
+         <ScrollView
+            style={{
+               height:
+                  HEIGHT - HEADERNAME_HEIGHT - TAP_HEIGHT - PLAYER_HEIGHT - 80,
+               marginBottom: 30,
+            }}>
             <Summary item={item} />
             {loaded && endTime ? (
                <SecondController

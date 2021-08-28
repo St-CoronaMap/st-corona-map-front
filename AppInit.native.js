@@ -82,11 +82,20 @@ function AppInit() {
          i18n.translations = i18nTranslation;
 
          const res = await appInit();
+         await AsyncStorage.setItem("@restart", "false");
          dispatch(setIsFirst(res.first));
          dispatch(signin(res.userInfo));
          dispatch(getPlaylist());
       } catch (err) {
-         Restart();
+         const res = await AsyncStorage.getItem("@restart");
+         if (!res || res === "false") {
+            await AsyncStorage.setItem("@restart", "true");
+            Restart();
+         } else if (res === "true") {
+            await AsyncStorage.removeItem("@tokens");
+            await AsyncStorage.setItem("@restart", "false");
+            Restart();
+         }
       }
    };
 

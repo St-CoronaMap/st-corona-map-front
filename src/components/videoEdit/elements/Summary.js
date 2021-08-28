@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
    },
    text: {
       padding: 10,
-      fontSize: 20,
+      fontSize: 16,
       ...boldFontStyle,
    },
    channelContainer: {
@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       paddingBottom: Platform.OS === "web" ? 5 : 10,
    },
-   image: { width: 40, height: 40, borderRadius: 20 },
+   image: { width: 30, height: 30, borderRadius: 20 },
 });
 export default React.memo(Summary);
