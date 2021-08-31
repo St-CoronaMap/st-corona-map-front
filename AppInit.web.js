@@ -29,6 +29,7 @@ import * as Localization from "expo-localization";
 import i18n from "i18n-js";
 import { i18nTranslation } from "./src/lib/i18nTranslation";
 import { IS_MOBILE_WEB } from "./src/lib/styles/variables";
+import { Restart } from "fiction-expo-restart";
 
 const Stack = createStackNavigator();
 
@@ -89,7 +90,26 @@ function AppInit() {
          await Font.loadAsync({
             notosans: require("./assets/NotoSansKR-Regular.web.otf"),
          });
-      } catch (err) {}
+
+         await AsyncStorage.setItem("@restart", "false");
+      } catch (err) {
+         const res = await AsyncStorage.getItem("@restart");
+         if (
+            res !== "resetNonId" &&
+            err.message === "존재하지 않는 회원입니다."
+         ) {
+            await AsyncStorage.removeItem("@nomMemberId");
+            await AsyncStorage.setItem("@restart", "resetNonId");
+            Restart();
+         } else if (!res || res === "false") {
+            await AsyncStorage.setItem("@restart", "true");
+            Restart();
+         } else if (res === "resetNonId") {
+            await AsyncStorage.setItem("@restart", "false");
+         } else if (res === "true") {
+            await AsyncStorage.setItem("@restart", "false");
+         }
+      }
    };
 
    const onFinish = () => setPreLoading(false);

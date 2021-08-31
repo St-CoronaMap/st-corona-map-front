@@ -42,8 +42,8 @@ function ReauthenticateModal({
    return (
       <CustomModal
          visible={visible}
-         title={<CustomModalHeader props={titleProps} />}
-         footer={<CustomModalFooter buttons={footerProps} />}>
+         title={<CustomModalHeader props={titleProps} width={300} />}
+         footer={<CustomModalFooter buttons={footerProps} width={300} />}>
          <View style={styles.container}>
             <Text style={fontStyle}>{I18n.t("input_current_password")}</Text>
             <Input

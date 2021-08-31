@@ -45,6 +45,7 @@ function RemoveUserModal({
          footer={
             <CustomModalFooter
                buttons={success ? footerOnSuccess : footerProps}
+               width={300}
             />
          }>
          <View style={styles.container}>

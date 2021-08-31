@@ -75,7 +75,7 @@ export const nonMemberLogin = async () => {
       //로그인
       return await login(id, "");
    } catch (err) {
-      throw err.response.data || err;
+      throw err;
    }
 };
 
@@ -113,7 +113,7 @@ export const appInit = async () => {
       };
    } catch (err) {
       // 아예 초기화가 실패했을떄
-      throw err.response.data || err;
+      throw err;
    }
 };
 

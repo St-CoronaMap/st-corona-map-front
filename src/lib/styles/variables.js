@@ -26,3 +26,5 @@ export const SMALL_MOBILE_WEB = width < 400 ? true : false;
 export const PLAYLIST_HEIGHT = IS_MOBILE_WEB ? width * 0.4 : 200;
 export const WIDTH = width;
 export const HEIGHT = height;
+
+export const modalPadding = 10;

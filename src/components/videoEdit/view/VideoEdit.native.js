@@ -34,6 +34,7 @@ function VideoEdit({
    onSelectLapse,
    onChangeState,
    checkIcon,
+   scrollViewRef,
 }) {
    return (
       <View style={styles.container}>
@@ -50,6 +51,7 @@ function VideoEdit({
             />
          </View>
          <ScrollView
+            ref={scrollViewRef || null}
             style={{
                height:
                   HEIGHT - HEADERNAME_HEIGHT - TAP_HEIGHT - PLAYER_HEIGHT - 80,

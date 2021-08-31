@@ -85,7 +85,8 @@ function Search({ onSearch, typing, onChange, result, onPressItem }) {
             />
             <ListItem.Content>
                <ListItem.Title
-                  style={[{ color: palette.blackBerry }, boldFontStyle]}>
+                  style={[{ color: palette.blackBerry }, boldFontStyle]}
+                  numberOfLines={2}>
                   {item.title}
                </ListItem.Title>
 

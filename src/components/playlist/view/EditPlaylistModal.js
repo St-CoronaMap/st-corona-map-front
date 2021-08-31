@@ -37,6 +37,7 @@ function EditPlaylistModal({
          footer={
             <CustomModalFooter
                buttons={onEditTitle ? editTitleButtons : buttons}
+               width={300}
             />
          }>
          {!onEditTitle ? (
@@ -85,10 +86,12 @@ function EditPlaylistModal({
 const styles = StyleSheet.create({
    container: {
       width: 300,
+      padding: 10,
       justifyContent: "center",
       alignItems: "center",
    },
    containerEdit: {
+      width: 300,
       padding: 30,
       paddingBottom: 0,
       backgroundColor: palette.ivory,

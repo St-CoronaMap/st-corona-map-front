@@ -28,8 +28,8 @@ function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
    return (
       <CustomModal
          visible={visible}
-         title={<CustomModalHeader props={titleProps} />}
-         footer={<CustomModalFooter buttons={buttons} />}
+         title={<CustomModalHeader props={titleProps} width={310} />}
+         footer={<CustomModalFooter buttons={buttons} width={310} />}
          rounded>
          <View style={styles.container}>
             <Text style={fontStyle}>{I18n.t("enter_playlist_name")}</Text>
@@ -45,6 +45,7 @@ function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
 
 const styles = StyleSheet.create({
    container: {
+      width: 310,
       padding: 30,
       paddingBottom: 0,
       backgroundColor: palette.ivory,

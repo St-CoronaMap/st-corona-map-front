@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { copilot } from "react-native-copilot";
 import CustomStepNumber from "../../elements/CustomStepNumber";
 import CustomTootip from "../../elements/CustomTootip";
@@ -29,6 +29,7 @@ function VideoEditContainer({
    onSelectLapse,
    checkIcon,
 }) {
+   const scrollViewRef = useRef();
    useEffect(() => {
       const handleLapse = async () => {
          const time = await playerRef.current?.getCurrentTime();
@@ -42,7 +43,7 @@ function VideoEditContainer({
 
    useEffect(() => {
       if (isFirst && loaded && endTime) {
-         setTimeout(start, 100);
+         setTimeout(() => start(false, scrollViewRef.current), 100);
          clearIsFirstV();
       }
    }, [isFirst, loaded, endTime]);
@@ -97,6 +98,7 @@ function VideoEditContainer({
          onSelectLapse={onSelectLapse}
          onChangeState={onChangeState}
          checkIcon={checkIcon}
+         scrollViewRef={scrollViewRef}
       />
    );
 }

@@ -13,6 +13,9 @@ import { Platform } from "react-native";
 import { HEIGHT, IS_MOBILE_WEB, WIDTH } from "../../../lib/styles/variables.js";
 import { View } from "react-native";
 
+const width =
+   Platform.OS === "web" ? (IS_MOBILE_WEB ? WIDTH * 0.95 : 600) : WIDTH;
+
 function SelectPlaylist({ visible, cancel, item }) {
    const titleProps = {
       title: I18n.t("select_playlist"),
@@ -29,18 +32,13 @@ function SelectPlaylist({ visible, cancel, item }) {
    return (
       <CustomModal
          visible={visible}
-         title={<CustomModalHeader props={titleProps} />}
-         footer={<CustomModalFooter buttons={buttons} />}
+         title={<CustomModalHeader props={titleProps} width={width} />}
+         footer={<CustomModalFooter buttons={buttons} width={width} />}
          rounded={false}
          isFullScreen>
          <View
             style={{
-               width:
-                  Platform.OS === "web"
-                     ? IS_MOBILE_WEB
-                        ? WIDTH * 0.95
-                        : 600
-                     : WIDTH,
+               width: width,
                height: HEIGHT * 0.7,
                backgroundColor: palette.ivory,
             }}>

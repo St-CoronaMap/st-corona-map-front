@@ -154,7 +154,7 @@ export const i18nTranslation = {
       nonmember_playlist_limit:
          "비회원은 재생목록을 최대 5개까지 만들 수 있습니다.",
       update_range: "다음과 같이 수정하시겠습니까?",
-      add_video: "다음을 재생목록에 추가하시겠습니까?",
+      add_video: "해당 영상을 재생목록에 추가하시겠습니까?",
       select_playlist: "재생목록 선택",
 
       cancel: "취소",

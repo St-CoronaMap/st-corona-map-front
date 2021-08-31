@@ -19,6 +19,13 @@ import CustomModalFooter from "../../elements/CustomModalFooter";
 import I18n from "i18n-js";
 import { IS_MOBILE_WEB } from "../../../lib/styles/variables.js";
 
+const width =
+   Platform.OS === "web"
+      ? IS_MOBILE_WEB
+         ? "95%"
+         : 500
+      : Dimensions.get("window").width - 100;
+
 function CheckItemModal({ visible, close, onOk, item, from }) {
    const footerButtons = [
       {
@@ -34,7 +41,7 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
    return (
       <CustomModal
          visible={visible}
-         footer={<CustomModalFooter buttons={footerButtons} />}
+         footer={<CustomModalFooter buttons={footerButtons} width={width} />}
          rounded={true}>
          <View style={styles.container}>
             <Text style={styles.header}>
@@ -67,12 +74,7 @@ function CheckItemModal({ visible, close, onOk, item, from }) {
 
 const styles = StyleSheet.create({
    container: {
-      width:
-         Platform.OS === "web"
-            ? IS_MOBILE_WEB
-               ? "95%"
-               : 500
-            : Dimensions.get("window").width - 100,
+      width: width,
       backgroundColor: palette.ivory,
       alignItems: "center",
       justifyContent: "center",

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AppLoading from "expo-app-loading";
-import { ModalPortal } from "react-native-modals";
 
 import { appInit, reissue } from "./src/lib/api/auth";
 import { getPlaylist } from "./src/modules/playlist";
@@ -82,19 +81,28 @@ function AppInit() {
          i18n.translations = i18nTranslation;
 
          const res = await appInit();
-         await AsyncStorage.setItem("@restart", "false");
          dispatch(setIsFirst(res.first));
          dispatch(signin(res.userInfo));
          dispatch(getPlaylist());
+
+         await AsyncStorage.setItem("@restart", "false");
       } catch (err) {
+         console.log(err);
          const res = await AsyncStorage.getItem("@restart");
-         if (!res || res === "false") {
+         if (
+            res !== "resetNonId" &&
+            err.message === "존재하지 않는 회원입니다."
+         ) {
+            await AsyncStorage.removeItem("@nomMemberId");
+            await AsyncStorage.setItem("@restart", "resetNonId");
+            Restart();
+         } else if (!res || res === "false") {
             await AsyncStorage.setItem("@restart", "true");
             Restart();
-         } else if (res === "true") {
-            await AsyncStorage.removeItem("@tokens");
+         } else if (res === "resetNonId") {
             await AsyncStorage.setItem("@restart", "false");
-            Restart();
+         } else if (res === "true") {
+            await AsyncStorage.setItem("@restart", "false");
          }
       }
    };
@@ -137,7 +145,6 @@ function AppInit() {
                      }}
                   />
                </Stack.Navigator>
-               <ModalPortal />
                <Snackbar
                   visible={snackbar}
                   onDismiss={() => dispatch(clearSnackbar())}
