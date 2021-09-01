@@ -33,6 +33,7 @@ function ProfileContainer({ navigation }) {
                return;
             }
          }
+
          let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,

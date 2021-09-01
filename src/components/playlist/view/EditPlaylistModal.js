@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
    },
    containerEdit: {
       width: 300,
-      padding: 30,
+      padding: 10,
       paddingBottom: 0,
       backgroundColor: palette.ivory,
       alignItems: "center",

@@ -7,5 +7,8 @@ export default function seperateSecond(second) {
    minute = minute.length === 1 ? "0" + minute : minute;
    second %= 60;
 
+   if (hour === "00") {
+      return `${minute}:${second < 10 ? "0" + `${second}` : second}`;
+   }
    return `${hour}:${minute}:${second < 10 ? "0" + `${second}` : second}`;
 }

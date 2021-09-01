@@ -46,7 +46,7 @@ function AddPlaylistModal({ visible, cancel, onChange, addPlaylist, errMsg }) {
 const styles = StyleSheet.create({
    container: {
       width: 310,
-      padding: 30,
+      padding: 10,
       paddingBottom: 0,
       backgroundColor: palette.ivory,
       alignItems: "center",

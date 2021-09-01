@@ -48,7 +48,7 @@ sagaMiddleware.run(rootSaga);
 export default function App() {
    return (
       <SafeAreaProvider>
-         <StatusBar backgroundColor={palette.blackBerry} />
+         <StatusBar />
          <SafeAreaView
             style={{
                flex: 1,

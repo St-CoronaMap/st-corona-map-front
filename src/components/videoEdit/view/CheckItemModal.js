@@ -17,14 +17,9 @@ import seperateSecond from "../../../lib/utils/seperateSecond";
 import CustomModal from "../../elements/CustomModal";
 import CustomModalFooter from "../../elements/CustomModalFooter";
 import I18n from "i18n-js";
-import { IS_MOBILE_WEB } from "../../../lib/styles/variables.js";
+import { IS_MOBILE_WEB, WIDTH } from "../../../lib/styles/variables.js";
 
-const width =
-   Platform.OS === "web"
-      ? IS_MOBILE_WEB
-         ? "95%"
-         : 500
-      : Dimensions.get("window").width - 100;
+const width = Platform.OS === "web" ? (IS_MOBILE_WEB ? "95%" : 500) : WIDTH;
 
 function CheckItemModal({ visible, close, onOk, item, from }) {
    const footerButtons = [
