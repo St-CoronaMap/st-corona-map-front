@@ -1,7 +1,5 @@
 <p align="center"><img width='200px' src="https://user-images.githubusercontent.com/31322144/144734753-907c6b18-d163-498b-b4ee-db2b18460dd8.png"></p>
 
-
-
 # YourList
 
 ### 서비스 소개
@@ -11,21 +9,17 @@
 
 ### 기술
 
-- React-Native를 사용하여 웹과 앱을 모두 지원하도록 하였습니다.
+-  React-Native를 사용하여 웹과 앱을 모두 지원하도록 하였습니다.
 
-- 서비스가 언어/문화에 제약이 없다는 점에서 i18n을 통한 글로벌 언어를 제공하였습니다.
+-  서비스가 언어/문화에 제약이 없다는 점에서 i18n을 통한 글로벌 언어를 제공하였습니다.
 
-- 회원 관리는 JWT 토큰 기반으로 하였습니다.
-
-  
+-  회원 관리는 JWT 토큰 기반으로 하였습니다.
 
 ## Link
 
-- 웹 사이트 : https://www.yourlist.me/
+-  웹 사이트 : https://www.yourlist.me/
 
-- 플레이스토어 : https://play.google.com/store/apps/details?id=com.callmeshin75.yourlist
-
-
+-  플레이스토어 : https://play.google.com/store/apps/details?id=com.callmeshin75.yourlist
 
 ## TechStack
 
@@ -46,11 +40,7 @@
   </tr>
 </tbody></table>
 
-
-
 ## UI
-
-
 
 <table frame="void" style="border:none;" ><tbody>
   <tr align="center" valign="middle"  style="border:none;">
@@ -76,4 +66,3 @@
       </td>
   </tr>
 </tbody></table>
-
