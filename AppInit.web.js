@@ -12,7 +12,7 @@ import PlayScreen from "./src/screens/Play";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsFirst } from "./src/modules/isFirst";
 
-import { Platform, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import HeaderName from "./src/components/headerName/HeaderName";
 import Loading from "./src/components/elements/Loading";
 import Snackbar from "rn-animated-snackbar";
@@ -129,12 +129,7 @@ function AppInit() {
          <NavigationContainer
             ref={navigationRef}
             documentTitle={{ enabled: false }}>
-            <View
-               style={
-                  Platform.OS === "web"
-                     ? styles.containerWeb
-                     : styles.containerNative
-               }>
+            <View style={styles.containerWeb}>
                <HeaderName />
                <Stack.Navigator mode="modal" initialRouteName="Main">
                   <Stack.Screen

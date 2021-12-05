@@ -3,6 +3,7 @@ import { Dimensions, Platform, StyleSheet, View } from "react-native";
 import { Modal, ModalContent, SlideAnimation } from "react-native-modals";
 import palette from "../../lib/styles/palette";
 import { IS_MOBILE_WEB, WIDTH } from "../../lib/styles/variables";
+
 function CustomModal({
    children,
    visible,
