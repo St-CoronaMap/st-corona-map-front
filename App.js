@@ -38,10 +38,12 @@ if (Platform.OS !== "web") {
 
 /*리덕스 */
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(
-   rootReducer,
-   composeWithDevTools(applyMiddleware(sagaMiddleware, logger))
-);
+const store = __DEV__
+   ? createStore(
+        rootReducer,
+        composeWithDevTools(applyMiddleware(sagaMiddleware, logger))
+     )
+   : createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 /* 앱 함수 */
