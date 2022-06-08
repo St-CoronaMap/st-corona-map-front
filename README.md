@@ -17,7 +17,7 @@
 
 ## Link
 
--  웹 사이트 : https://www.yourlist.me/
+-  웹 사이트 : https://www.yourlist.me/  (현재 Forkie Player로 대체됨)
 
 -  플레이스토어 : https://play.google.com/store/apps/details?id=com.callmeshin75.yourlist
 
